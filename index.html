@@ -5,7 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tikitok Overlays — overlays et alertes pour ton live TikTok</title>
 <meta name="description" content="Overlays, alertes, roue, contours de caméra et commandes du chat pour TikTok LIVE Studio. Gratuit pour commencer, Pro pour aller plus loin.">
-<link rel="icon" href="img/logo.png">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0c0a14">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Tikitok Overlays">
+<meta property="og:description" content="Overlays, alertes, roue, contours de caméra et commandes du chat pour TikTok LIVE Studio.">
+<meta property="og:image" content="https://tikitokoverlays.com/img/logo.png">
 <style>
   /* ============ À MODIFIER : liens et prix (le reste du site s'adapte tout seul) ============ */
   /* Les liens sont dans le bloc de code tout en bas (const CONFIG). */
@@ -19,6 +27,7 @@
   html { scroll-behavior: smooth; }
   body { margin: 0; background: var(--bg); color: var(--text); font-family: "Segoe UI", system-ui, -apple-system, sans-serif; line-height: 1.55; overflow-x: hidden; }
   img { max-width: 100%; display: block; }
+  .shot img, .frame img { width: 100%; height: auto; }
   a { color: inherit; }
   .wrap { width: min(1120px, 100% - 40px); margin: 0 auto; }
   h1, h2, h3 { line-height: 1.08; margin: 0; letter-spacing: -.02em; }
@@ -44,6 +53,45 @@
   .lng button { border: 0; padding: 5px 10px; border-radius: 7px; background: transparent; color: var(--muted); font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
   .lng button.on { background: var(--grad); color: #fff; }
   [data-only="en"] { display: none; } html[lang="en"] [data-only="en"] { display: block; }
+  /* ---------- thème Halloween (bouton citrouille en haut) ---------- */
+  .hwtog { display: grid; place-items: center; width: 40px; height: 40px; padding: 0; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,.04); color: var(--muted); cursor: pointer; transition: transform .15s, border-color .15s, color .15s; }
+  .hwtog:hover { transform: rotate(-8deg) scale(1.06); border-color: rgba(255,122,26,.6); color: #ff9d3d; }
+  .hwtog svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linejoin: round; stroke-linecap: round; }
+  .hwtog .face { stroke: none; fill: currentColor; opacity: 0; }
+  html.hw .hwtog { color: #ff7a1a; border-color: rgba(255,122,26,.7); background: rgba(255,122,26,.12); box-shadow: 0 0 18px rgba(255,122,26,.35); }
+  html.hw .hwtog svg .body { fill: rgba(255,122,26,.25); }
+  html.hw .hwtog .face { opacity: 1; fill: #ffd24a; }
+  #hwDeco { display: none; }
+  html.hw { --bg: #0a0510; --bg2: #120a1c; --card: #180e24; --line: rgba(255,150,60,.2); --text: #fbeedd; --muted: #b39ccb; --pink: #ff7a1a; --violet: #6b2fc2; --grad: linear-gradient(120deg, #ff7a1a, #b3359b 60%, #6b2fc2); }
+  html.hw body { background: radial-gradient(900px 500px at 85% -5%, rgba(255,122,26,.16), transparent 60%), radial-gradient(700px 500px at -5% 40%, rgba(107,47,194,.22), transparent 60%), var(--bg); }
+  html.hw h1, html.hw h2, html.hw .logo, html.hw .plan h3 { font-family: "Chiller", "Jokerman", "Papyrus", "Segoe UI", fantasy; letter-spacing: .035em; }
+  html.hw h1 { font-size: clamp(54px, 10vw, 118px); text-shadow: 0 0 36px rgba(255,122,26,.35); }
+  html.hw h2 { font-size: clamp(38px, 6.2vw, 66px); color: #ffb066; text-shadow: 0 0 24px rgba(255,122,26,.3); }
+  html.hw .hero h1 em { background: linear-gradient(120deg, #ffb347, #ff7a1a 45%, #8cff2e); -webkit-background-clip: text; background-clip: text; }
+  html.hw .eyebrow { color: #8cff2e; }
+  html.hw .btn { box-shadow: 0 10px 30px rgba(255,122,26,.35); }
+  html.hw .feat:hover { border-color: rgba(140,255,46,.5); }
+  html.hw .feat .ic { background: linear-gradient(135deg, rgba(255,122,26,.22), rgba(107,47,194,.28)); }
+  html.hw .plan.best { box-shadow: 0 0 70px rgba(255,122,26,.25); }
+  html.hw .txt li::before { background: #8cff2e; box-shadow: 0 0 10px #8cff2e; }
+  html.hw .hero::before { background: radial-gradient(600px 400px at 20% 10%, rgba(107,47,194,.45), transparent 70%), radial-gradient(600px 420px at 85% 30%, rgba(255,122,26,.3), transparent 70%), radial-gradient(500px 300px at 50% 100%, rgba(140,255,46,.1), transparent 70%); }
+  html.hw header { border-bottom-color: rgba(255,150,60,.3); position: sticky; }
+  html.hw header::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 20px; pointer-events: none; filter: drop-shadow(0 0 6px rgba(140,255,46,.4)); background: radial-gradient(circle 4px at 13.5px 13px, rgba(140,255,46,.85) 96%, transparent) 0 0 / 53px 18px repeat-x, linear-gradient(90deg, transparent 10px, rgba(140,255,46,.85) 10px 17px, transparent 17px) 0 0 / 53px 13px repeat-x, radial-gradient(circle 3.4px at 34.5px 9px, rgba(140,255,46,.85) 96%, transparent) 0 0 / 71px 14px repeat-x, linear-gradient(90deg, transparent 31px, rgba(140,255,46,.85) 31px 38px, transparent 38px) 0 0 / 71px 9px repeat-x, linear-gradient(rgba(140,255,46,.85), rgba(140,255,46,.85)) 0 0 / 100% 4px no-repeat; }
+  html.hw #hwDeco { display: block; position: fixed; inset: 0; z-index: 40; pointer-events: none; overflow: hidden; }
+  html.hw #hwDeco .web { position: absolute; width: clamp(90px, 14vw, 190px); aspect-ratio: 1; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%23e8e2f5' stroke-opacity='.55' stroke-width='1.3' stroke-linecap='round'%3E%3Cpath d='M0 0L100 0M0 0L90 40M0 0L68 68M0 0L40 90M0 0L0 100M26 0Q22 14 24 24Q14 22 0 26M52 0Q44 28 48 46Q28 44 0 52M78 0Q66 40 70 66Q42 62 0 78'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat; }
+  html.hw #hwDeco .web.a { top: 64px; left: 0; }
+  html.hw #hwDeco .web.b { bottom: 0; right: 0; transform: scale(-1); }
+  html.hw #hwDeco .web.c { top: 64px; right: 0; transform: scaleX(-1); opacity: .8; }
+  html.hw #hwDeco .spider { position: absolute; top: 64px; left: clamp(70px, 11vw, 150px); width: 26px; height: 150px; transform-origin: 50% 0; animation: hwSpider 5s ease-in-out infinite;
+    background: linear-gradient(#d4cbe6, #d4cbe6) 50% 0 / 1.5px 108px no-repeat, radial-gradient(circle 5px at 50% 110px, #050309 96%, transparent), radial-gradient(circle 9px at 50% 123px, #050309 96%, transparent), radial-gradient(circle 1.6px at 40% 109px, #ff4d2e 96%, transparent), radial-gradient(circle 1.6px at 60% 109px, #ff4d2e 96%, transparent), radial-gradient(ellipse 14px 1.8px at 50% 121px, #050309 96%, transparent); }
+  @keyframes hwSpider { 0%, 100% { transform: translateY(-34px) rotate(-3deg); } 50% { transform: translateY(22px) rotate(3deg); } }
+  html.hw #hwDeco .bat { position: absolute; top: 90px; left: -80px; width: 56px; aspect-ratio: 60 / 28; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 28'%3E%3Cpath fill='%2307040b' d='M30 8c-3-5-6-6-8-5 1 2 0 4-2 5-3-3-9-4-17-2 5 1 8 3 9 6-3 0-6 1-8 3 6 0 10 1 13 4 2-3 5-3 7 0 1 3 3 4 6 4s5-1 6-4c2-3 5-3 7 0 3-3 7-4 13-4-2-2-5-3-8-3 1-3 4-5 9-6-8-2-14-1-17 2-2-1-3-3-2-5-2-1-5 0-8 5z'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat; filter: drop-shadow(0 0 5px rgba(255,122,26,.7)); animation: hwBat 24s linear infinite; }
+  html.hw #hwDeco .bat.b { animation-duration: 36s; animation-delay: -14s; top: 160px; width: 40px; }
+  html.hw #hwDeco .bat.c { animation-duration: 30s; animation-delay: -6s; top: 40vh; width: 34px; opacity: .8; }
+  @keyframes hwBat { 0% { transform: translate(0, 0) scaleY(1); } 8% { transform: translate(9vw, 40px) scaleY(.5); } 16% { transform: translate(18vw, -10px) scaleY(1); } 24% { transform: translate(27vw, 50px) scaleY(.5); } 32% { transform: translate(36vw, 0) scaleY(1); } 40% { transform: translate(45vw, 46px) scaleY(.5); } 48% { transform: translate(54vw, -6px) scaleY(1); } 56% { transform: translate(63vw, 44px) scaleY(.5); } 64% { transform: translate(72vw, 0) scaleY(1); } 72% { transform: translate(81vw, 40px) scaleY(.5); } 100% { transform: translate(calc(100vw + 140px), 20px) scaleY(1); } }
+  html.hw .shot { border-color: rgba(255,150,60,.35); box-shadow: 0 40px 90px rgba(0,0,0,.6), 0 0 0 8px rgba(255,122,26,.05), 0 0 80px rgba(255,122,26,.18); }
+  html.hw .frame { border-color: rgba(255,150,60,.3); }
+  @media (prefers-reduced-motion: reduce) { html.hw #hwDeco * { animation: none !important; } }
   /* ---------- héros ---------- */
   .hero { position: relative; padding: 90px 0 70px; text-align: center; overflow: hidden; }
   .hero::before { content: ""; position: absolute; inset: -20% -10% auto; height: 120%; z-index: -1; background: radial-gradient(600px 400px at 20% 10%, rgba(123,44,255,.4), transparent 70%), radial-gradient(600px 420px at 85% 30%, rgba(255,45,111,.3), transparent 70%), radial-gradient(500px 300px at 50% 100%, rgba(255,122,26,.18), transparent 70%); }
@@ -51,7 +99,7 @@
   .hero h1 em { font-style: normal; background: linear-gradient(120deg, var(--orange), var(--pink) 50%, var(--violet)); -webkit-background-clip: text; background-clip: text; color: transparent; }
   .hero p.lead { max-width: 640px; margin: 0 auto 32px; color: var(--muted); font-size: clamp(17px, 2.4vw, 21px); }
   .hero .cta { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
-  .hero .shot { margin: 56px auto 0; width: min(980px, 100%); border-radius: 22px; border: 1px solid var(--line); box-shadow: 0 40px 90px rgba(0,0,0,.6), 0 0 0 8px rgba(255,255,255,.03); overflow: hidden; }
+  .hero .shot { margin: 56px auto 0; width: min(880px, 100%); border-radius: 22px; border: 1px solid var(--line); box-shadow: 0 40px 90px rgba(0,0,0,.6), 0 0 0 8px rgba(255,255,255,.03); overflow: hidden; }
   .legal { max-width: 560px; margin: 22px auto 0; padding: 10px 16px; border-radius: 12px; border: 1px dashed rgba(255,255,255,.22); color: var(--muted); font-size: 13.5px; background: rgba(255,255,255,.03); }
   .legal b { color: var(--text); }
   .chips { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 26px; }
@@ -123,15 +171,17 @@
 </head>
 <body>
 
+<div id="hwDeco" aria-hidden="true"><i class="web a"></i><i class="web c"></i><i class="web b"></i><i class="spider"></i><i class="bat"></i><i class="bat b"></i><i class="bat c"></i></div>
 <header>
   <div class="wrap">
-    <a class="logo" href="#"><img src="img/logo.png" alt="">Tikitok Overlays</a>
+    <a class="logo" href="#"><img src="icon-192.png" alt="">Tikitok Overlays</a>
     <nav>
       <a href="#fonctions">Fonctions</a>
       <a href="#apercu">Aperçu</a>
       <a href="#offres">Offres</a>
       <a href="#faq">Questions</a>
       <a class="btn" href="#telecharger" style="padding:9px 18px">Télécharger</a>
+      <button type="button" class="hwtog" id="hwTog" aria-pressed="false" title="Thème Halloween"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="body" d="M12 6.5c-5 0-9 2.8-9 6.8s4 6.7 9 6.7 9-2.7 9-6.7-4-6.8-9-6.8z"/><path d="M12 6.5c-2.3 1-3.6 3.4-3.6 6.8s1.3 5.8 3.6 6.7M12 6.5c2.3 1 3.6 3.4 3.6 6.8S14.3 19.1 12 20"/><path d="M12 6.5V3.8l2.2-1.3"/><path class="face" d="M7.2 12.6l2-1.5.6 2.1zM16.8 12.6l-2-1.5-.6 2.1zM9.2 16.2l1.4-1 1.4 1 1.4-1 1.4 1-1.2 1.5h-3.2z"/></svg></button>
       <div class="lng" role="group" aria-label="Langue / Language"><button type="button" data-lang="fr">FR</button><button type="button" data-lang="en">EN</button></div>
     </nav>
   </div>
@@ -359,10 +409,21 @@
     document.querySelector('meta[name=description]').content = TXT[l].desc;
     document.querySelectorAll('.lng button').forEach((b) => b.classList.toggle('on', b.dataset.lang === l));
     renderPlan(); renderVersion();
+    if (document.getElementById("hwTog") && typeof setHw === "function") setHw(document.documentElement.classList.contains("hw"), false);
   }
   function renderPlan() { const [v, p, n] = TXT[LANG].plans[PLAN]; document.getElementById('priceV').textContent = v; document.getElementById('priceP').textContent = p; document.getElementById('priceNote').textContent = n; }
   function renderVersion() { const i = document.getElementById('dlInfo'); if (i && RELEASE) i.textContent = TXT[LANG].ver(RELEASE.v, RELEASE.mo); }
   for (const b of document.querySelectorAll('.lng button')) b.onclick = () => setLang(b.dataset.lang);
+  // thème Halloween : actif tout seul du 1er octobre au 2 novembre, chacun peut le couper ou l'activer (choix mémorisé)
+  function hwDefault() { const d = new Date(), m = d.getMonth(), j = d.getDate(); return m === 9 || (m === 10 && j <= 2); }
+  function setHw(on, save) {
+    document.documentElement.classList.toggle('hw', on);
+    const t = document.getElementById('hwTog'); t.setAttribute('aria-pressed', String(on));
+    t.title = LANG === 'en' ? (on ? 'Halloween theme: on' : 'Halloween theme: off') : (on ? 'Thème Halloween : activé' : 'Thème Halloween : désactivé');
+    if (save) try { localStorage.setItem('hw', on ? '1' : '0'); } catch { /* stockage indisponible */ }
+  }
+  document.getElementById('hwTog').onclick = () => setHw(!document.documentElement.classList.contains('hw'), true);
+  { let v = null; try { v = localStorage.getItem('hw'); } catch { /* stockage indisponible */ } setHw(v === null ? hwDefault() : v === '1', false); }
   for (const e of document.querySelectorAll('[data-i]')) e.innerHTML = window.tabIcon(e.dataset.i);
   document.getElementById('y').textContent = new Date().getFullYear();
   // tarifs repris tels quels de l'appli (Réglages > Prendre l'abonnement)
