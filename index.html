@@ -180,6 +180,15 @@
   .ccard .row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
   .ccard .btn { padding: 10px 16px; font-size: 14px; }
   .ccard .soon { margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: rgba(255,122,26,.12); border: 1px solid rgba(255,122,26,.45); color: #ffc58a; font-size: 14px; font-weight: 700; }
+  .cform { margin-top: 28px; padding: 26px 28px; border-radius: 18px; background: var(--card); border: 1px solid var(--line); max-width: 760px; display: grid; gap: 14px; }
+  .cform h3 { font-size: 21px; }
+  .cform label { display: grid; gap: 6px; font-weight: 700; font-size: 14px; color: #d9d3e8; }
+  .cform input, .cform select, .cform textarea { font: inherit; font-weight: 400; color: inherit; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: rgba(255,255,255,.05); width: 100%; box-sizing: border-box; }
+  .cform select option { color: #111; }
+  .cform textarea { min-height: 130px; resize: vertical; }
+  .cform .hp { position: absolute; left: -9999px; height: 0; overflow: hidden; }
+  .cform .status { font-size: 14px; min-height: 20px; }
+  .cform .status.ok { color: #7dffb0; } .cform .status.err { color: #ff8a8a; }
   .helpbox { margin-top: 28px; padding: 24px 28px; border-radius: 18px; border: 1px dashed rgba(255,255,255,.2); background: rgba(255,255,255,.03); max-width: 760px; }
   .helpbox h3 { font-size: 19px; margin-bottom: 10px; }
   .helpbox ul { margin: 0; padding-left: 22px; color: #d9d3e8; display: grid; gap: 6px; }
@@ -401,6 +410,7 @@
     <h2>Une question ? Écris-nous.</h2>
     <p class="lead2">Abonnement, clé de licence, bug, idée de fonction ou simple curiosité : on lit tout. Réponse en général sous 24 h.</p>
     <div class="contacts" id="contactCards"></div>
+    <form class="cform reveal in" id="contactForm" hidden></form>
     <div class="helpbox reveal">
       <h3>Pour qu'on t'aide plus vite, indique-nous :</h3>
       <ul>
@@ -433,7 +443,7 @@
     contact: {
       discord: SCC.pseudoDiscord || '', discordName: SCC.pseudoDiscord || '',
       tiktok: (SCC.tiktok || []).map((x) => ({ name: x.nom, handle: x.compte })),
-      email: SCC.email || '', discordServerSoon: !!SCC.serveurDiscordBientot, discordInvite: SCC.lienServeurDiscord || '',
+      formKey: (SC.formulaire || {}).cle || '', discordServerSoon: !!SCC.serveurDiscordBientot, discordInvite: SCC.lienServeurDiscord || '',
     },
   };
   const num = (n, lang) => (Math.round(n * 10) / 10).toString().replace('.', lang === 'en' ? '.' : ',');
@@ -452,6 +462,34 @@
     fr: { discord: 'Discord', discordSub: (n) => `Pseudo : ${n}. Garde tes messages privés ouverts pour recevoir ta clé.`, copy: 'Copier le pseudo', copied: 'Pseudo copié', tiktok: 'TikTok', tiktokSub: 'Écris-nous en message privé.', open: 'Ouvrir le profil', mail: 'E-mail', mailSub: 'Pour toute demande, et pour être prévenu de l\'ouverture du serveur Discord.', write: 'Écrire un e-mail', server: 'Un serveur Discord officiel est en cours de création : bientôt ouvert !', join: 'Rejoindre le serveur' },
     en: { discord: 'Discord', discordSub: (n) => `Username: ${n}. Keep your direct messages open to receive your key.`, copy: 'Copy username', copied: 'Username copied', tiktok: 'TikTok', tiktokSub: 'Send us a direct message.', open: 'Open profile', mail: 'Email', mailSub: 'For any request, and to be told when the Discord server opens.', write: 'Write an email', server: 'An official Discord server is being set up: opening soon!', join: 'Join the server' },
   };
+  const FT = {
+    fr: { title: 'Écris-nous directement', pseudo: 'Pseudo (Discord ou TikTok, pour te répondre)', reason: 'Raison', reasons: ['Abonnement / clé de licence', 'Un bug', 'Une idée de fonction', 'Autre'], msg: 'Ton message', send: 'Envoyer', sending: 'Envoi…', ok: 'Message envoyé, merci ! On te répond vite.', err: "Impossible d'envoyer pour le moment. Réessaie ou écris-nous sur Discord / TikTok.", subject: 'Message du site Tikitok' },
+    en: { title: 'Write to us directly', pseudo: 'Username (Discord or TikTok, so we can reply)', reason: 'Reason', reasons: ['Subscription / license key', 'A bug', 'A feature idea', 'Other'], msg: 'Your message', send: 'Send', sending: 'Sending…', ok: 'Message sent, thank you! We will reply soon.', err: 'Could not send right now. Try again or write to us on Discord / TikTok.', subject: 'Message from the Tikitok website' },
+  };
+  function renderForm() {
+    const f = document.getElementById('contactForm'); if (!f) return;
+    const key = (CONFIG.contact || {}).formKey; f.hidden = !key; if (!key) return;
+    const t = FT[LANG]; f.replaceChildren();
+    const h = document.createElement('h3'); h.textContent = t.title; f.append(h);
+    const lab = (text, el) => { const l = document.createElement('label'); l.append(text, el); f.append(l); return el; };
+    const pseudo = lab(t.pseudo, Object.assign(document.createElement('input'), { required: true, maxLength: 80, name: 'pseudo' }));
+    const sel = lab(t.reason, document.createElement('select')); t.reasons.forEach((r) => sel.append(new Option(r, r)));
+    const msg = lab(t.msg, Object.assign(document.createElement('textarea'), { required: true, maxLength: 3000, name: 'message' }));
+    const hp = Object.assign(document.createElement('input'), { type: 'checkbox', name: 'botcheck', tabIndex: -1, className: 'hp' }); hp.setAttribute('autocomplete', 'off'); f.append(hp);
+    const btn = Object.assign(document.createElement('button'), { className: 'btn', type: 'submit', textContent: t.send });
+    const st = Object.assign(document.createElement('div'), { className: 'status' });
+    f.append(btn, st);
+    f.onsubmit = async (e) => {
+      e.preventDefault(); btn.disabled = true; btn.textContent = t.sending; st.className = 'status'; st.textContent = '';
+      try {
+        const r = await fetch('https://api.web3forms.com/submit', { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ access_key: key, subject: t.subject + ' : ' + sel.value, from_name: pseudo.value, pseudo: pseudo.value, raison: sel.value, message: msg.value, botcheck: hp.checked }) });
+        const j = await r.json();
+        if (!j.success) throw new Error('refus');
+        st.className = 'status ok'; st.textContent = t.ok; pseudo.value = ''; msg.value = '';
+      } catch { st.className = 'status err'; st.textContent = t.err; }
+      btn.disabled = false; btn.textContent = t.send;
+    };
+  }
   function renderContact() {
     const box = document.getElementById('contactCards'); if (!box) return;
     const t = CT[LANG], c = CONFIG.contact || {};
@@ -479,7 +517,7 @@
       const l = Object.assign(document.createElement('a'), { className: 'btn', href: `https://www.tiktok.com/@${encodeURIComponent(a.handle)}`, target: '_blank', rel: 'noopener', textContent: t.open });
       card('announce', `${t.tiktok} · ${a.name}`, `@${a.handle}`, t.tiktokSub, [l]);
     }
-    if (c.email) card('shares', t.mail, c.email, t.mailSub, [Object.assign(document.createElement('a'), { className: 'btn', href: `mailto:${c.email}`, textContent: t.write })]);
+    renderForm();
   }
   // formules (prix, note) construites à partir des prix de config.js
   TXT.fr.plans = { monthly: [money(PRICE.m, 'fr'), 'par mois', 'Sans engagement : tu arrêtes quand tu veux.'], yearly: [money(PRICE.y, 'fr'), 'par an', `Soit ${money(PRICE.y / 12, 'fr')} par mois : ${FREE_MONTHS} mois offerts.`] };

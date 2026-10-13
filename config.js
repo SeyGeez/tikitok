@@ -31,7 +31,6 @@ window.SITE_CONFIG = {
   // ---------- Page « Contactez-nous » ----------
   // Pour retirer un contact, vide-le (guillemets vides) ; pour en retirer un de la liste TikTok, efface sa ligne entière.
   contact: {
-    email: 'klptypro@gmail.com',
     tiktok: [
       { nom: 'TheKlpty', compte: 'TheKlpty' },                       // « compte » = ce qui vient après le @
       { nom: 'Prince', compte: 'user4992772884992773v2' },
@@ -39,6 +38,13 @@ window.SITE_CONFIG = {
     pseudoDiscord: '',               // ton pseudo Discord personnel (vide = non affiché)
     serveurDiscordBientot: true,     // true = affiche « un serveur Discord est en cours de création » ; false = masque ce message
     lienServeurDiscord: '',          // quand le serveur existe : colle ici son lien d'invitation (https://discord.gg/…) : un bouton « Rejoindre » apparaît
+  },
+
+  // ---------- Formulaire de contact (les messages arrivent dans ta boîte mail, sans que ton adresse soit visible) ----------
+  // 1. va sur https://web3forms.com, entre ton e-mail dans « Create your Access Key » ; la clé arrive par mail ;
+  // 2. colle-la entre les guillemets ci-dessous. Tant que c'est vide, le formulaire est caché.
+  formulaire: {
+    cle: '',
   },
 
   // ---------- Bandeau d'annonce tout en haut du site ----------
