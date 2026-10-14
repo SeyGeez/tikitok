@@ -54,6 +54,11 @@
   @media (max-width: 760px) { nav a:not(.btn) { display: none; } }
 
   .banner { padding: 10px 20px; text-align: center; font-weight: 700; font-size: 15px; color: #1a0f00; background: linear-gradient(90deg, #ffb347, #ff7a1a, #ff2d6f); }
+  .shot img, .frame img { cursor: zoom-in; }
+  #lb { position: fixed; inset: 0; z-index: 100; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(5,4,12,.92); cursor: zoom-out; }
+  #lb.on { display: flex; }
+  #lb img { max-width: 100%; max-height: 100%; border-radius: 12px; box-shadow: 0 30px 90px rgba(0,0,0,.7); }
+  #lb button { position: absolute; top: 14px; right: 18px; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line); background: rgba(255,255,255,.08); color: #fff; font-size: 24px; line-height: 1; cursor: pointer; }
   .lng { display: inline-flex; padding: 3px; border-radius: 10px; border: 1px solid var(--line); background: rgba(255,255,255,.04); }
   .lng button { border: 0; padding: 5px 10px; border-radius: 7px; background: transparent; color: var(--muted); font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
   .lng button.on { background: var(--grad); color: #fff; }
@@ -586,6 +591,16 @@
     setLang(l); }
   const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
   document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  // Clic sur une capture : elle s'affiche en grand (clic ou Échap pour fermer)
+  (() => {
+    const lb = document.createElement('div'); lb.id = 'lb';
+    const big = document.createElement('img'), x = Object.assign(document.createElement('button'), { type: 'button', textContent: '×' });
+    x.setAttribute('aria-label', 'Fermer'); lb.append(big, x); document.body.append(lb);
+    const close = () => lb.classList.remove('on');
+    lb.addEventListener('click', close);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    document.querySelectorAll('.shot img, .frame img').forEach((im) => im.addEventListener('click', () => { big.src = im.src; big.alt = im.alt; lb.classList.add('on'); }));
+  })();
 </script>
 </body>
 </html>
