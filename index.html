@@ -660,6 +660,54 @@
   .mn.wheel { padding: 0; background: none; border: 0; } .mn.wheel::before, .mn.cam::before { display: none; }
   .legend .tier { margin-right: 6px; }
 
+
+  .mn.cam { background: #000 url(img/cameras.jpg) center / cover; border: 2px solid #8cff2e; box-shadow: 0 0 24px rgba(140,255,46,.4), 0 18px 40px rgba(0,0,0,.55); }
+  .mn.cam span { text-shadow: 0 1px 4px #000; }
+
+  /* accueil : lueur, badge, cartes qui flottent autour du titre */
+  .ch.c0::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(620px 380px at 18% 22%, rgba(107,47,194,.38), transparent 70%), radial-gradient(560px 380px at 84% 30%, rgba(255,122,26,.26), transparent 70%), radial-gradient(520px 300px at 50% 92%, rgba(140,255,46,.09), transparent 70%); animation: aur 12s ease-in-out infinite alternate; }
+  @keyframes aur { to { transform: translateY(26px) scale(1.06); opacity: .8; } }
+  .newbadge { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 22px; padding: 7px 18px 7px 8px; border-radius: 999px; border: 1px solid rgba(255,122,26,.45); background: rgba(255,122,26,.08); color: #ffd0a0; font: 700 14px "Segoe UI", sans-serif; text-decoration: none; transition: transform .2s, box-shadow .2s; }
+  .newbadge:hover { transform: translateY(-2px); box-shadow: 0 0 26px rgba(255,122,26,.35); }
+  .newbadge b { padding: 3px 10px; border-radius: 999px; background: linear-gradient(100deg, #ff7a1a, #ff3d8b); color: #fff; font: 800 11px Consolas, monospace; letter-spacing: .16em; }
+  .c0 .chips { justify-content: center; margin: 22px 0 0; }
+  .hfs { position: absolute; inset: 0; pointer-events: none; }
+  .hf { position: absolute; animation: flo 6s ease-in-out infinite alternate; box-shadow: 0 18px 40px rgba(0,0,0,.5), 0 0 26px rgba(255,122,26,.18); border-radius: 14px; }
+  .hf.l1 { left: 3%; top: 58vh; width: 240px; } .hf.l2 { left: 9%; top: 84vh; width: 170px; animation-delay: -2s; }
+  .hf.r1 { right: 3%; top: 56vh; width: 230px; animation-delay: -4s; } .hf.r2 { right: 8%; top: 82vh; width: 240px; animation-delay: -1s; }
+  @keyframes flo { from { transform: translateY(-10px) rotate(-1.5deg); } to { transform: translateY(12px) rotate(1.5deg); } }
+  @media (max-width: 1180px) { .hfs { display: none; } }
+
+  /* pack thèmes */
+  .tpack { margin-top: 46px; padding: 34px; border-radius: 26px; border: 1px solid rgba(255,150,60,.3); background: linear-gradient(160deg, rgba(255,122,26,.07), rgba(107,47,194,.07)), var(--card); box-shadow: 0 0 60px rgba(255,122,26,.1); }
+  .tp-head { display: flex; gap: 28px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
+  .tp-head h3 { font-size: clamp(28px, 3.4vw, 40px); margin: 8px 0 8px; }
+  .tp-head p { margin: 0; max-width: 560px; color: var(--muted); }
+  .tp-price { display: grid; justify-items: start; gap: 6px; }
+  .tp-price b { font-size: 46px; font-weight: 900; letter-spacing: -.03em; line-height: 1; }
+  .tp-price small { color: var(--muted); font-size: 14px; margin-bottom: 8px; }
+  .tgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin-top: 28px; }
+  .tcard { padding: 12px 12px 16px; border-radius: 20px; border: 1px solid var(--line); background: rgba(255,255,255,.03); transition: transform .25s, box-shadow .25s, border-color .25s; }
+  .tcard:hover { transform: translateY(-6px); border-color: var(--ac); box-shadow: 0 18px 46px rgba(0,0,0,.5), 0 0 30px color-mix(in srgb, var(--ac) 35%, transparent); }
+  .tcard h4 { margin: 14px 4px 4px; font-size: 20px; } .tcard p { margin: 0 4px; color: var(--muted); font-size: 14px; }
+  .tp { position: relative; height: 172px; border-radius: 14px; overflow: hidden; display: grid; align-content: center; gap: 10px; padding: 16px; font-family: var(--f); color: var(--tx); background: radial-gradient(120% 90% at 18% 8%, var(--s1), transparent 62%), radial-gradient(110% 90% at 92% 100%, var(--s2), transparent 62%), #0c0714; }
+  .tp .t1 { display: flex; align-items: center; gap: 10px; padding: 8px 12px 8px 8px; background: var(--bg); border-left: 4px solid var(--ac); }
+  .tp .t1 .e { width: 34px; height: 34px; display: grid; place-items: center; font-size: 20px; background: color-mix(in srgb, var(--c2) 60%, #000); flex: none; }
+  .tp .t1 b { display: block; font-size: 15px; letter-spacing: .04em; text-transform: uppercase; } .tp .t1 i { font-style: normal; font-size: 11px; opacity: .8; }
+  .tp .t2 { padding: 7px 12px; background: color-mix(in srgb, var(--bg) 85%, transparent); font-size: 13px; width: fit-content; max-width: 100%; } .tp .t2 b { color: var(--ac); margin-right: 6px; }
+  .tp .t3 { height: 12px; background: rgba(255,255,255,.16); overflow: hidden; } .tp .t3 i { display: block; width: 64%; height: 100%; background: linear-gradient(90deg, var(--ac), var(--c2)); }
+  [data-g=fn] .t1, [data-g=fn] .t2 { transform: skewX(-8deg); } [data-g=fn] .t1 { border: 2px solid #fff; box-shadow: 4px 4px 0 var(--ac); }
+  [data-g=vl] .t1, [data-g=vl] .t2, [data-g=vl] .t3 { clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px)); }
+  [data-g=ow] .t1, [data-g=ow] .t2 { clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%); border-bottom: 3px solid var(--ac); } [data-g=ow] .t3 { transform: skewX(-20deg); }
+  [data-g=mc] .t1, [data-g=mc] .t2, [data-g=mc] .t3 { border: 3px solid #000; box-shadow: inset -3px -3px 0 rgba(0,0,0,.4), inset 3px 3px 0 rgba(255,255,255,.25); }
+  [data-g=mw] .t1, [data-g=mw] .t2 { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%); letter-spacing: .08em; text-transform: uppercase; }
+  [data-g=gt] .t1, [data-g=gt] .t2 { border-radius: 4px; box-shadow: 0 0 16px color-mix(in srgb, var(--ac) 70%, transparent); } [data-g=gt] .t3 { border-radius: 8px; }
+  .tcredit { margin: 22px 0 0; font-size: 13px; color: var(--muted); }
+
+  /* bouton retour en haut */
+  #totop { position: fixed; right: 22px; bottom: 22px; z-index: 58; width: 50px; height: 50px; border-radius: 50%; border: 1px solid rgba(255,150,60,.5); background: linear-gradient(135deg, #ff7a1a, #ff3d8b); color: #fff; cursor: pointer; display: grid; place-items: center; box-shadow: 0 10px 30px rgba(0,0,0,.5), 0 0 24px rgba(255,122,26,.4); opacity: 0; transform: translateY(16px) scale(.8); pointer-events: none; transition: opacity .3s, transform .3s, box-shadow .2s; }
+  #totop.on { opacity: 1; transform: none; pointer-events: auto; } #totop:hover { box-shadow: 0 10px 30px rgba(0,0,0,.5), 0 0 40px rgba(255,122,26,.75); transform: translateY(-3px); }
+  #totop svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Tikitok Overlays","applicationCategory":"MultimediaApplication","operatingSystem":"Windows","description":"Overlays, alertes, roue de la fortune, contours de caméra et commandes du chat pour TikTok LIVE Studio.","url":"https://tikitokoverlays.com/","image":"https://tikitokoverlays.com/img/logo.png","inLanguage":["fr","en"],"offers":[{"@type":"Offer","name":"Gratuit","price":"0","priceCurrency":"EUR"},{"@type":"Offer","name":"Pro mensuel","price":"20","priceCurrency":"EUR"},{"@type":"Offer","name":"Pro annuel","price":"120","priceCurrency":"EUR"}]}</script>
 </head>
@@ -686,11 +734,19 @@
 <!-- ============ MONDE : scène 3D fixe (les panneaux de l'appli se démontent et tourbillonnent pendant le défilement) ============ -->
 <canvas id="fx" aria-hidden="true"></canvas>
 <div id="stage" aria-hidden="true" data-dyn><div id="world"></div></div>
+<button type="button" id="totop" aria-label="Retour en haut" title="Retour en haut"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 <nav id="dots" aria-label="Chapitres" data-dyn></nav>
 
 <main>
 <section class="ch c0" id="accueil" data-ch="Tikitok">
+  <div class="hfs" aria-hidden="true" data-dyn>
+    <div class="hf l1 mn giftm" style="display:flex"><div class="ge">🦁</div><div><small>CADEAU</small><b>Lion ×3</b><span>léa_ttk</span></div></div>
+    <div class="hf l2 mn"><div class="t">Spectateurs</div><div class="big">1 284</div></div>
+    <div class="hf r1 mn"><div class="t">Chat</div><div class="bub"><b>maxplays</b>GG !</div><div class="bub"><b>nora</b>trop fort 🔥</div></div>
+    <div class="hf r2 mn"><div class="t">Objectif</div><div class="bar"><i style="width:68%"></i></div><div class="row"><span>68 %</span><b>680 / 1 000</b></div></div>
+  </div>
   <div class="chin mid">
+    <a class="newbadge" href="#themes"><b>NOUVEAU</b>Thèmes de jeux : Fortnite, Valorant, GTA6…</a><br>
     <span class="eyebrow">Pour TikTok LIVE Studio</span>
     <h1>Un live qui a de la <em>gueule</em>.</h1>
     <p class="lead">Overlays, alertes, roue de la fortune, contours de caméra et commandes du chat. Tu règles tout dans une appli simple, avec l'aperçu de ton live sur un téléphone.</p>
@@ -699,6 +755,7 @@
       <a class="btn ghost" href="#offres">Voir les offres Pro</a>
     </div>
     <p class="legal">Tikitok Overlays est un outil indépendant, <b>non affilié à TikTok ni à ByteDance</b>. <span>TikTok est une marque de ses propriétaires.</span></p>
+    <div class="chips"><span class="chip">Windows</span><span class="chip">Aucun compte à créer</span><span class="chip">Fonctionne avec ton live en cours</span></div>
     <div class="scrollhint" aria-hidden="true"><span>Fais défiler</span><i></i></div>
   </div>
 </section>
@@ -830,6 +887,25 @@
         <a class="btn" href="#telecharger" data-link="subscribe">Prendre l'abonnement</a>
       </div>
     </div>
+    <div class="tpack reveal" id="themes">
+      <div class="tp-head">
+        <div>
+          <span class="pilltag">Nouveau</span>
+          <h3>Pack Thèmes</h3>
+          <p>Des overlays refaits de zéro pour les jeux que tu streames : chat, cadeaux, objectifs, classement, victoire… chaque jeu a son style et ses animations, prêts à l'emploi. Les thèmes ne sont pas personnalisables.</p>
+        </div>
+        <div class="tp-price"><b>6,99 €</b><small>paiement unique</small><a class="btn" href="#telecharger" data-link="subscribe">Prendre le pack</a></div>
+      </div>
+      <div class="tgrid">
+        <div class="tcard" data-g="fn" style="--bg:#1b1250;--ac:#ffe135;--c2:#7a3cff;--tx:#fff;--f:Impact,'Arial Black',sans-serif;--s1:rgba(122,60,255,.5);--s2:rgba(40,215,255,.4)"><div class="tp"><div class="t1"><span class="e">🎁</span><div><b>Rose ×3</b><i>léa_ttk</i></div></div><div class="t2"><b>maxplays</b>GG !</div><div class="t3"><i></i></div></div><h4>Fortnite</h4><p>Victoire royale, tempête, butin</p></div>
+        <div class="tcard" data-g="vl" style="--bg:#0f1923;--ac:#ff4655;--c2:#ff4655;--tx:#ece8e1;--f:Bahnschrift,'Segoe UI',sans-serif;--s1:rgba(255,70,85,.3);--s2:rgba(15,25,35,.9)"><div class="tp"><div class="t1"><span class="e">🎯</span><div><b>Rose ×3</b><i>léa_ttk</i></div></div><div class="t2"><b>maxplays</b>GG !</div><div class="t3"><i></i></div></div><h4>Valorant</h4><p>Lames, ACE, crédits</p></div>
+        <div class="tcard" data-g="ow" style="--bg:#232a33;--ac:#f99e1a;--c2:#218ffe;--tx:#fff;--f:Bahnschrift,'Segoe UI',sans-serif;--s1:rgba(33,143,254,.4);--s2:rgba(249,158,26,.35)"><div class="tp"><div class="t1"><span class="e">🛡️</span><div><b>Rose ×3</b><i>léa_ttk</i></div></div><div class="t2"><b>maxplays</b>GG !</div><div class="t3"><i></i></div></div><h4>Overwatch</h4><p>HUD, ultime, moment fort</p></div>
+        <div class="tcard" data-g="mc" style="--bg:#3b3b3b;--ac:#5bc236;--c2:#8b5a2b;--tx:#fff;--f:'Courier New',monospace;--s1:rgba(91,194,54,.4);--s2:rgba(139,90,43,.45)"><div class="tp"><div class="t1"><span class="e">⛏️</span><div><b>Rose ×3</b><i>léa_ttk</i></div></div><div class="t2"><b>maxplays</b>GG !</div><div class="t3"><i></i></div></div><h4>Minecraft</h4><p>Hotbar, cœurs, succès</p></div>
+        <div class="tcard" data-g="mw" style="--bg:#1a2218;--ac:#9fb33a;--c2:#4a5a2a;--tx:#e6ecd0;--f:Bahnschrift,'Segoe UI',sans-serif;--s1:rgba(120,140,50,.35);--s2:rgba(0,0,0,.6)"><div class="tp"><div class="t1"><span class="e">🔫</span><div><b>Rose ×3</b><i>léa_ttk</i></div></div><div class="t2"><b>maxplays</b>GG !</div><div class="t3"><i></i></div></div><h4>MW4</h4><p>Radar, killstreak, objectif</p></div>
+        <div class="tcard" data-g="gt" style="--bg:#2a0f4a;--ac:#ff3d8b;--c2:#38c8ff;--tx:#fff;--f:Impact,'Arial Black',sans-serif;--s1:rgba(255,61,139,.45);--s2:rgba(56,200,255,.4)"><div class="tp"><div class="t1"><span class="e">🌴</span><div><b>Rose ×3</b><i>léa_ttk</i></div></div><div class="t2"><b>maxplays</b>GG !</div><div class="t3"><i></i></div></div><h4>GTA6</h4><p>Niveau de recherche, argent, missions</p></div>
+      </div>
+      <p class="tcredit">Inspirés par ces jeux. Tikitok Overlays n'est affilié à aucun de leurs éditeurs.</p>
+    </div>
     <div class="paystrip reveal">
       <p>Sans carte bancaire : tu fais ta demande dans l'appli, ta clé arrive sur Discord sous 24 h.</p>
       <div class="chips" style="margin:0"><span class="chip pay">Carte cadeau Eneba</span><span class="chip pay">Paysafecard</span><span class="chip pay">PayPal (amis et proches)</span></div>
@@ -955,6 +1031,8 @@
   });
 
   Object.assign(EN, {"Fais défiler":"Scroll","01 · L'appli":"01 · The app","Tout un live,":"A whole stream,","en une appli.":"in one app.","Tikitok Overlays s'installe sur ton PC et se branche à ton live en un clic. Démontons-la pour voir ce qu'il y a dedans.":"Tikitok Overlays installs on your PC and plugs into your stream in one click. Let's take it apart to see what's inside.","02 · Tout ce qu'elle fait":"02 · Everything it does","Une tornade":"A whirlwind","d'overlays.":"of overlays.","Alertes, chat, objectifs, jeux, classements, thèmes… Fais défiler, on passe tout en revue.":"Alerts, chat, goals, games, leaderboards, themes… Keep scrolling, we go through it all.","03 · Alertes et cadeaux":"03 · Alerts and gifts","Un cadeau.":"One gift.","Un effet.":"One effect.","04 · Le chat":"04 · The chat","Ton chat,":"Your chat,","en vedette.":"in the spotlight.","05 · Les jeux":"05 · The games","Ils jouent":"They play","avec toi.":"with you.","Des jeux collectifs : la roue, le dé 3D, les boss et les courses. Les spectateurs font monter la jauge ensemble.":"Group games: the wheel, the 3D die, bosses and races. Your viewers fill the meter together.","06 · À ton image":"06 · Your own style","Un style":"A style","qui claque.":"that pops.","Couleurs, polices, contours de caméra et thèmes de saison comme Halloween. Et de nouveaux overlays à chaque mise à jour.":"Colors, fonts, camera frames and seasonal themes like Halloween. And new overlays with every update.","Essaie toi-même":"Try it yourself","Envoie un cadeau.":"Send a gift.","Regarde ce qui se passe.":"See what happens.","Choisis un cadeau : l'alerte, la fontaine de cœurs, le chat et l'objectif réagissent comme dans ton vrai live.":"Pick a gift: the alert, the heart fountain, the chat and the goal react just like in your real stream.","Clique sur un cadeau":"Click a gift","🎃 Objectif":"🎃 Goal"});
+
+  Object.assign(EN, {"NOUVEAU":"NEW","Thèmes de jeux : Fortnite, Valorant, GTA6…":"Game themes: Fortnite, Valorant, GTA6…","Nouveau":"New","Pack Thèmes":"Themes Pack","Des overlays refaits de zéro pour les jeux que tu streames : chat, cadeaux, objectifs, classement, victoire… chaque jeu a son style et ses animations, prêts à l'emploi. Les thèmes ne sont pas personnalisables.":"Overlays rebuilt from scratch for the games you stream: chat, gifts, goals, leaderboard, victory… each game has its own style and animations, ready to use. Themes can't be customized.","6,99 €":"€6.99","paiement unique":"one-time payment","Prendre le pack":"Get the pack","Victoire royale, tempête, butin":"Victory royale, storm, loot","Lames, ACE, crédits":"Blades, ACE, credits","HUD, ultime, moment fort":"HUD, ultimate, play of the game","Hotbar, cœurs, succès":"Hotbar, hearts, advancements","Radar, killstreak, objectif":"Radar, killstreak, objective","Niveau de recherche, argent, missions":"Wanted level, money, missions","Inspirés par ces jeux. Tikitok Overlays n'est affilié à aucun de leurs éditeurs.":"Inspired by these games. Tikitok Overlays is not affiliated with any of their publishers."});
 
   const ALT = {"Le panneau Design de Tikitok Overlays avec l'aperçu de la roue":"The Design panel of Tikitok Overlays, with the wheel preview","Aperçu du live dans un téléphone, avec le chat à côté":"Stream preview inside a phone, with the chat beside it","Cinq contours de caméra : pellicule, viseur, polaroïd, néon, Halloween":"Five camera frames: film strip, viewfinder, polaroid, neon, Halloween","Huit styles de roue de la fortune":"Eight prize wheel styles","Overlays au style Halloween":"Halloween-style overlays"};
   Object.assign(ALT, { "Des contours de caméra pour ton live": "Camera frames for your stream" });
@@ -1227,7 +1305,7 @@
       [5, 168, 168, '', 'mn wheel'],
       [5, 130, 130, '<i><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></i>', 'mn dice'],
       [5, 240, 104, '<div class="t">Boss</div><div class="big">GOBLIN</div><div class="hp"><i style="width:58%"></i></div>', 'mn boss'],
-      [6, 230, 150, '<span>REC ●</span>', 'mn cam'],
+      [6, 270, 116, '<span>REC ●</span>', 'mn cam'],
       [6, 240, 96, '<div class="t">🎃 Halloween</div><div class="row">Toiles, bave, citrouilles<b>✦</b></div>', 'mn'],
       [1, 170, 90, '<div class="t">Spectateurs</div><div class="big">1 284</div>', 'mn'],
     ];
@@ -1362,6 +1440,15 @@
       goal = goal + g.goal >= 100 ? 0 : goal + g.goal; $('dmGi').style.width = goal + '%'; $('dmG').textContent = Math.round(goal) + ' %';
       viewers += Math.round(rnd(8, 40)); $('dmV').textContent = fmt(viewers);
     }
+  })();
+</script>
+<script>
+  (() => {
+    const b = document.getElementById('totop'); if (!b) return;
+    const up = () => b.classList.toggle('on', scrollY > 700);
+    addEventListener('scroll', up, { passive: true }); up();
+    b.onclick = () => scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    new MutationObserver(() => { b.title = b.ariaLabel = document.documentElement.lang === 'en' ? 'Back to top' : 'Retour en haut'; }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
   })();
 </script>
 </body>
