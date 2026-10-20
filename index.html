@@ -1284,7 +1284,7 @@
           // les tuiles forment la capture au départ, puis s'éclatent
           x = lerp(p.gx, x, e); y = lerp(p.gy, y, e); z = lerp(0, z, e) + Math.sin(Math.PI * ex) * 260;
           ry = lerp(0, ry, e); rx = lerp(0, rx, e); rz = lerp(0, rz, e);
-          op = lerp(.42, .55, e);
+          op = lerp(0, .55, clamp(u * 2.5, 0, 1));
         } else {
           // les mini overlays sortent de l'écran de la capture
           const k = clamp((u - .12) / .8, 0, 1), ke = ease(k);
