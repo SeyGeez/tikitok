@@ -9,7 +9,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta name="theme-color" content="#0c0a14">
+<meta name="theme-color" content="#04050b">
 <link rel="canonical" href="https://tikitokoverlays.com/">
 <meta property="og:url" content="https://tikitokoverlays.com/">
 <meta property="og:site_name" content="Tikitok Overlays">
@@ -200,12 +200,279 @@
   .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s, transform .7s; }
   .reveal.in { opacity: 1; transform: none; }
   @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+
+  /* =====================================================================
+     REFONTE v2 : « néon cristal »  (se superpose à l'ancien style ; le thème Halloween garde la main par-dessus)
+     ===================================================================== */
+  :root {
+    --bg: #04050b; --bg2: #080a15; --card: rgba(14,17,33,.72); --solid: #0b0e1c; --line: rgba(255,255,255,.09);
+    --text: #f2f5ff; --muted: #98a2c3; --pink: #ff2d86; --violet: #8b5cff; --cyan: #19e6ff; --orange: #19e6ff; --green: #c6ff3d;
+    --grad: linear-gradient(120deg, #ff2d86, #8b5cff 55%, #19e6ff);
+    --font-d: "Bahnschrift", "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif;
+  }
+  @property --ang { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+  html { scroll-padding-top: 96px; }
+  body { counter-reset: sec; background: var(--bg); position: relative; }
+  h1, h2, h3, .logo, .price, .eyebrow { font-family: var(--font-d); }
+
+  /* fond : aurore + quadrillage qui s'efface vers le bas */
+  body::before { content: ""; position: fixed; inset: -10%; z-index: -2; pointer-events: none;
+    background: radial-gradient(720px 520px at 10% 6%, rgba(139,92,255,.32), transparent 62%), radial-gradient(640px 520px at 92% 16%, rgba(255,45,134,.22), transparent 62%), radial-gradient(760px 520px at 58% 104%, rgba(25,230,255,.16), transparent 62%);
+    animation: aur 24s ease-in-out infinite alternate; }
+  body::after { content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .5;
+    background: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px) 0 0 / 64px 64px, linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px) 0 0 / 64px 64px;
+    -webkit-mask: radial-gradient(ellipse 90% 70% at 50% 0, #000 20%, transparent 75%); mask: radial-gradient(ellipse 90% 70% at 50% 0, #000 20%, transparent 75%); }
+  @keyframes aur { to { transform: translate3d(0, -34px, 0) scale(1.1); filter: hue-rotate(28deg); } }
+  html.hw body::before { filter: hue-rotate(150deg) saturate(.9); animation: none; }
+  #prog { position: fixed; left: 0; top: 0; height: 3px; width: 0; z-index: 120; background: var(--grad); box-shadow: 0 0 14px rgba(25,230,255,.7); }
+
+  /* barre du haut : pilule flottante */
+  header { top: 10px; background: transparent; border: 0; backdrop-filter: none; margin-bottom: -6px; }
+  header .wrap { height: 62px; padding: 0 12px 0 18px; border-radius: 20px; background: rgba(9,11,24,.66); border: 1px solid var(--line); backdrop-filter: blur(18px) saturate(1.4);
+    box-shadow: 0 10px 40px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06); }
+  .logo { font-weight: 800; letter-spacing: -.01em; white-space: nowrap; }
+  .logo img { filter: drop-shadow(0 0 10px rgba(139,92,255,.7)); }
+  nav a:not(.btn) { position: relative; }
+  nav a:not(.btn)::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px; border-radius: 2px; background: var(--grad); transform: scaleX(0); transition: transform .25s; }
+  nav a:not(.btn):hover::after { transform: scaleX(1); }
+
+  /* boutons */
+  .btn { position: relative; overflow: hidden; border-radius: 999px; background: var(--grad); background-size: 200% 100%; box-shadow: 0 10px 34px rgba(139,92,255,.38), inset 0 1px 0 rgba(255,255,255,.25); transition: transform .18s, box-shadow .18s, background-position .5s; }
+  .btn::after { content: ""; position: absolute; top: 0; bottom: 0; width: 40%; left: -60%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.4), transparent); transform: skewX(-20deg); }
+  .btn:hover { background-position: 100% 0; transform: translateY(-2px); box-shadow: 0 16px 44px rgba(25,230,255,.32), inset 0 1px 0 rgba(255,255,255,.3); }
+  .btn:hover::after { left: 130%; transition: left .7s; }
+  .btn.ghost { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.18); box-shadow: none; backdrop-filter: blur(8px); }
+  .btn.ghost:hover { border-color: var(--cyan); box-shadow: 0 0 26px rgba(25,230,255,.25); }
+  html.hw .btn { box-shadow: 0 10px 30px rgba(255,122,26,.35); }
+
+  /* titres de section numérotés */
+  section .eyebrow { display: inline-flex; align-items: center; gap: 10px; color: var(--cyan); letter-spacing: .24em; }
+  section .eyebrow::before { counter-increment: sec; content: counter(sec, decimal-leading-zero); padding: 3px 8px; border-radius: 8px; background: rgba(25,230,255,.1); border: 1px solid rgba(25,230,255,.35); letter-spacing: .06em; }
+  html.hw section .eyebrow { color: #8cff2e; }
+  html.hw section .eyebrow::before { background: rgba(140,255,46,.1); border-color: rgba(140,255,46,.4); }
+  h2 { font-weight: 800; letter-spacing: -.035em; }
+  section { padding: 104px 0; }
+  .alt { background: linear-gradient(180deg, rgba(10,13,28,.7), rgba(6,8,18,.7)); border-block: 1px solid var(--line); }
+
+  /* héros */
+  .hero { padding: 64px 0 36px; text-align: left; }
+  .hero::before { display: none; }
+  html.hw .hero::before { display: block; }
+  .hero .wrap { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, .88fr); gap: 56px; align-items: center; }
+  .hero h1 { font-size: clamp(46px, 7vw, 98px); font-weight: 800; letter-spacing: -.04em; line-height: .96; max-width: none; margin: 0 0 24px; }
+  .hero h1 em { background: linear-gradient(100deg, #19e6ff, #8b5cff 40%, #ff2d86 75%, #19e6ff); background-size: 220% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: shine 7s linear infinite; filter: drop-shadow(0 0 22px rgba(139,92,255,.45)); }
+  html.hw .hero h1 em { background: linear-gradient(120deg, #ffb347, #ff7a1a 45%, #8cff2e); -webkit-background-clip: text; background-clip: text; animation: none; filter: none; }
+  @keyframes shine { to { background-position: 220% 0; } }
+  .hero p.lead { margin: 0 0 30px; max-width: 560px; font-size: clamp(17px, 2vw, 20px); }
+  .hero .cta, .hero .chips { justify-content: flex-start; }
+  .hero .legal { margin: 24px 0 0; max-width: 540px; border-radius: 14px; border-color: rgba(255,255,255,.16); }
+  .chip { border-radius: 999px; backdrop-filter: blur(6px); }
+  .chip::before { content: ""; display: inline-block; width: 6px; height: 6px; margin-right: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); vertical-align: middle; }
+
+  /* scène du héros : un faux téléphone en plein live */
+  .hero-r { position: relative; display: grid; place-items: center; min-height: 560px; }
+  .stage { position: relative; z-index: 1; width: min(330px, 78vw); aspect-ratio: 9 / 18.4; animation: bob 7s ease-in-out infinite; }
+  @keyframes bob { 50% { transform: translateY(-12px) rotate(.6deg); } }
+  .stage::before { content: ""; position: absolute; inset: -30px; z-index: -1; border-radius: 60px; background: var(--grad); opacity: .45; filter: blur(46px); animation: glow 9s ease-in-out infinite alternate; }
+  @keyframes glow { to { transform: scale(1.08) rotate(3deg); opacity: .6; } }
+  .phone { position: absolute; inset: 0; border-radius: 40px; padding: 9px; background: linear-gradient(160deg, #2b3050, #0a0c18 40%, #1d2140); box-shadow: 0 40px 90px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.14), inset 0 0 0 1px rgba(255,255,255,.06); }
+  .screen { position: relative; width: 100%; height: 100%; border-radius: 32px; overflow: hidden; background: #0a0716; isolation: isolate; }
+  .screen .vid { position: absolute; inset: -20%; z-index: -1; background: radial-gradient(60% 50% at 30% 30%, #ff2d86 0, transparent 60%), radial-gradient(55% 50% at 78% 62%, #19a0ff 0, transparent 62%), radial-gradient(50% 40% at 40% 90%, #8b5cff 0, transparent 62%), #12091f; filter: blur(22px) saturate(1.2); opacity: .8; animation: vid 12s ease-in-out infinite alternate; }
+  @keyframes vid { to { transform: rotate(14deg) scale(1.15); } }
+  .screen::after { content: ""; position: absolute; left: 50%; top: 9px; width: 28%; height: 20px; margin-left: -14%; border-radius: 20px; background: #05060d; z-index: 5; }
+  .s-top { position: absolute; top: 40px; left: 12px; right: 12px; display: flex; justify-content: space-between; align-items: center; font: 800 11px var(--font-d); letter-spacing: .08em; }
+  .s-live { padding: 4px 9px; border-radius: 7px; background: #ff2d55; box-shadow: 0 0 14px rgba(255,45,85,.7); animation: blink 1.6s infinite; }
+  @keyframes blink { 50% { opacity: .65; } }
+  .s-vw { padding: 4px 9px; border-radius: 7px; background: rgba(0,0,0,.45); backdrop-filter: blur(6px); }
+  .s-goal { position: absolute; top: 74px; left: 12px; right: 12px; padding: 8px 10px; border-radius: 12px; background: rgba(0,0,0,.42); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,.12); }
+  .s-goal .gl { display: flex; justify-content: space-between; font: 800 11px var(--font-d); margin-bottom: 6px; }
+  .s-goal .gb { height: 8px; border-radius: 8px; background: rgba(255,255,255,.14); overflow: hidden; }
+  .s-goal .gb i { display: block; height: 100%; width: 0; border-radius: 8px; background: linear-gradient(90deg, #ff2d86, #ffb347); box-shadow: 0 0 12px #ff2d86; transition: width .25s linear; }
+  .s-alert { position: absolute; left: 12px; top: 138px; max-width: calc(100% - 24px); padding: 9px 14px 9px 10px; border-radius: 16px; display: flex; align-items: center; gap: 9px; font: 700 12.5px var(--font-d); background: linear-gradient(120deg, rgba(255,45,134,.92), rgba(139,92,255,.92)); box-shadow: 0 10px 30px rgba(255,45,134,.45); transform: translateX(-130%); transition: transform .55s cubic-bezier(.2,1.1,.3,1); }
+  .s-alert.on { transform: none; }
+  .s-alert b { font-size: 24px; line-height: 1; filter: drop-shadow(0 2px 6px rgba(0,0,0,.4)); }
+  .s-hearts { position: absolute; right: 8px; bottom: 112px; width: 70px; top: 200px; pointer-events: none; }
+  .s-hearts span { position: absolute; bottom: 0; font-size: 22px; animation: rise 3.4s ease-in forwards; will-change: transform, opacity; filter: drop-shadow(0 0 8px currentColor); }
+  @keyframes rise { 0% { transform: translate(0, 0) scale(.4); opacity: 0; } 12% { opacity: 1; transform: translate(0, -20px) scale(1); } 100% { transform: translate(var(--dx), -330px) scale(1.15) rotate(var(--rot)); opacity: 0; } }
+  .s-chat { position: absolute; left: 12px; right: 74px; bottom: 16px; display: flex; flex-direction: column; justify-content: flex-end; gap: 5px; height: 150px; overflow: hidden; -webkit-mask: linear-gradient(transparent, #000 40%); mask: linear-gradient(transparent, #000 40%); }
+  .s-chat div { font: 600 12.5px var(--font-d); padding: 5px 10px; border-radius: 12px; background: rgba(0,0,0,.45); backdrop-filter: blur(6px); width: fit-content; max-width: 100%; animation: pop .35s cubic-bezier(.2,1.2,.3,1); }
+  .s-chat div b { color: var(--cyan); margin-right: 6px; } .s-chat div:nth-child(3n) b { color: #ffb347; } .s-chat div:nth-child(3n+1) b { color: #ff7ac0; }
+  @keyframes pop { from { transform: translateY(14px) scale(.9); opacity: 0; } }
+  .orb { position: absolute; padding: 9px 14px; border-radius: 16px; font: 800 14px var(--font-d); background: rgba(12,15,32,.78); border: 1px solid rgba(255,255,255,.16); backdrop-filter: blur(10px); box-shadow: 0 14px 40px rgba(0,0,0,.5), 0 0 24px rgba(139,92,255,.3); animation: bob 5.5s ease-in-out infinite; white-space: nowrap; }
+  .orb.o1 { left: -17%; top: 27%; animation-delay: -1s; } .orb.o2 { right: -15%; top: 47%; animation-delay: -3s; border-color: rgba(255,45,134,.5); } .orb.o3 { right: -9%; bottom: 8%; animation-delay: -2s; border-color: rgba(25,230,255,.5); }
+
+  /* bandeau défilant */
+  .marq { margin-top: 28px; overflow: hidden; border-block: 1px solid var(--line); background: rgba(255,255,255,.02); padding: 18px 0; -webkit-mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .marq-t { display: flex; width: max-content; animation: mq 46s linear infinite; }
+  .marq:hover .marq-t { animation-play-state: paused; }
+  .marq-t span { font: 800 clamp(20px, 3vw, 30px) var(--font-d); letter-spacing: .12em; text-transform: uppercase; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.38); white-space: nowrap; padding-right: 40px; }
+  .marq-t span::after { content: "✦"; margin-left: 40px; color: var(--cyan); -webkit-text-stroke: 0; text-shadow: 0 0 14px var(--cyan); }
+  .marq-t span:nth-child(3n)::after { color: var(--pink); text-shadow: 0 0 14px var(--pink); }
+  @keyframes mq { to { transform: translateX(-50%); } }
+
+  /* captures dans des fenêtres */
+  .shotwrap { padding: 70px 0 10px; }
+  .shot, .frame { position: relative; border-radius: 18px; border: 1px solid rgba(255,255,255,.14); background: #0a0c18; box-shadow: 0 40px 100px rgba(0,0,0,.6), 0 0 80px rgba(139,92,255,.16); overflow: hidden; }
+  .shot { margin: 0 auto; width: min(960px, 100%); transition: transform .25s ease-out; transform-style: preserve-3d; will-change: transform; }
+  .shot::before, .frame::before { content: ""; display: block; height: 34px; border-bottom: 1px solid var(--line); background: radial-gradient(circle 5px at 20px 17px, #ff5f57 96%, transparent), radial-gradient(circle 5px at 40px 17px, #febc2e 96%, transparent), radial-gradient(circle 5px at 60px 17px, #28c840 96%, transparent), rgba(255,255,255,.03); }
+  .hero .shot { margin: 0 auto; }
+
+  /* cartes en verre avec lueur qui suit la souris */
+  .feat, .step, .ccard, .plan:not(.best), .cform, .helpbox { background: radial-gradient(320px circle at var(--mx, 50%) var(--my, -30%), rgba(139,92,255,.2), transparent 62%), var(--card); backdrop-filter: blur(10px); border-color: var(--line); }
+  .feat:hover, .ccard:hover { border-color: rgba(25,230,255,.5); box-shadow: 0 0 40px rgba(25,230,255,.1); }
+  .feat { border-radius: 22px; padding: 26px; }
+  .features { grid-template-columns: repeat(3, 1fr); }
+  .features .feat:first-child { grid-column: span 2; background: radial-gradient(420px circle at var(--mx, 80%) var(--my, 0%), rgba(255,45,134,.24), transparent 62%), var(--card); }
+  @media (max-width: 900px) { .features { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .features { grid-template-columns: 1fr; } .features .feat:first-child { grid-column: auto; } }
+  .feat .ic, .ccard .ic { border-radius: 16px; background: linear-gradient(135deg, rgba(25,230,255,.16), rgba(139,92,255,.24)); border-color: rgba(25,230,255,.35); box-shadow: 0 0 22px rgba(139,92,255,.25); }
+  .feat .pro { background: var(--grad); box-shadow: 0 0 14px rgba(139,92,255,.5); }
+  .txt li::before { background: var(--cyan); box-shadow: 0 0 10px var(--cyan); }
+  html.hw .txt li::before { background: #8cff2e; box-shadow: 0 0 10px #8cff2e; }
+  .chip.pay { border-color: rgba(25,230,255,.4); background: rgba(25,230,255,.07); }
+
+  /* offres */
+  .plan { border-radius: 26px; }
+  .plan.best { border: 2px solid transparent; background: linear-gradient(var(--solid), var(--solid)) padding-box, conic-gradient(from var(--ang), #ff2d86, #8b5cff, #19e6ff, #c6ff3d, #ff2d86) border-box; animation: spin 7s linear infinite; box-shadow: 0 0 80px rgba(139,92,255,.3); backdrop-filter: none; }
+  @keyframes spin { to { --ang: 360deg; } }
+  .plan.best::after { content: ""; position: absolute; inset: 0; border-radius: 24px; pointer-events: none; background: radial-gradient(500px circle at var(--mx, 80%) var(--my, 0%), rgba(25,230,255,.12), transparent 60%); }
+  .plan .price { font-size: 56px; font-weight: 800; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; width: fit-content; }
+  .plan .price small { -webkit-text-fill-color: var(--muted); }
+  .plan li::before { border-color: var(--green); filter: drop-shadow(0 0 4px var(--green)); }
+  .plan li.no::before { filter: none; }
+  .plan .tag { background: var(--grad); box-shadow: 0 6px 22px rgba(139,92,255,.5); }
+  .seg { border-radius: 999px; } .seg button { border-radius: 999px; }
+  .step::before { border-radius: 50%; font-family: var(--font-d); box-shadow: 0 0 22px rgba(139,92,255,.5); }
+  details { transition: background .2s; } details[open] { background: linear-gradient(90deg, rgba(139,92,255,.08), transparent); }
+  summary::after { color: var(--cyan); font-size: 22px; line-height: 1; }
+  footer { background: linear-gradient(180deg, transparent, rgba(139,92,255,.07)); }
+  .cform input, .cform select, .cform textarea { background: rgba(255,255,255,.05); border-radius: 14px; }
+  .cform input:focus, .cform select:focus, .cform textarea:focus { outline: 0; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(25,230,255,.18); }
+
+  /* mobile */
+  @media (max-width: 940px) {
+    .hero .wrap { grid-template-columns: 1fr; gap: 20px; }
+    .hero-l { text-align: center; } .hero .cta, .hero .chips { justify-content: center; } .hero p.lead, .hero .legal { margin-inline: auto; }
+    .hero-r { min-height: 540px; margin-top: 26px; }
+    .orb.o1 { left: -4%; } .orb.o2 { right: -3%; } .orb.o3 { right: 0; }
+  }
+  @media (max-width: 520px) { .logo { font-size: 0; gap: 0; } .logo img { width: 38px; height: 38px; } nav .btn { padding: 9px 14px !important; font-size: 14px; } .hwtog { width: 36px; height: 36px; } }
+  @media (max-width: 760px) { header .wrap { gap: 12px; height: 58px; } nav { gap: 10px; } section { padding: 76px 0; } }
+  @media (prefers-reduced-motion: reduce) { body::before, .stage, .orb, .marq-t, .hero h1 em, .plan.best, .s-live, .screen .vid { animation: none !important; } }
+
+  /* =====================================================================
+     HALLOWEEN v2 : « nuit hantée »  (s'active avec la citrouille ; remplace l'ancien thème)
+     ===================================================================== */
+  html.hw { --bg: #07030c; --bg2: #0d0614; --card: rgba(22,10,30,.74); --solid: #12081c; --line: rgba(255,150,60,.2); --text: #fbeedd; --muted: #b9a2cf; --cyan: #8cff2e; --orange: #ff7a1a; --green: #8cff2e; --pink: #ff7a1a; --violet: #7c34d6; --grad: linear-gradient(120deg, #ff7a1a, #d6336c 55%, #7c34d6); --drip: radial-gradient(circle 4px at 13.5px 13px, rgba(140,255,46,.9) 96%, transparent) 0 0 / 53px 18px repeat-x, linear-gradient(90deg, transparent 10px, rgba(140,255,46,.9) 10px 17px, transparent 17px) 0 0 / 53px 13px repeat-x, radial-gradient(circle 3.4px at 34.5px 9px, rgba(140,255,46,.9) 96%, transparent) 0 0 / 71px 14px repeat-x, linear-gradient(90deg, transparent 31px, rgba(140,255,46,.9) 31px 38px, transparent 38px) 0 0 / 71px 9px repeat-x, linear-gradient(rgba(140,255,46,.9), rgba(140,255,46,.9)) 0 0 / 100% 4px no-repeat; }
+  html.hw body { background: var(--bg); }
+  html.hw body::before { filter: none; animation: aur 20s ease-in-out infinite alternate;
+    background: radial-gradient(760px 540px at 88% 4%, rgba(255,150,50,.30), transparent 62%), radial-gradient(700px 560px at 6% 30%, rgba(124,52,214,.38), transparent 62%), radial-gradient(800px 520px at 55% 108%, rgba(140,255,46,.12), transparent 62%); }
+  html.hw body::after { background: linear-gradient(rgba(255,140,50,.05) 1px, transparent 1px) 0 0 / 64px 64px, linear-gradient(90deg, rgba(255,140,50,.05) 1px, transparent 1px) 0 0 / 64px 64px; }
+  html.hw #prog { background: linear-gradient(90deg, #ff7a1a, #8cff2e); box-shadow: 0 0 14px rgba(255,122,26,.8); }
+  html.hw .alt { background: linear-gradient(180deg, rgba(20,9,28,.78), rgba(9,4,14,.78)); border-block-color: rgba(255,150,60,.22); }
+
+  /* décor fixe : lune de braises, brume, éclair discret, fantôme */
+  html.hw #hwDeco .embers { position: absolute; inset: 0; animation: embers 15s linear infinite;
+    background: radial-gradient(circle 2.2px at 20% 90%, rgba(255,170,70,.95), transparent) 0 0 / 190px 270px, radial-gradient(circle 1.6px at 72% 60%, rgba(255,120,30,.85), transparent) 0 0 / 250px 330px, radial-gradient(circle 3px at 45% 30%, rgba(140,255,46,.55), transparent) 0 0 / 320px 430px, radial-gradient(circle 1.4px at 85% 15%, rgba(255,200,120,.8), transparent) 0 0 / 160px 210px; }
+  @keyframes embers { to { background-position: 0 -270px, 40px -330px, -30px -430px, 20px -210px; } }
+  html.hw #hwDeco .fog { position: absolute; left: -20%; right: -20%; bottom: -40px; height: 260px; background: radial-gradient(ellipse 40% 60% at 20% 80%, rgba(190,150,255,.16), transparent 70%), radial-gradient(ellipse 36% 55% at 60% 90%, rgba(255,160,90,.12), transparent 70%), radial-gradient(ellipse 30% 50% at 90% 75%, rgba(190,150,255,.14), transparent 70%); filter: blur(12px); animation: fog 28s ease-in-out infinite alternate; }
+  html.hw #hwDeco .fog.f2 { bottom: auto; top: 30%; height: 200px; opacity: .6; animation-duration: 38s; animation-direction: alternate-reverse; }
+  @keyframes fog { to { transform: translateX(9%); } }
+  html.hw #hwDeco .flash { position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 0, rgba(200,170,255,.5), transparent 60%); opacity: 0; animation: flash 19s infinite; }
+  @keyframes flash { 0%, 92%, 100% { opacity: 0; } 93% { opacity: .1; } 94% { opacity: .02; } 95% { opacity: .08; } 96% { opacity: 0; } }
+  html.hw #hwDeco .ghost { position: absolute; top: 58%; left: -90px; width: 64px; aspect-ratio: 60 / 74; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 74'%3E%3Cpath fill='%23f3eefc' fill-opacity='.9' d='M30 2C14 2 5 14 5 30v38c0 3 3 4 5 2l5-5 5 6c2 2 4 2 6 0l4-5 4 5c2 2 4 2 6 0l5-6 5 5c2 2 5 1 5-2V30C55 14 46 2 30 2Z'/%3E%3Cellipse cx='21' cy='30' rx='4' ry='6' fill='%2314091f'/%3E%3Cellipse cx='39' cy='30' rx='4' ry='6' fill='%2314091f'/%3E%3Cellipse cx='30' cy='44' rx='5' ry='7' fill='%2314091f'/%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat; opacity: .55; filter: drop-shadow(0 0 14px rgba(190,150,255,.7)); animation: ghost 42s linear infinite; }
+  @keyframes ghost { 0% { transform: translate(0, 0) rotate(-4deg); } 25% { transform: translate(30vw, -60px) rotate(4deg); } 50% { transform: translate(60vw, 20px) rotate(-3deg); } 75% { transform: translate(85vw, -50px) rotate(4deg); } 100% { transform: translate(calc(100vw + 160px), 0) rotate(-4deg); } }
+
+  /* barre, boutons, titres */
+  html.hw header .wrap { background: rgba(14,6,20,.72); border-color: rgba(255,150,60,.3); box-shadow: 0 10px 40px rgba(0,0,0,.5), 0 0 30px rgba(255,122,26,.12), inset 0 1px 0 rgba(255,200,140,.08); }
+  html.hw .logo img { filter: drop-shadow(0 0 10px rgba(255,122,26,.8)); }
+  html.hw nav a:not(.btn)::after { background: linear-gradient(90deg, #ff7a1a, #8cff2e); }
+  html.hw .btn { box-shadow: 0 10px 34px rgba(255,122,26,.4), inset 0 1px 0 rgba(255,255,255,.25); }
+  html.hw .btn:hover { box-shadow: 0 16px 44px rgba(140,255,46,.3), inset 0 1px 0 rgba(255,255,255,.3); }
+  html.hw .btn.ghost { background: rgba(255,255,255,.04); border-color: rgba(255,150,60,.4); box-shadow: none; }
+  html.hw .btn.ghost:hover { border-color: #8cff2e; box-shadow: 0 0 26px rgba(140,255,46,.25); }
+  html.hw .hero h1 { font-size: clamp(50px, 6.6vw, 92px); line-height: .94; letter-spacing: .03em; text-shadow: 0 0 40px rgba(255,122,26,.35); }
+  html.hw .hero h1 em { animation: flick 5s infinite; background: linear-gradient(120deg, #ffb347, #ff7a1a 45%, #8cff2e); -webkit-background-clip: text; background-clip: text; filter: drop-shadow(0 0 20px rgba(255,122,26,.6)); }
+  @keyframes flick { 0%, 18%, 22%, 60%, 64%, 100% { opacity: 1; } 20%, 62% { opacity: .55; } 21% { opacity: .9; } }
+  html.hw h2 { color: #ffb066; text-shadow: 0 0 26px rgba(255,122,26,.35); }
+  html.hw .chip::before { background: #ff7a1a; box-shadow: 0 0 8px #ff7a1a; }
+  html.hw .chip.pay { border-color: rgba(255,122,26,.45); background: rgba(255,122,26,.08); }
+
+  /* lune derrière le téléphone */
+  .moon { display: none; }
+  html.hw .moon { display: block; position: absolute; z-index: 0; pointer-events: none; right: -8%; top: -6%; width: min(290px, 60vw); aspect-ratio: 1; border-radius: 50%;
+    background: radial-gradient(circle at 62% 30%, rgba(190,120,40,.35) 0 7%, transparent 8%), radial-gradient(circle at 30% 62%, rgba(190,120,40,.3) 0 10%, transparent 11%), radial-gradient(circle at 68% 70%, rgba(190,120,40,.28) 0 5%, transparent 6%), radial-gradient(circle at 35% 32%, #fff4cf, #ffd58a 58%, #f2a33f);
+    box-shadow: 0 0 70px 18px rgba(255,170,60,.38), 0 0 200px 60px rgba(255,122,26,.2); animation: moon 8s ease-in-out infinite alternate; }
+  @keyframes moon { to { box-shadow: 0 0 90px 26px rgba(255,170,60,.5), 0 0 230px 80px rgba(255,122,26,.26); transform: scale(1.03); } }
+
+  /* téléphone en mode hanté */
+  html.hw .stage::before { background: linear-gradient(135deg, #ff7a1a, #7c34d6 60%, #8cff2e); opacity: .5; }
+  html.hw .phone { background: linear-gradient(160deg, #4a2a1a, #0c0610 40%, #2a1540); box-shadow: 0 40px 90px rgba(0,0,0,.7), 0 0 0 1px rgba(255,150,60,.3), inset 0 0 0 1px rgba(255,200,140,.07); }
+  html.hw .screen { background: #0a0510; }
+  html.hw .screen .vid { background: radial-gradient(60% 50% at 30% 30%, #ff7a1a 0, transparent 60%), radial-gradient(55% 50% at 78% 62%, #6a2bd0 0, transparent 62%), radial-gradient(50% 40% at 40% 92%, #3fae12 0, transparent 62%), #12060c; }
+  html.hw .s-live { background: #ff7a1a; box-shadow: 0 0 14px rgba(255,122,26,.8); }
+  html.hw .s-goal .gb i { background: linear-gradient(90deg, #8cff2e, #ffb347); box-shadow: 0 0 12px #8cff2e; }
+  html.hw .s-alert { background: linear-gradient(120deg, rgba(255,122,26,.94), rgba(124,52,214,.94)); box-shadow: 0 10px 30px rgba(255,122,26,.5); }
+  html.hw .s-chat div b { color: #8cff2e; } html.hw .s-chat div:nth-child(3n) b { color: #ffb347; } html.hw .s-chat div:nth-child(3n+1) b { color: #c79bff; }
+  html.hw .orb { border-color: rgba(255,150,60,.45); box-shadow: 0 14px 40px rgba(0,0,0,.5), 0 0 24px rgba(255,122,26,.35); }
+  html.hw .s-hearts span { filter: drop-shadow(0 0 8px rgba(255,150,60,.9)); }
+
+  /* marquee, cartes, offres */
+  html.hw .marq-t span { -webkit-text-stroke-color: rgba(255,150,60,.5); }
+  html.hw .marq-t span::after { content: "🎃"; text-shadow: none; }
+  html.hw .marq-t span:nth-child(3n)::after { content: "🦇"; }
+  html.hw .shot, html.hw .frame { border-color: rgba(255,150,60,.35); box-shadow: 0 40px 100px rgba(0,0,0,.65), 0 0 80px rgba(255,122,26,.2); }
+  html.hw .feat, html.hw .step, html.hw .ccard, html.hw .plan:not(.best), html.hw .cform, html.hw .helpbox { background: radial-gradient(320px circle at var(--mx, 50%) var(--my, -30%), rgba(255,122,26,.2), transparent 62%), var(--card); border-color: rgba(255,150,60,.18); }
+  html.hw .features .feat:first-child { background: radial-gradient(420px circle at var(--mx, 80%) var(--my, 0%), rgba(140,255,46,.14), transparent 62%), var(--card); }
+  html.hw .feat:hover, html.hw .ccard:hover { border-color: rgba(140,255,46,.55); box-shadow: 0 0 40px rgba(140,255,46,.12); }
+  html.hw .feat .ic, html.hw .ccard .ic { background: linear-gradient(135deg, rgba(255,122,26,.2), rgba(124,52,214,.28)); border-color: rgba(255,150,60,.4); box-shadow: 0 0 22px rgba(255,122,26,.25); }
+  html.hw .feat .pro { background: linear-gradient(120deg, #ff7a1a, #d6336c); box-shadow: 0 0 14px rgba(255,122,26,.5); }
+  html.hw .feat, html.hw .step { position: relative; }
+  html.hw .feat::after, html.hw .step::after { content: ""; position: absolute; top: 0; right: 0; width: 74px; aspect-ratio: 1; pointer-events: none; opacity: .5; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%23e8e2f5' stroke-width='1.6' stroke-linecap='round'%3E%3Cpath d='M100 0L0 0M100 0L10 40M100 0L32 68M100 0L60 90M100 0L100 100M74 0Q78 14 76 24Q86 22 100 26M48 0Q56 28 52 46Q72 44 100 52M22 0Q34 40 30 66Q58 62 100 78'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 100% 100% no-repeat; }
+  html.hw .plan.best { background: linear-gradient(var(--solid), var(--solid)) padding-box, conic-gradient(from var(--ang), #ff7a1a, #7c34d6, #8cff2e, #ffb347, #ff7a1a) border-box; box-shadow: 0 0 80px rgba(255,122,26,.3); }
+  html.hw .plan.best::after { background: radial-gradient(500px circle at var(--mx, 80%) var(--my, 0%), rgba(255,122,26,.14), transparent 60%); }
+  html.hw .plan .price { background: linear-gradient(120deg, #ffb347, #ff7a1a 50%, #8cff2e); -webkit-background-clip: text; background-clip: text; }
+  html.hw .plan li::before { border-color: #8cff2e; filter: drop-shadow(0 0 4px #8cff2e); }
+  html.hw .plan .tag { background: linear-gradient(120deg, #ff7a1a, #d6336c); box-shadow: 0 6px 22px rgba(255,122,26,.5); }
+  html.hw .seg button.on { background: linear-gradient(120deg, #ff7a1a, #d6336c); }
+  html.hw .step::before { box-shadow: 0 0 22px rgba(255,122,26,.55); }
+  html.hw summary::after { color: #ff9d3d; } html.hw details[open] { background: linear-gradient(90deg, rgba(255,122,26,.08), transparent); }
+  html.hw .cform input:focus, html.hw .cform select:focus, html.hw .cform textarea:focus { border-color: #8cff2e; box-shadow: 0 0 0 3px rgba(140,255,46,.16); }
+
+  /* bave qui coule en haut des sections claires, et cimetière en bas de page */
+  html.hw .alt, html.hw footer { position: relative; }
+  html.hw .alt::before { content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 22px; pointer-events: none; filter: drop-shadow(0 0 6px rgba(140,255,46,.45)); background: var(--drip); }
+  html.hw footer { padding-top: 120px; border-top: 0; background: radial-gradient(ellipse 60% 90% at 50% 100%, rgba(255,122,26,.2), transparent 70%); }
+  html.hw footer::before { content: ""; position: absolute; left: 0; right: 0; top: 14px; height: 96px; pointer-events: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 100'%3E%3Cg fill='%2306030a'%3E%3Cpath d='M0 100V90Q60 82 120 90T240 88T360 90T480 86T600 90V100Z'/%3E%3Cpath d='M62 90V62a15 15 0 0 1 30 0V90Z'/%3E%3Cpath d='M130 90V70a11 11 0 0 1 22 0V90Z'/%3E%3Cpath d='M214 90V52h6v11h14v6h-14V90Z'/%3E%3Cpath d='M290 90V64a14 14 0 0 1 28 0V90Z'/%3E%3Cpath d='M372 90V72a10 10 0 0 1 20 0V90Z'/%3E%3Cpath d='M452 90c3-14 2-26-3-40l-12-18 5-2 12 14 4-18 5 1-4 20 12-10 3 4-14 14c3 12 3 22 3 35Z'/%3E%3Cpath d='M532 90V60a15 15 0 0 1 30 0V90Z'/%3E%3C/g%3E%3Cg fill='none' stroke='%23ff7a1a' stroke-opacity='.35' stroke-width='1.5'%3E%3Cpath d='M70 70h14M76 64v14M222 60h0M298 72h12'/%3E%3C/g%3E%3C/svg%3E") 0 100% / auto 96px repeat-x; filter: drop-shadow(0 -6px 18px rgba(255,122,26,.25)); }
+  @media (max-width: 940px) { html.hw .moon { right: 4%; top: -2%; width: 200px; } html.hw .hero h1 { font-size: clamp(54px, 15vw, 96px); } }
+  @media (prefers-reduced-motion: reduce) { html.hw #hwDeco *, html.hw .moon, html.hw .hero h1 em { animation: none !important; } }
+
+  /* ----- retouches : slime brillant qui coule de la barre, toiles rangées dans les coins ----- */
+  html.hw { --goo: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 80'%3E%3Cdefs%3E%3ClinearGradient id='g' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23d4ff4a'/%3E%3Cstop offset='.55' stop-color='%2377e01f'/%3E%3Cstop offset='1' stop-color='%232f9a14'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23g)' d='M0 0H240V9C228 9 226 11 224 18V42a6 6 0 0 1-12 0V18C210 11 205 9 196 9C186 9 184 12 182 16V26a5 5 0 0 1-10 0V16C170 11 166 9 156 9C146 9 144 10 142 14V58a7 7 0 0 1-14 0V14C126 10 120 9 110 9C98 9 96 12 94 17V30a5 5 0 0 1-10 0V17C82 11 76 9 66 9C56 9 54 11 52 16V50a6 6 0 0 1-12 0V16C38 10 32 9 22 9C12 9 8 9 0 9Z'/%3E%3Cg stroke='%23fff' stroke-opacity='.55' stroke-width='2' stroke-linecap='round' fill='none'%3E%3Cpath d='M218 22v16M135 22v30M46 22v24M178 19v4M90 20v6'/%3E%3Cpath d='M20 4h60M150 4h70' stroke-opacity='.35'/%3E%3C/g%3E%3Ccircle cx='118' cy='70' r='2.4' fill='%2377e01f'/%3E%3Ccircle cx='32' cy='66' r='1.8' fill='%2377e01f'/%3E%3C/svg%3E"); }
+  html.hw header::after { display: none; }
+  html.hw header .wrap { position: relative; }
+  html.hw header .wrap::after { content: ""; position: absolute; left: 26px; right: 26px; top: calc(100% - 3px); height: 62px; pointer-events: none; z-index: -1;
+    background: var(--goo) 0 0 / 186px 62px repeat-x; transform-origin: 50% 0; filter: drop-shadow(0 6px 10px rgba(80,200,20,.35)); animation: goo 7s ease-in-out infinite; }
+  @keyframes goo { 50% { transform: scaleY(1.16); } }
+  html.hw .alt::before { height: 62px; top: -1px; background: var(--goo) 70px 0 / 186px 62px repeat-x; filter: drop-shadow(0 6px 10px rgba(80,200,20,.3)); transform-origin: 50% 0; animation: goo 9s ease-in-out infinite; z-index: 1; }
+  html.hw #hwDeco .web { width: clamp(64px, 9vw, 128px); opacity: .8; }
+  html.hw #hwDeco .web.a { top: 0; left: 0; } html.hw #hwDeco .web.c { top: 0; right: 0; } html.hw #hwDeco .web.b { bottom: 0; right: 0; width: clamp(64px, 8vw, 110px); }
+  html.hw #hwDeco .spider { top: 0; left: clamp(30px, 5.5vw, 78px); }
+  @media (max-width: 760px) { html.hw #hwDeco .spider { display: none; } html.hw #hwDeco .web { width: 56px; opacity: .55; } html.hw header .wrap::after { height: 46px; background-size: 138px 46px; } html.hw .alt::before { height: 46px; background-size: 138px 46px; } }
+  @media (prefers-reduced-motion: reduce) { html.hw header .wrap::after, html.hw .alt::before { animation: none; } }
+
+  /* araignée : le fil reste accroché en haut de l'écran, seule sa longueur change (elle descend et remonte vraiment) */
+  @property --len { syntax: '<length>'; initial-value: 70px; inherits: false; }
+  html.hw #hwDeco .spider { top: 0; height: 190px; transform: none; animation: spiderLen 6s ease-in-out infinite;
+    background: linear-gradient(#d4cbe6, #d4cbe6) 50% 0 / 1.5px var(--len) no-repeat, radial-gradient(circle 5px at 50% calc(var(--len) + 2px), #050309 96%, transparent), radial-gradient(circle 9px at 50% calc(var(--len) + 15px), #050309 96%, transparent), radial-gradient(circle 1.6px at 40% calc(var(--len) + 1px), #ff4d2e 96%, transparent), radial-gradient(circle 1.6px at 60% calc(var(--len) + 1px), #ff4d2e 96%, transparent), radial-gradient(ellipse 14px 1.8px at 50% calc(var(--len) + 13px), #050309 96%, transparent); }
+  @keyframes spiderLen { 0%, 100% { --len: 40px; } 50% { --len: 130px; } }
+  @media (prefers-reduced-motion: reduce) { html.hw #hwDeco .spider { animation: none; --len: 90px; } }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Tikitok Overlays","applicationCategory":"MultimediaApplication","operatingSystem":"Windows","description":"Overlays, alertes, roue de la fortune, contours de caméra et commandes du chat pour TikTok LIVE Studio.","url":"https://tikitokoverlays.com/","image":"https://tikitokoverlays.com/img/logo.png","inLanguage":["fr","en"],"offers":[{"@type":"Offer","name":"Gratuit","price":"0","priceCurrency":"EUR"},{"@type":"Offer","name":"Pro mensuel","price":"20","priceCurrency":"EUR"},{"@type":"Offer","name":"Pro annuel","price":"120","priceCurrency":"EUR"}]}</script>
 </head>
 <body>
 
-<div id="hwDeco" aria-hidden="true"><i class="web a"></i><i class="web c"></i><i class="web b"></i><i class="spider"></i><i class="bat"></i><i class="bat b"></i><i class="bat c"></i></div>
+<div id="hwDeco" aria-hidden="true"><i class="web a"></i><i class="web c"></i><i class="web b"></i><i class="spider"></i><i class="bat"></i><i class="bat b"></i><i class="bat c"></i><i class="embers"></i><i class="fog"></i><i class="fog f2"></i><i class="flash"></i><i class="ghost"></i></div>
 <div id="banner" class="banner" data-dyn hidden></div>
 <header>
   <div class="wrap">
@@ -227,18 +494,35 @@
 <!-- ============ HÉROS ============ -->
 <div class="hero">
   <div class="wrap">
-    <span class="eyebrow">Pour TikTok LIVE Studio</span>
-    <h1>Un live qui a de la <em>gueule</em>.</h1>
-    <p class="lead">Overlays, alertes, roue de la fortune, contours de caméra et commandes du chat. Tu règles tout dans une appli simple, avec l'aperçu de ton live sur un téléphone.</p>
-    <div class="cta">
-      <a class="btn" href="#telecharger" data-link="free"><svg class="dl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg>Télécharger gratuitement</a>
-      <a class="btn ghost" href="#offres">Voir les offres Pro</a>
+    <div class="hero-l">
+      <span class="eyebrow">Pour TikTok LIVE Studio</span>
+      <h1>Un live qui a de la <em>gueule</em>.</h1>
+      <p class="lead">Overlays, alertes, roue de la fortune, contours de caméra et commandes du chat. Tu règles tout dans une appli simple, avec l'aperçu de ton live sur un téléphone.</p>
+      <div class="cta">
+        <a class="btn" href="#telecharger" data-link="free"><svg class="dl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg>Télécharger gratuitement</a>
+        <a class="btn ghost" href="#offres">Voir les offres Pro</a>
+      </div>
+      <p class="legal">Tikitok Overlays est un outil indépendant, <b>non affilié à TikTok ni à ByteDance</b>. <span>TikTok est une marque de ses propriétaires.</span></p>
+      <div class="chips"><span class="chip">Windows</span><span class="chip">Aucun compte à créer</span><span class="chip">Fonctionne avec ton live en cours</span></div>
     </div>
-    <p class="legal">Tikitok Overlays est un outil indépendant, <b>non affilié à TikTok ni à ByteDance</b>. <span>TikTok est une marque de ses propriétaires.</span></p>
-    <div class="chips"><span class="chip">Windows</span><span class="chip">Aucun compte à créer</span><span class="chip">Fonctionne avec ton live en cours</span></div>
-    <div class="shot reveal"><img src="img/design.jpg" alt="Le panneau Design de Tikitok Overlays avec l'aperçu de la roue"></div>
+    <div class="hero-r">
+      <i class="moon" aria-hidden="true"></i>
+      <div class="stage" aria-hidden="true" data-dyn>
+        <div class="phone"><div class="screen">
+          <div class="vid"></div>
+          <div class="s-top"><span class="s-live">LIVE</span><span class="s-vw">👁 <b id="stV">1 284</b></span></div>
+          <div class="s-goal"><div class="gl"><span id="stGl">❤ 1 000</span><b id="stG">0 %</b></div><div class="gb"><i id="stGi"></i></div></div>
+          <div class="s-alert" id="stA"></div>
+          <div class="s-hearts" id="stH"></div>
+          <div class="s-chat" id="stC"></div>
+        </div></div>
+        <span class="orb o1" id="stO1">🎁 ×5</span><span class="orb o2" id="stO2">⭐ LVL 12</span><span class="orb o3" id="stO3">+1 000 ❤</span>
+      </div>
+    </div>
   </div>
 </div>
+<div class="marq" aria-hidden="true"><div class="marq-t"><span>Alertes</span><span>Roue de la fortune</span><span>Chat à l'écran</span><span>Compte à rebours</span><span>Commandes du chat</span><span>Contours de caméra</span><span>Niveaux et fidélité</span><span>Aperçu sur téléphone</span><span>Cadeau → action</span><span>Boss, hype, courses</span><span>Alertes</span><span>Roue de la fortune</span><span>Chat à l'écran</span><span>Compte à rebours</span><span>Commandes du chat</span><span>Contours de caméra</span><span>Niveaux et fidélité</span><span>Aperçu sur téléphone</span><span>Cadeau → action</span><span>Boss, hype, courses</span></div></div>
+<div class="shotwrap"><div class="wrap"><div class="shot reveal"><img src="img/design.jpg" alt="Le panneau Design de Tikitok Overlays avec l'aperçu de la roue"></div></div></div>
 
 <!-- ============ FONCTIONS ============ -->
 <section id="fonctions">
@@ -479,6 +763,7 @@
   // ================================
   // ---------- langues : le français est dans la page, l'anglais dans ce dictionnaire ----------
   const EN = {"Confidentialité":"Privacy","Ce que Tikitok et Tikitok Lite envoient à notre serveur, pourquoi, et combien de temps nous le gardons.":"What Tikitok and Tikitok Lite send to our server, why, and how long we keep it.","Ce qui est envoyé":"What is sent","À l'activation de ta clé : ta clé d'abonnement, un code de ton PC (une empreinte anonyme, ni ton nom ni ton identifiant Windows) et la version de l'appli.":"When you activate your key: your subscription key, a code for your PC (an anonymous fingerprint, not your name or Windows ID) and the app version.","Toutes les minutes, tant que Tikitok Lite est ouvert : un signe de vie qui indique si l'appli est ouverte et si tu es en live (oui ou non).":"Every minute while Tikitok Lite is open: a heartbeat saying whether the app is open and whether you are live (yes or no).","Ton adresse IP sert seulement à limiter les abus pendant la demande ; elle n'est pas enregistrée dans notre base d'abonnements.":"Your IP address is only used to limit abuse during the request; it is not stored in our subscriptions database.","Ce qui n'est jamais envoyé":"What is never sent","Le contenu de ton live, tes spectateurs, tes messages, tes identifiants TikTok ou Discord (sauf le pseudo Discord que tu nous donnes pour ta clé). L'appli parle à TikTok directement depuis ton PC.":"The content of your live, your viewers, your messages, your TikTok or Discord logins (except the Discord username you give us for your key). The app talks to TikTok directly from your PC.","La version gratuite envoie seulement un signe de vie anonyme toutes les 5 minutes : un numéro au hasard propre à l'installation, la version de l'appli et « en live : oui ou non ». Jamais ton pseudo TikTok ni le contenu de ton live. Tu peux le désactiver dans Réglages → Statistiques anonymes.":"The free version only sends an anonymous heartbeat every 5 minutes: a random number specific to the installation, the app version and \"live: yes or no\". Never your TikTok username or the content of your live. You can turn it off in Settings → Anonymous statistics.","Pourquoi et combien de temps":"Why and how long","Pour vérifier que ton abonnement est valide, le limiter à 2 PC, t'aider en cas de problème et protéger le service contre les copies illégales. Nous gardons ces informations tant que ton abonnement existe, et les journaux de sécurité 90 jours au maximum.":"To check your subscription is valid, limit it to 2 PCs, help you when something goes wrong and protect the service against illegal copies. We keep this information while your subscription exists, and security logs for 90 days at most.","Le serveur est hébergé au Canada (OVHcloud, Beauharnois), un pays reconnu par l'Union européenne comme offrant un niveau de protection adéquat.":"The server is hosted in Canada (OVHcloud, Beauharnois), a country recognised by the European Union as providing an adequate level of protection.","Tes droits":"Your rights","Tu peux demander à voir, corriger ou supprimer tes données à tout moment : écris-nous depuis la section Contact.":"You can ask to see, correct or delete your data at any time: write to us from the Contact section.","Contactez-nous":"Contact us","Contact":"Contact","Une question ? Écris-nous.":"A question? Write to us.","Abonnement, clé de licence, bug, idée de fonction ou simple curiosité : on lit tout. Réponse en général sous 24 h.":"Subscription, license key, bug, feature idea or just curiosity: we read everything. We usually reply within 24 hours.","Pour qu'on t'aide plus vite, indique-nous :":"To help you faster, tell us:","ce que tu voulais faire et ce qui s'est passé à la place,":"what you wanted to do and what happened instead,","la version de Tikitok (en bas de la fenêtre de l'appli),":"your Tikitok version (at the bottom of the app window),","une capture d'écran si possible,":"a screenshot if possible,","pour une clé d'abonnement : ton pseudo Discord et le « Code de ce PC » (Réglages).":"for a subscription key: your Discord username and the \"PC code\" (Settings).","Tikitok Overlays est un outil indépendant,":"Tikitok Overlays is an independent tool,","non affilié à TikTok ni à ByteDance":"not affiliated with TikTok or ByteDance","TikTok est une marque de ses propriétaires.":"TikTok is a trademark of its respective owners.","0 €":"€0","Fonctions":"Features","Aperçu":"Preview","Offres":"Pricing","Questions":"FAQ","Télécharger":"Download","Pour TikTok LIVE Studio":"For TikTok LIVE Studio","Un live qui a de la":"A live with","gueule":"attitude","Overlays, alertes, roue de la fortune, contours de caméra et commandes du chat. Tu règles tout dans une appli simple, avec l'aperçu de ton live sur un téléphone.":"Overlays, alerts, a prize wheel, camera frames and chat commands. Set everything up in one simple app, with a phone preview of your stream.","Télécharger gratuitement":"Download for free","Voir les offres Pro":"See Pro pricing","Aucun compte à créer":"No account needed","Fonctionne avec ton live en cours":"Works with your live stream","Tout ce qu'il faut":"Everything you need","Une boîte à outils":"A toolbox","pour animer ton live.":"to liven up your stream.","Cadeaux, follows, spectateurs":"Gifts, follows, viewers","Les cadeaux, les nouveaux abonnés et le nombre de spectateurs s'affichent à l'écran, avec le son que tu veux.":"Gifts, new followers and the viewer count show up on screen, with the sound you choose.","Top donateurs et sondages":"Top gifters and polls","Le classement du live, des sondages en direct et un tirage au sort avec suspense.":"The live leaderboard, live polls and a suspenseful giveaway draw.","Chat à l'écran":"On-screen chat","Les messages de ton chat dans ton overlay, avec le niveau et les Super Fans mis en avant.":"Your chat messages in your overlay, with levels and Super Fans highlighted.","Objectifs de likes et de follows":"Like and follow goals","Des barres qui montent en direct (l'objectif en diamants reste gratuit).":"Progress bars that fill up live (the diamonds goal stays free).","Aperçu sur téléphone":"Phone preview","Vois ton live comme tes spectateurs, avec le chat à côté.":"See your stream the way your viewers do, with the chat next to it.","Roue de la fortune":"Prize wheel","Huit styles, des confettis, un cadeau qui la lance toute seule.":"Eight styles, confetti, and a gift that spins it automatically.","Commandes du chat":"Chat commands","!niveau, !pieces, !top, !live et les tiens : « !discord », « !regles »…":"!niveau, !pieces, !top, !live and your own: \"!discord\", \"!rules\"…","Niveaux et fidélité":"Levels and loyalty","XP, niveaux et pièces de chaque spectateur gardés d'un live à l'autre. Les Super Fans sont mis en avant.":"Each viewer's XP, level and coins are kept from one stream to the next. Super Fans are highlighted.","Compte à rebours":"Countdown timer","Chaque cadeau, follow ou Super Fan ajoute du temps.":"Every gift, follow or Super Fan adds time.","Boss, hype, courses":"Boss fights, hype, races","Des jeux collectifs : les spectateurs font monter la jauge ensemble.":"Group games: your viewers fill the meter together.","Cadeau → action":"Gift → action","Un cadeau déclenche une touche ou un clic, même dans un jeu.":"A gift triggers a key press or a click, even inside a game.","Vois ton live sans te prendre la tête.":"See your stream without the hassle.","Dès que tu cliques sur « Connecter », l'appli ouvre un téléphone avec ton vrai live, et le chat juste à côté. Tu vérifies tes overlays comme tes spectateurs les voient.":"As soon as you click \"Connect\", the app opens a phone showing your real stream, with the chat right beside it. You check your overlays exactly like your viewers see them.","Le live et le chat côte à côte":"The stream and chat side by side","Bascule en un clic sur tes overlays seuls":"Switch to your overlays only in one click","Un bouton de test pour tout voir sans être en direct":"A test button to see everything without going live","Contours de caméra":"Camera frames","Cinq cadres qui ont du caractère.":"Five frames with character.","Pellicule de cinéma, viseur de caméra avec son point REC, polaroïd, tube néon qui grésille, et un cadre Halloween avec de la bave qui coule. Ton pseudo écrit dessus, tes couleurs si tu veux.":"Film strip, camera viewfinder with its REC dot, polaroid, buzzing neon tube, and a Halloween frame with dripping slime. Your name on it, your colors if you want.","La roue":"The wheel","Une roue qui fait le show.":"A wheel that puts on a show.","Elle prend son élan, le pointeur claque sur chaque cheville, et à l'arrêt la case gagnante s'allume dans une pluie de confettis. Casino, néon, bonbon, galaxie, vinyle…":"It winds up, the pointer clacks over every peg, and when it stops the winning slice lights up in a shower of confetti. Casino, neon, candy, galaxy, vinyl…","8 styles, du plus sage au plus fou":"8 styles, from the tame to the wild","Un cadeau précis la lance automatiquement":"A specific gift spins it automatically","Tu choisis les cases et les effets":"You choose the slices and the effects","Saison d'Halloween":"Halloween season","Tout ton live en mode hanté.":"Your whole stream, haunted.","Un style Halloween pour chaque overlay : toiles d'araignée, bave verte, chauves-souris, citrouilles. L'appli peut aussi se mettre aux couleurs de la nuit, avec des sons d'ambiance : glas, rire de sorcière, fantôme, porte qui grince.":"A Halloween style for every overlay: cobwebs, green slime, bats, pumpkins. The app itself can also go dark, with spooky sounds: tolling bell, witch's cackle, ghost, creaking door.","Gratuit pour commencer.":"Free to start.","Pro pour tout débloquer.":"Pro to unlock everything.","Gratuit":"Free","L'essentiel pour un live propre.":"The essentials for a clean stream.","Cadeaux, follows, spectateurs, partages":"Gifts, follows, viewers, shares","Top donateurs, top like live et objectif en diamants":"Top donors, top likers and diamond goal","Top donateurs et objectif en diamants":"Top gifters and diamonds goal","Sondage, tirage au sort, alerte plein écran":"Polls, giveaway draw, full-screen alert","Aperçu de ton live sur téléphone":"Phone preview of your stream","Couleurs, polices et thèmes au choix":"Your choice of colors, fonts and themes","4 sons personnalisés":"4 custom sounds","Chat à l'écran, roue, commandes, niveaux, jeux…":"On-screen chat, wheel, commands, levels, games…","LE PLUS COMPLET":"MOST COMPLETE","Mensuel":"Monthly","Annuel":"Yearly","Tout ce qui est gratuit":"Everything in Free","Chat à l'écran, objectifs de likes et de follows":"On-screen chat, like and follow goals","Roue de la fortune, 8 styles":"Prize wheel, 8 styles","Commandes du chat personnalisées":"Custom chat commands","Niveaux, XP, Super Fans, pièces":"Levels, XP, Super Fans, coins","Boss, hype, courses":"Boss fights, hype, races","Cadeau → touche ou clic, traduction du chat":"Gift → key or click, chat translation","Contours de caméra, sons illimités":"Camera frames, unlimited sounds","Mises à jour automatiques":"Automatic updates","Prendre l'abonnement":"Subscribe","Paiement":"Payment","Simple, sans carte bancaire.":"Simple, no bank card needed.","Tu fais ta demande directement dans l'appli. Tu choisis ta formule et ton moyen de paiement, et ta clé t'arrive sur Discord.":"You make your request right inside the app. Pick your plan and payment method, and your key arrives on Discord.","Carte cadeau Eneba":"Eneba gift card","PayPal (amis et proches)":"PayPal (friends & family)","Choisis ta formule":"Pick your plan","Dans l'appli : Réglages, puis « Prendre l'abonnement ». Mensuel à {{m}} ou annuel à {{y}}.":"In the app: Settings, then \"Subscribe\". {{m}} monthly or {{y}} yearly.","Paye":"Pay","L'appli te montre exactement quoi acheter et où, selon le moyen choisi.":"The app shows you exactly what to buy and where, depending on the method you chose.","Envoie ta demande":"Send your request","Ton pseudo Discord et ta preuve de paiement partent en un seul clic.":"Your Discord name and proof of payment go out in a single click.","Reçois ta clé":"Get your key","Sous 24 h maximum, sur Discord. Elle débloque tout, tout de suite.":"Within 24 hours at most, on Discord. It unlocks everything right away.","Mises à jour incluses pendant toute la durée de l'abonnement. La clé est personnelle et liée à ton PC : ne la partage pas.":"Updates are included for the whole length of your subscription. The key is personal and tied to your PC: don't share it.","C'est parti":"Let's go","En place en trois minutes.":"Up and running in three minutes.","Installe":"Install","Télécharge Tikitok Overlays et lance l'installation. Rien d'autre à configurer.":"Download Tikitok Overlays and run the installer. Nothing else to set up.","Connecte-toi":"Connect","Entre ton pseudo TikTok pendant que tu es en direct.":"Enter your TikTok username while you are live.","Ajoute à LIVE Studio":"Add it to LIVE Studio","Copie le lien d'un overlay et colle-le dans une source « Link ».":"Copy an overlay's link and paste it into a \"Link\" source.","Joue !":"Play!","Choisis tes styles, tes sons, et regarde le résultat sur le téléphone.":"Pick your styles and sounds, and watch the result on the phone.","Télécharger Tikitok Overlays":"Download Tikitok Overlays","Les questions qu'on pose souvent.":"Frequently asked questions.","Est-ce que je dois rester sur mon PC ?":"Do I have to stay on my PC?","Oui : Tikitok Overlays tourne sur ton ordinateur pendant ton live. C'est lui qui se connecte à TikTok et joue les sons. Tu peux réduire la fenêtre, les overlays continuent.":"Yes: Tikitok Overlays runs on your computer during your stream. It connects to TikTok and plays the sounds. You can minimize the window, the overlays keep running.","Est-ce que ça marche avec TikTok LIVE Studio ?":"Does it work with TikTok LIVE Studio?","Oui, c'est fait pour. Chaque overlay a un lien que tu ajoutes comme source « Link ». Tu peux aussi n'utiliser qu'un seul lien pour tous tes overlays grâce à la Scène.":"Yes, it's made for it. Each overlay has a link that you add as a \"Link\" source. You can also use a single link for all your overlays with the Scene tab.","Qu'est-ce que je perds sans l'abonnement ?":"What do I miss without a subscription?","Les fonctions Pro (chat à l'écran, objectifs de likes, roue, commandes, niveaux, jeux, actions, contours de caméra…) sont verrouillées. Le reste est gratuit, sans limite de temps.":"Pro features (on-screen chat, like goals, wheel, commands, levels, games, actions, camera frames…) are locked. Everything else is free, with no time limit.","Comment je paye, et quand je reçois ma clé ?":"How do I pay, and when do I get my key?","Dans l'appli, tu choisis mensuel ({{m}}) ou annuel ({{y}}, soit {{free}} mois offerts), puis ton moyen de paiement : carte cadeau Eneba, Paysafecard ou PayPal en « amis et proches ». Tu envoies ta demande avec ta preuve de paiement, et tu reçois ta clé sur Discord sous 24 h maximum. Garde tes messages privés Discord ouverts.":"In the app, you pick monthly ({{m}}) or yearly ({{y}}, that's {{free}} months free), then your payment method: Eneba gift card, Paysafecard or PayPal \"friends & family\". You send your request with your proof of payment, and you get your key on Discord within 24 hours at most. Keep your Discord private messages open.","Je peux utiliser ma clé sur plusieurs ordinateurs ?":"Can I use my key on several computers?","Non : la clé est personnelle et liée à ton PC. Si tu changes d'ordinateur, contacte-nous.":"No: the key is personal and tied to your PC. If you change computers, contact us.","Mes données sont-elles en sécurité ?":"Is my data safe?","Tout est enregistré sur ton ordinateur. Tikitok Overlays ne te demande jamais ton mot de passe TikTok.":"Everything is stored on your computer. Tikitok Overlays never asks for your TikTok password.","Je peux changer les couleurs, les polices, les sons ?":"Can I change the colors, fonts and sounds?","Oui. Chaque overlay a ses couleurs, ses formes, ses polices et ses sons, avec un aperçu en direct, et des thèmes prêts à l'emploi en un clic.":"Yes. Every overlay has its own colors, shapes, fonts and sounds, with a live preview, plus ready-made themes in one click.","Tikitok Overlays n'est pas affilié à TikTok. ©":"Tikitok Overlays is not affiliated with TikTok. ©","Is the app available in English?":"Is the app available in English?"};
+  Object.assign(EN, { "Alertes": "Alerts" });
   const ALT = {"Le panneau Design de Tikitok Overlays avec l'aperçu de la roue":"The Design panel of Tikitok Overlays, with the wheel preview","Aperçu du live dans un téléphone, avec le chat à côté":"Stream preview inside a phone, with the chat beside it","Cinq contours de caméra : pellicule, viseur, polaroïd, néon, Halloween":"Five camera frames: film strip, viewfinder, polaroid, neon, Halloween","Huit styles de roue de la fortune":"Eight prize wheel styles","Overlays au style Halloween":"Halloween-style overlays"};
   const TXT = { fr: { title: 'Tikitok Overlays — overlays et alertes pour ton live TikTok', desc: 'Overlays, alertes, roue, contours de caméra et commandes du chat pour TikTok LIVE Studio. Gratuit pour commencer, Pro pour aller plus loin.', plans: { monthly: ['20 €', 'par mois', 'Sans engagement : tu arrêtes quand tu veux.'], yearly: ['120 €', 'par an', 'Soit 10 € par mois : 6 mois offerts.'] }, ver: (v, mo) => `Version ${v} · ${mo} Mo · Windows` },
     en: { title: 'Tikitok Overlays — overlays and alerts for your TikTok LIVE', desc: 'Overlays, alerts, a prize wheel, camera frames and chat commands for TikTok LIVE Studio. Free to start, Pro to go further.', plans: { monthly: ['€20', 'per month', 'No commitment: cancel whenever you want.'], yearly: ['€120', 'per year', "That's €10 a month: 6 months free."] }, ver: (v, mo) => `Version ${v} · ${mo} MB · Windows` } };
@@ -619,6 +904,64 @@
     lb.addEventListener('click', close);
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
     document.querySelectorAll('.shot img, .frame img').forEach((im) => im.addEventListener('click', () => { big.src = im.src; big.alt = im.alt; lb.classList.add('on'); }));
+  })();
+
+  // ---------- v2 : barre de progression, lueur des cartes, inclinaison de la capture, scène du héros ----------
+  (() => {
+    const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const bar = document.createElement('div'); bar.id = 'prog'; document.body.append(bar);
+    const onScroll = () => { const h = document.documentElement; bar.style.width = (h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) * 100 + '%'; };
+    addEventListener('scroll', onScroll, { passive: true }); onScroll();
+    // la lueur des cartes suit la souris
+    document.addEventListener('pointermove', (e) => {
+      const c = e.target.closest && e.target.closest('.feat, .step, .ccard, .plan, .cform, .helpbox'); if (!c) return;
+      const r = c.getBoundingClientRect(); c.style.setProperty('--mx', (e.clientX - r.left) + 'px'); c.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    }, { passive: true });
+    // la grande capture s'incline doucement
+    const shot = document.querySelector('.shotwrap .shot');
+    if (shot && !calm && matchMedia('(pointer: fine)').matches) {
+      shot.parentElement.addEventListener('pointermove', (e) => { const r = shot.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; shot.style.transform = 'perspective(1100px) rotateY(' + (x * 7) + 'deg) rotateX(' + (-y * 5) + 'deg)'; });
+      shot.parentElement.addEventListener('pointerleave', () => { shot.style.transform = ''; });
+    }
+    // la scène : cœurs qui montent, cadeaux qui arrivent, chat qui défile, objectif qui se remplit
+    const st = document.querySelector('.stage'); if (!st) return;
+    const $ = (id) => document.getElementById(id), rnd = (a, b) => a + Math.random() * (b - a);
+    const GIFTS = [['🌹', 'léa_ttk', 'Rose ×3'], ['🦁', 'maxplays', 'Lion'], ['💎', 'nora.live', 'Galaxie'], ['🚀', 'tomtom', 'Fusée ×2'], ['👑', 'kenzo_', 'Couronne'], ['🍩', 'ayaa', 'Donut ×5']];
+    const CHAT = [['léa_ttk', '🔥🔥🔥'], ['maxplays', 'GG !'], ['nora.live', 'trop fort'], ['tomtom', 'je suis là'], ['ayaa', '❤️❤️'], ['kenzo_', 'lets goooo'], ['mila', 'incroyable'], ['sam.p', '👏👏']];
+    const HW = () => document.documentElement.classList.contains('hw');
+    const GIFTS1 = [['🎃', 'léa_ttk', 'Citrouille ×3'], ['👻', 'maxplays', 'Fantôme'], ['🦇', 'nora.live', 'Chauve-souris'], ['💀', 'tomtom', 'Crâne ×2'], ['🕷️', 'kenzo_', 'Araignée'], ['🧙', 'ayaa', 'Sorcière']];
+    const CHAT1 = [['léa_ttk', 'mouahaha 😈'], ['maxplays', 'j\'ai peur 😱'], ['nora.live', '🎃🎃🎃'], ['tomtom', 'booo !'], ['ayaa', '🦇🦇'], ['kenzo_', 'trop flippant'], ['mila', '👻'], ['sam.p', 'joyeux halloween']];
+    const HEARTS1 = ['🎃', '🦇', '👻', '🕸️', '🔥', '💀'];
+    const skin = () => { const h = HW(); $('stGl').textContent = h ? '🎃 1 000' : '❤ 1 000'; $('stO1').textContent = h ? '🎃 ×5' : '🎁 ×5'; $('stO2').textContent = h ? '💀 LVL 13' : '⭐ LVL 12'; $('stO3').textContent = h ? '+1 000 🦇' : '+1 000 ❤'; };
+    new MutationObserver(skin).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] }); skin();
+    const COL = ['#ff2d86', '#ff7ac0', '#ffb347', '#19e6ff', '#c6ff3d', '#ff4d6d'];
+    let ci = 0, gi = 0, goal = 0, viewers = 1284;
+    const addChat = () => {
+      const CH = HW() ? CHAT1 : CHAT, [n, t] = CH[ci++ % CH.length], d = document.createElement('div'), b = document.createElement('b'); b.textContent = n; d.append(b, t); $('stC').append(d);
+      while ($('stC').children.length > 6) $('stC').firstChild.remove();
+    };
+    const heart = () => {
+      const h = document.createElement('span'); h.textContent = HW() ? HEARTS1[(Math.random() * HEARTS1.length) | 0] : '❤'; h.style.color = COL[(Math.random() * COL.length) | 0];
+      h.style.left = rnd(0, 44) + 'px'; h.style.setProperty('--dx', rnd(-26, 26) + 'px'); h.style.setProperty('--rot', rnd(-24, 24) + 'deg'); h.style.fontSize = rnd(16, 28) + 'px';
+      $('stH').append(h); setTimeout(() => h.remove(), 3500);
+    };
+    const gift = () => {
+      const GL = HW() ? GIFTS1 : GIFTS, [e, n, g] = GL[gi++ % GL.length], a = $('stA');
+      a.replaceChildren(); const b = document.createElement('b'); b.textContent = e; a.append(b, n + ' · ' + g);
+      a.classList.add('on'); setTimeout(() => a.classList.remove('on'), 2600);
+    };
+    for (let i = 0; i < 3; i++) addChat();
+    if (calm) { gift(); $('stGi').style.width = '62%'; $('stG').textContent = '62 %'; return; }
+    let alive = true;
+    document.addEventListener('visibilitychange', () => { alive = !document.hidden; });
+    setInterval(() => { if (alive) { addChat(); } }, 1500);
+    setInterval(() => { if (alive && $('stH').children.length < 14) heart(); }, 260);
+    setInterval(() => { if (alive) gift(); }, 4600); setTimeout(gift, 900);
+    setInterval(() => {
+      if (!alive) return;
+      goal = goal >= 100 ? 0 : goal + rnd(0.8, 2); $('stGi').style.width = goal + '%'; $('stG').textContent = Math.round(goal) + ' %';
+      viewers += Math.round(rnd(-6, 9)); $('stV').textContent = viewers.toLocaleString('fr-FR');
+    }, 220);
   })();
 </script>
 </body>
