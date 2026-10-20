@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" class="hw">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -454,6 +454,8 @@
   html.hw header .wrap::after { content: ""; position: absolute; left: 26px; right: 26px; top: calc(100% - 3px); height: 62px; pointer-events: none; z-index: -1;
     background: var(--goo) 0 0 / 186px 62px repeat-x; transform-origin: 50% 0; filter: drop-shadow(0 6px 10px rgba(80,200,20,.35)); animation: goo 7s ease-in-out infinite; }
   @keyframes goo { 50% { transform: scaleY(1.16); } }
+  html.hw header .wrap::after { transition: opacity .35s; }
+  html.hw.scrolled header .wrap::after { opacity: 0; }   /* une fois la page défilée, seul le slime du haut des sections reste : plus de double slime */
   html.hw .alt::before { height: 62px; top: -1px; background: var(--goo) 70px 0 / 186px 62px repeat-x; filter: drop-shadow(0 6px 10px rgba(80,200,20,.3)); transform-origin: 50% 0; animation: goo 9s ease-in-out infinite; z-index: 1; }
   html.hw #hwDeco .web { width: clamp(64px, 9vw, 128px); opacity: .8; }
   html.hw #hwDeco .web.a { top: 0; left: 0; } html.hw #hwDeco .web.c { top: 0; right: 0; } html.hw #hwDeco .web.b { bottom: 0; right: 0; width: clamp(64px, 8vw, 110px); }
@@ -532,6 +534,18 @@
   .tl p { margin: 0; color: var(--muted); font-size: 15px; }
   @media (max-width: 800px) { .tl { grid-template-columns: 1fr; gap: 28px; } .tl::before { left: 20px; right: auto; top: 0; bottom: 0; width: 2px; height: auto; } .tl li { padding: 0 0 0 62px; } .tl li::before { position: absolute; left: 0; top: 0; margin: 0; } }
   @media (max-width: 760px) { .gal-head { align-items: flex-start; } .gal-ctl { display: none; } }
+
+  /* galerie v4 : une seule image, on change avec les flèches */
+  .gal-track { display: grid; overflow: visible; scroll-snap-type: none; padding-block: 34px 18px; padding-inline: 0; scroll-padding: 0; touch-action: pan-y; }
+  .gal-track .slide { grid-area: 1 / 1; flex: none; width: 100%; height: clamp(250px, 50vw, 600px); opacity: 0; visibility: hidden; transform: translateX(34px) scale(.975); transition: opacity .45s, transform .55s cubic-bezier(.2,.8,.2,1), visibility 0s .45s; pointer-events: none; }
+  .gal-track .slide.on { opacity: 1; visibility: visible; transform: none; transition: opacity .45s, transform .55s cubic-bezier(.2,.8,.2,1), visibility 0s; pointer-events: auto; }
+  .slide img { object-position: top center; }
+  .slide.more { flex-basis: auto; }
+  .gal-dots { display: flex; justify-content: center; gap: 10px; padding-bottom: 6px; }
+  .gal-dots button { width: 10px; height: 10px; padding: 0; border-radius: 50%; border: 0; background: rgba(255,255,255,.25); cursor: pointer; transition: width .25s, background .25s; }
+  .gal-dots button.on { width: 30px; border-radius: 6px; background: var(--grad); }
+  @media (max-width: 760px) { .gal-ctl { display: flex; } .gal-head { align-items: flex-end; } .gal-ctl button { width: 42px; height: 42px; } }
+  .hwtog { display: none !important; }   /* le thème Halloween est le seul thème du site */
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Tikitok Overlays","applicationCategory":"MultimediaApplication","operatingSystem":"Windows","description":"Overlays, alertes, roue de la fortune, contours de caméra et commandes du chat pour TikTok LIVE Studio.","url":"https://tikitokoverlays.com/","image":"https://tikitokoverlays.com/img/logo.png","inLanguage":["fr","en"],"offers":[{"@type":"Offer","name":"Gratuit","price":"0","priceCurrency":"EUR"},{"@type":"Offer","name":"Pro mensuel","price":"20","priceCurrency":"EUR"},{"@type":"Offer","name":"Pro annuel","price":"120","priceCurrency":"EUR"}]}</script>
 </head>
@@ -596,7 +610,7 @@
     </div>
     <div class="gal-ctl"><button type="button" id="galPrev" aria-label="Précédent">←</button><button type="button" id="galNext" aria-label="Suivant">→</button></div>
   </div>
-  <div class="gal-track" id="galTrack">
+  <div class="gal-track wrap" id="galTrack">
     <figure class="slide"><img src="img/design.jpg" alt="Le panneau Design de Tikitok Overlays avec l'aperçu de la roue" loading="lazy"><figcaption>Tout se règle ici, avec l'aperçu en direct.</figcaption></figure>
     <figure class="slide"><img src="img/preview.jpg" alt="Aperçu du live dans un téléphone, avec le chat à côté" loading="lazy"><figcaption>Ton live et le chat, comme tes spectateurs les voient.</figcaption></figure>
     <figure class="slide"><img src="img/roues.jpg" alt="Huit styles de roue de la fortune" loading="lazy"><figcaption>Des roues, des styles, des effets.</figcaption></figure>
@@ -604,6 +618,7 @@
     <figure class="slide"><img src="img/halloween.jpg" alt="Overlays au style Halloween" loading="lazy"><figcaption>Des thèmes de saison, comme Halloween.</figcaption></figure>
     <div class="slide more"><div><b>Et plus (+)</b><span>De nouveaux overlays à chaque mise à jour.</span></div></div>
   </div>
+  <div class="wrap"><div class="gal-dots" id="galDots" role="tablist" aria-label="Images"></div></div>
 </section>
 
 <!-- ============ FONCTIONS : une liste, deux niveaux ============ -->
@@ -896,8 +911,8 @@
     t.title = LANG === 'en' ? (on ? 'Halloween theme: on' : 'Halloween theme: off') : (on ? 'Thème Halloween : activé' : 'Thème Halloween : désactivé');
     if (save) try { localStorage.setItem('hw', on ? '1' : '0'); } catch { /* stockage indisponible */ }
   }
-  document.getElementById('hwTog').onclick = () => setHw(!document.documentElement.classList.contains('hw'), true);
-  { let v = null; try { v = localStorage.getItem('hw'); } catch { /* stockage indisponible */ } setHw(v === null ? hwDefault() : v === '1', false); }
+  // thème Halloween permanent : plus de bouton pour le couper
+  setHw(true, false);
   for (const e of document.querySelectorAll('[data-i]')) e.innerHTML = window.tabIcon(e.dataset.i);
   try { const ld = document.querySelector('script[type="application/ld+json"]'); const o = JSON.parse(ld.textContent); o.offers[1].price = String(PRICE.m); o.offers[2].price = String(PRICE.y); o.offers.forEach((x) => { if (x.price !== '0') x.priceCurrency = PRICE.cur === '€' ? 'EUR' : x.priceCurrency; }); ld.textContent = JSON.stringify(o); } catch { /* sans importance */ }
   document.getElementById('y').textContent = new Date().getFullYear();
@@ -938,18 +953,25 @@
     document.querySelectorAll('.shot img, .frame img, .slide img').forEach((im) => im.addEventListener('click', () => { big.src = im.src; big.alt = im.alt; lb.classList.add('on'); }));
   })();
 
-  // galerie : flèches (et le doigt / la molette font défiler tout seuls)
+  // galerie : une seule image à la fois ; flèches, points, clavier et glissé du doigt pour changer
   (() => {
     const tr = document.getElementById('galTrack'); if (!tr) return;
-    const step = () => (tr.querySelector('.slide') ? tr.querySelector('.slide').getBoundingClientRect().width + 22 : 600);
-    document.getElementById('galPrev').onclick = () => tr.scrollBy({ left: -step(), behavior: 'smooth' });
-    document.getElementById('galNext').onclick = () => tr.scrollBy({ left: step(), behavior: 'smooth' });
+    const slides = [...tr.querySelectorAll('.slide')], dots = document.getElementById('galDots');
+    let cur = 0, x0 = null;
+    const show = (i) => { cur = (i + slides.length) % slides.length; slides.forEach((el, k) => el.classList.toggle('on', k === cur)); [...dots.children].forEach((d, k) => d.classList.toggle('on', k === cur)); };
+    slides.forEach((_, k) => { const d = document.createElement('button'); d.type = 'button'; d.setAttribute('aria-label', String(k + 1)); d.onclick = () => show(k); dots.append(d); });
+    document.getElementById('galPrev').onclick = () => show(cur - 1);
+    document.getElementById('galNext').onclick = () => show(cur + 1);
+    tr.addEventListener('pointerdown', (e) => { x0 = e.clientX; });
+    tr.addEventListener('pointerup', (e) => { if (x0 !== null && Math.abs(e.clientX - x0) > 50) show(cur + (e.clientX < x0 ? 1 : -1)); x0 = null; });
+    document.addEventListener('keydown', (e) => { const r = tr.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return; if (e.key === 'ArrowLeft') show(cur - 1); if (e.key === 'ArrowRight') show(cur + 1); });
+    show(0);
   })();
   // ---------- v2 : barre de progression, lueur des cartes, inclinaison de la capture, scène du héros ----------
   (() => {
     const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const bar = document.createElement('div'); bar.id = 'prog'; document.body.append(bar);
-    const onScroll = () => { const h = document.documentElement; bar.style.width = (h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) * 100 + '%'; };
+    const onScroll = () => { const h = document.documentElement; h.classList.toggle('scrolled', h.scrollTop > 40); bar.style.width = (h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)) * 100 + '%'; };
     addEventListener('scroll', onScroll, { passive: true }); onScroll();
     // la lueur des cartes suit la souris
     document.addEventListener('pointermove', (e) => {
