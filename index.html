@@ -307,8 +307,6 @@
   .marq-t { display: flex; width: max-content; animation: mq 46s linear infinite; }
   .marq:hover .marq-t { animation-play-state: paused; }
   .marq-t span { font: 800 clamp(20px, 3vw, 30px) var(--font-d); letter-spacing: .12em; text-transform: uppercase; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.38); white-space: nowrap; padding-right: 40px; }
-  .marq-t span::after { content: "✦"; margin-left: 40px; color: var(--cyan); -webkit-text-stroke: 0; text-shadow: 0 0 14px var(--cyan); }
-  .marq-t span:nth-child(3n)::after { color: var(--pink); text-shadow: 0 0 14px var(--pink); }
   @keyframes mq { to { transform: translateX(-50%); } }
 
   /* captures dans des fenêtres */
@@ -420,8 +418,6 @@
 
   /* marquee, cartes, offres */
   html.hw .marq-t span { -webkit-text-stroke-color: rgba(255,150,60,.5); }
-  html.hw .marq-t span::after { content: "🎃"; text-shadow: none; }
-  html.hw .marq-t span:nth-child(3n)::after { content: "🦇"; }
   html.hw .shot, html.hw .frame { border-color: rgba(255,150,60,.35); box-shadow: 0 40px 100px rgba(0,0,0,.65), 0 0 80px rgba(255,122,26,.2); }
   html.hw .feat, html.hw .step, html.hw .ccard, html.hw .plan:not(.best), html.hw .cform, html.hw .helpbox { background: radial-gradient(320px circle at var(--mx, 50%) var(--my, -30%), rgba(255,122,26,.2), transparent 62%), var(--card); border-color: rgba(255,150,60,.18); }
   html.hw .features .feat:first-child { background: radial-gradient(420px circle at var(--mx, 80%) var(--my, 0%), rgba(140,255,46,.14), transparent 62%), var(--card); }
@@ -678,7 +674,12 @@
   @keyframes flo { from { transform: translateY(-10px) rotate(-1.5deg); } to { transform: translateY(12px) rotate(1.5deg); } }
   @media (max-width: 1180px) { .hfs { display: none; } }
 
-  /* pack thèmes */
+  .tki { width: 1em; height: 1em; display: inline-block; vertical-align: -.14em; flex: none; }
+  .gift .gi .tki { width: 30px; height: 30px; } .al .ae .tki { width: 24px; height: 24px; } .mn.giftm .ge .tki { width: 32px; height: 32px; }
+  .ph-hearts span .tki { width: 1em; height: 1em; filter: drop-shadow(0 0 6px currentColor); } .gift .dv .tki, .ph-top .tki, .ph-goal .tki, .mn .tki { width: 14px; height: 14px; }
+  .mn.giftm .ge .tki { width: 32px; height: 32px; }
+
+  /* packs de thèmes : un pack par jeu, 6,99 € chacun */
   .tpack { margin-top: 46px; padding: 34px; border-radius: 26px; border: 1px solid rgba(255,150,60,.3); background: linear-gradient(160deg, rgba(255,122,26,.07), rgba(107,47,194,.07)), var(--card); box-shadow: 0 0 60px rgba(255,122,26,.1); }
   .tp-head { display: flex; gap: 28px; align-items: center; justify-content: space-between; flex-wrap: wrap; }
   .tp-head h3 { font-size: clamp(28px, 3.4vw, 40px); margin: 8px 0 8px; }
@@ -686,22 +687,26 @@
   .tp-price { display: grid; justify-items: start; gap: 6px; }
   .tp-price b { font-size: 46px; font-weight: 900; letter-spacing: -.03em; line-height: 1; }
   .tp-price small { color: var(--muted); font-size: 14px; margin-bottom: 8px; }
-  .tgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin-top: 28px; }
-  .tcard { padding: 12px 12px 16px; border-radius: 20px; border: 1px solid var(--line); background: rgba(255,255,255,.03); transition: transform .25s, box-shadow .25s, border-color .25s; }
+  .tgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; margin-top: 28px; }
+  .tcard { padding: 12px; border-radius: 22px; border: 1px solid var(--line); background: rgba(255,255,255,.03); transition: transform .25s, box-shadow .25s, border-color .25s; }
   .tcard:hover { transform: translateY(-6px); border-color: var(--ac); box-shadow: 0 18px 46px rgba(0,0,0,.5), 0 0 30px color-mix(in srgb, var(--ac) 35%, transparent); }
-  .tcard h4 { margin: 14px 4px 4px; font-size: 20px; } .tcard p { margin: 0 4px; color: var(--muted); font-size: 14px; }
-  .tp { position: relative; height: 172px; border-radius: 14px; overflow: hidden; display: grid; align-content: center; gap: 10px; padding: 16px; font-family: var(--f); color: var(--tx); background: radial-gradient(120% 90% at 18% 8%, var(--s1), transparent 62%), radial-gradient(110% 90% at 92% 100%, var(--s2), transparent 62%), #0c0714; }
-  .tp .t1 { display: flex; align-items: center; gap: 10px; padding: 8px 12px 8px 8px; background: var(--bg); border-left: 4px solid var(--ac); }
-  .tp .t1 .e { width: 34px; height: 34px; display: grid; place-items: center; font-size: 20px; background: color-mix(in srgb, var(--c2) 60%, #000); flex: none; }
-  .tp .t1 b { display: block; font-size: 15px; letter-spacing: .04em; text-transform: uppercase; } .tp .t1 i { font-style: normal; font-size: 11px; opacity: .8; }
-  .tp .t2 { padding: 7px 12px; background: color-mix(in srgb, var(--bg) 85%, transparent); font-size: 13px; width: fit-content; max-width: 100%; } .tp .t2 b { color: var(--ac); margin-right: 6px; }
-  .tp .t3 { height: 12px; background: rgba(255,255,255,.16); overflow: hidden; } .tp .t3 i { display: block; width: 64%; height: 100%; background: linear-gradient(90deg, var(--ac), var(--c2)); }
-  [data-g=fn] .t1, [data-g=fn] .t2 { transform: skewX(-8deg); } [data-g=fn] .t1 { border: 2px solid #fff; box-shadow: 4px 4px 0 var(--ac); }
-  [data-g=vl] .t1, [data-g=vl] .t2, [data-g=vl] .t3 { clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px)); }
-  [data-g=ow] .t1, [data-g=ow] .t2 { clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%); border-bottom: 3px solid var(--ac); } [data-g=ow] .t3 { transform: skewX(-20deg); }
-  [data-g=mc] .t1, [data-g=mc] .t2, [data-g=mc] .t3 { border: 3px solid #000; box-shadow: inset -3px -3px 0 rgba(0,0,0,.4), inset 3px 3px 0 rgba(255,255,255,.25); }
-  [data-g=mw] .t1, [data-g=mw] .t2 { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%); letter-spacing: .08em; text-transform: uppercase; }
-  [data-g=gt] .t1, [data-g=gt] .t2 { border-radius: 4px; box-shadow: 0 0 16px color-mix(in srgb, var(--ac) 70%, transparent); } [data-g=gt] .t3 { border-radius: 8px; }
+  .tfoot { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 6px 4px; }
+  .tfoot h4 { margin: 0; font-size: 21px; } .tfoot .pr { padding: 5px 13px; border-radius: 999px; font: 800 14px var(--font-d); background: color-mix(in srgb, var(--ac) 22%, transparent); border: 1px solid color-mix(in srgb, var(--ac) 55%, transparent); color: #fff; }
+  .tp { position: relative; height: 196px; border-radius: 15px; overflow: hidden; display: grid; align-content: center; gap: 14px; padding: 18px; font-family: var(--f); color: var(--tx); background: radial-gradient(120% 90% at 18% 8%, var(--s1), transparent 62%), radial-gradient(110% 90% at 92% 100%, var(--s2), transparent 62%), #0c0714; }
+  .tp .cd { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 16px; background: var(--bg); border-left: 5px solid var(--ac); }
+  .tp .cd .lbl { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; opacity: .85; line-height: 1.25; max-width: 9em; }
+  .tp .cd .num { font-size: 34px; line-height: 1; letter-spacing: .02em; color: var(--ac); font-variant-numeric: tabular-nums; text-shadow: 0 0 16px color-mix(in srgb, var(--ac) 60%, transparent); }
+  .tp .gf { display: flex; align-items: center; gap: 12px; padding: 9px 14px 9px 9px; background: var(--bg); border-bottom: 3px solid var(--ac); animation: gfp 3.2s ease-in-out infinite; }
+  @keyframes gfp { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(6px); } }
+  .tp .gf .e { width: 40px; height: 40px; display: grid; place-items: center; flex: none; background: color-mix(in srgb, var(--c2) 55%, #000); color: var(--ac); }
+  .tp .gf .e .tki { width: 24px; height: 24px; }
+  .tp .gf b { display: block; font-size: 16px; letter-spacing: .04em; text-transform: uppercase; } .tp .gf i { font-style: normal; font-size: 12px; opacity: .8; }
+  [data-g=fn] .cd, [data-g=fn] .gf { transform: skewX(-8deg); } [data-g=fn] .cd { border: 2px solid #fff; border-left: 5px solid var(--ac); box-shadow: 4px 4px 0 var(--ac); } [data-g=fn] .gf { animation: none; border-bottom: 0; box-shadow: 4px 4px 0 var(--c2); }
+  [data-g=vl] .cd, [data-g=vl] .gf { clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px)); }
+  [data-g=ow] .cd, [data-g=ow] .gf { clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%); } [data-g=ow] .cd { border-left: 0; border-bottom: 4px solid var(--ac); }
+  [data-g=mc] .cd, [data-g=mc] .gf { border: 3px solid #000; box-shadow: inset -3px -3px 0 rgba(0,0,0,.4), inset 3px 3px 0 rgba(255,255,255,.25); } [data-g=mc] .cd .num { text-shadow: 2px 2px 0 #000; }
+  [data-g=mw] .cd, [data-g=mw] .gf { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%); letter-spacing: .08em; }
+  [data-g=gt] .cd, [data-g=gt] .gf { border-radius: 6px; box-shadow: 0 0 18px color-mix(in srgb, var(--ac) 65%, transparent); border-left-width: 0; } [data-g=gt] .gf { border-bottom: 0; }
   .tcredit { margin: 22px 0 0; font-size: 13px; color: var(--muted); }
 
   /* bouton retour en haut */
@@ -740,9 +745,9 @@
 <main>
 <section class="ch c0" id="accueil" data-ch="Tikitok">
   <div class="hfs" aria-hidden="true" data-dyn>
-    <div class="hf l1 mn giftm" style="display:flex"><div class="ge">🦁</div><div><small>CADEAU</small><b>Lion ×3</b><span>léa_ttk</span></div></div>
+    <div class="hf l1 mn giftm" style="display:flex"><div class="ge"><svg class="tki" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.4" stroke-dasharray="2.6 1.8"/><circle cx="12" cy="12.4" r="6" fill="currentColor" fill-opacity=".3"/><circle cx="7.2" cy="6.8" r="1.8"/><circle cx="16.8" cy="6.8" r="1.8"/><circle cx="9.8" cy="11.4" r=".9" fill="currentColor"/><circle cx="14.2" cy="11.4" r=".9" fill="currentColor"/><path d="M10.6 14.2h2.8L12 15.8zM12 15.8v1.4" /></svg></div><div><small>CADEAU</small><b>Lion ×3</b><span>léa_ttk</span></div></div>
     <div class="hf l2 mn"><div class="t">Spectateurs</div><div class="big">1 284</div></div>
-    <div class="hf r1 mn"><div class="t">Chat</div><div class="bub"><b>maxplays</b>GG !</div><div class="bub"><b>nora</b>trop fort 🔥</div></div>
+    <div class="hf r1 mn"><div class="t">Chat</div><div class="bub"><b>maxplays</b>GG !</div><div class="bub"><b>nora</b>trop fort</div></div>
     <div class="hf r2 mn"><div class="t">Objectif</div><div class="bar"><i style="width:68%"></i></div><div class="row"><span>68 %</span><b>680 / 1 000</b></div></div>
   </div>
   <div class="chin mid">
@@ -844,8 +849,8 @@
       </div>
       <div class="phoneW"><div class="phone" id="phone">
         <div class="vid"></div>
-        <div class="ph-top"><span class="live">LIVE</span><span class="vw">👁 <b id="dmV">1 284</b></span></div>
-        <div class="ph-goal"><div class="gl"><span>🎃 Objectif</span><b id="dmG">0 %</b></div><div class="gb"><i id="dmGi"></i></div></div>
+        <div class="ph-top"><span class="live">LIVE</span><span class="vw"><svg class="tki" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-6.8 10-6.8S22 12 22 12s-3.6 6.8-10 6.8S2 12 2 12z"/><circle cx="12" cy="12" r="3" fill="currentColor" fill-opacity=".3"/></svg> <b id="dmV">1 284</b></span></div>
+        <div class="ph-goal"><div class="gl"><span><svg class="tki" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="14.2" rx="9" ry="6.6" fill="currentColor" fill-opacity=".3"/><path d="M12 7.8c-1.4 1.6-1.4 11 0 12.8M7.4 8.9c-2.4 2.5-2.4 8.7 0 11.2M16.6 8.9c2.4 2.5 2.4 8.7 0 11.2"/><path d="M12 7.8V4.6c.3-1 1.2-1.6 2.3-1.6"/></svg> Objectif</span><b id="dmG">0 %</b></div><div class="gb"><i id="dmGi"></i></div></div>
         <div class="ph-alerts" id="dmA"></div>
         <div class="ph-hearts" id="dmH"></div>
         <div class="ph-chat" id="dmC"></div>
@@ -883,6 +888,7 @@
           <li>Tout ce qui est marqué « PRO » dans la liste</li>
           <li>Contours de caméra, sons illimités</li>
           <li>Mises à jour automatiques</li>
+          <li>Tous les packs de thèmes inclus tant que l'abonnement est actif</li>
         </ul>
         <a class="btn" href="#telecharger" data-link="subscribe">Prendre l'abonnement</a>
       </div>
@@ -891,18 +897,18 @@
       <div class="tp-head">
         <div>
           <span class="pilltag">Nouveau</span>
-          <h3>Pack Thèmes</h3>
-          <p>Des overlays refaits de zéro pour les jeux que tu streames : chat, cadeaux, objectifs, classement, victoire… chaque jeu a son style et ses animations, prêts à l'emploi. Les thèmes ne sont pas personnalisables.</p>
+          <h3>Packs Thèmes</h3>
+          <p>Un pack par jeu : 8 overlays refaits de zéro, prêts à l'emploi. Ce n'est pas un abonnement : tu le gardes. L'abonnement Pro les débloque tous tant qu'il est actif.</p>
         </div>
-        <div class="tp-price"><b>6,99 €</b><small>paiement unique</small><a class="btn" href="#telecharger" data-link="subscribe">Prendre le pack</a></div>
+        <div class="tp-price"><b>6,99 €</b><small>par pack · achat unique</small><a class="btn" href="#telecharger" data-link="subscribe">Prendre un pack</a></div>
       </div>
       <div class="tgrid">
-        <div class="tcard" data-g="fn" style="--bg:#1b1250;--ac:#ffe135;--c2:#7a3cff;--tx:#fff;--f:Impact,'Arial Black',sans-serif;--s1:rgba(122,60,255,.5);--s2:rgba(40,215,255,.4)"><div class="tp"><div class="t1"><span class="e">🎁</span><div><b>Rose ×3</b><i>léa_ttk</i></div></div><div class="t2"><b>maxplays</b>GG !</div><div class="t3"><i></i></div></div><h4>Fortnite</h4><p>Victoire royale, tempête, butin</p></div>
-        <div class="tcard" data-g="vl" style="--bg:#0f1923;--ac:#ff4655;--c2:#ff4655;--tx:#ece8e1;--f:Bahnschrift,'Segoe UI',sans-serif;--s1:rgba(255,70,85,.3);--s2:rgba(15,25,35,.9)"><div class="tp"><div class="t1"><span class="e">🎯</span><div><b>Rose ×3</b><i>léa_ttk</i></div></div><div class="t2"><b>maxplays</b>GG !</div><div class="t3"><i></i></div></div><h4>Valorant</h4><p>Lames, ACE, crédits</p></div>
-        <div class="tcard" data-g="ow" style="--bg:#232a33;--ac:#f99e1a;--c2:#218ffe;--tx:#fff;--f:Bahnschrift,'Segoe UI',sans-serif;--s1:rgba(33,143,254,.4);--s2:rgba(249,158,26,.35)"><div class="tp"><div class="t1"><span class="e">🛡️</span><div><b>Rose ×3</b><i>léa_ttk</i></div></div><div class="t2"><b>maxplays</b>GG !</div><div class="t3"><i></i></div></div><h4>Overwatch</h4><p>HUD, ultime, moment fort</p></div>
-        <div class="tcard" data-g="mc" style="--bg:#3b3b3b;--ac:#5bc236;--c2:#8b5a2b;--tx:#fff;--f:'Courier New',monospace;--s1:rgba(91,194,54,.4);--s2:rgba(139,90,43,.45)"><div class="tp"><div class="t1"><span class="e">⛏️</span><div><b>Rose ×3</b><i>léa_ttk</i></div></div><div class="t2"><b>maxplays</b>GG !</div><div class="t3"><i></i></div></div><h4>Minecraft</h4><p>Hotbar, cœurs, succès</p></div>
-        <div class="tcard" data-g="mw" style="--bg:#1a2218;--ac:#9fb33a;--c2:#4a5a2a;--tx:#e6ecd0;--f:Bahnschrift,'Segoe UI',sans-serif;--s1:rgba(120,140,50,.35);--s2:rgba(0,0,0,.6)"><div class="tp"><div class="t1"><span class="e">🔫</span><div><b>Rose ×3</b><i>léa_ttk</i></div></div><div class="t2"><b>maxplays</b>GG !</div><div class="t3"><i></i></div></div><h4>MW4</h4><p>Radar, killstreak, objectif</p></div>
-        <div class="tcard" data-g="gt" style="--bg:#2a0f4a;--ac:#ff3d8b;--c2:#38c8ff;--tx:#fff;--f:Impact,'Arial Black',sans-serif;--s1:rgba(255,61,139,.45);--s2:rgba(56,200,255,.4)"><div class="tp"><div class="t1"><span class="e">🌴</span><div><b>Rose ×3</b><i>léa_ttk</i></div></div><div class="t2"><b>maxplays</b>GG !</div><div class="t3"><i></i></div></div><h4>GTA6</h4><p>Niveau de recherche, argent, missions</p></div>
+        <div class="tcard" data-g="fn" style="--bg:#1b1250;--ac:#ffe135;--c2:#7a3cff;--tx:#fff;--f:Impact,'Arial Black',sans-serif;--s1:rgba(122,60,255,.5);--s2:rgba(40,215,255,.4)"><div class="tp"><div class="cd"><span class="lbl">LA TEMPÊTE SE FERME</span><b class="num" data-t="261">04:21</b></div><div class="gf"><span class="e"><svg class="tki" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="9" width="17" height="11.5" rx="2" fill="currentColor" fill-opacity=".3"/><path d="M12 9v11.5M3.5 14h17"/><path d="M12 9C11 5.2 6.8 4.6 6.8 7.2 6.8 9.2 9.8 9 12 9zM12 9c1-3.8 5.2-4.4 5.2-1.8C17.2 9.2 14.2 9 12 9z"/></svg></span><div><b>Rose ×3</b><i>léa_ttk</i></div></div></div><div class="tfoot"><h4>Fortnite</h4><span class="pr">6,99 €</span></div></div>
+        <div class="tcard" data-g="vl" style="--bg:#0f1923;--ac:#ff4655;--c2:#ff4655;--tx:#ece8e1;--f:Bahnschrift,'Segoe UI',sans-serif;--s1:rgba(255,70,85,.3);--s2:rgba(15,25,35,.9)"><div class="tp"><div class="cd"><span class="lbl">SPIKE POSÉ</span><b class="num" data-t="100">01:40</b></div><div class="gf"><span class="e"><svg class="tki" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.2"/><circle cx="12" cy="12" r="4.2" fill="currentColor" fill-opacity=".3"/><circle cx="12" cy="12" r="1" fill="currentColor"/><path d="M12 1.8v4.2M12 18v4.2M1.8 12H6M18 12h4.2"/></svg></span><div><b>Rose ×3</b><i>léa_ttk</i></div></div></div><div class="tfoot"><h4>Valorant</h4><span class="pr">6,99 €</span></div></div>
+        <div class="tcard" data-g="ow" style="--bg:#232a33;--ac:#f99e1a;--c2:#218ffe;--tx:#fff;--f:Bahnschrift,'Segoe UI',sans-serif;--s1:rgba(33,143,254,.4);--s2:rgba(249,158,26,.35)"><div class="tp"><div class="cd"><span class="lbl">POINT DE CAPTURE</span><b class="num" data-t="150">02:30</b></div><div class="gf"><span class="e"><svg class="tki" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.6l8 3v6c0 5-3.4 8.6-8 9.9-4.6-1.3-8-4.9-8-9.9v-6z" fill="currentColor" fill-opacity=".3"/><path d="M8.6 12l2.4 2.4 4.4-4.8"/></svg></span><div><b>Rose ×3</b><i>léa_ttk</i></div></div></div><div class="tfoot"><h4>Overwatch</h4><span class="pr">6,99 €</span></div></div>
+        <div class="tcard" data-g="mc" style="--bg:#3b3b3b;--ac:#7bd94b;--c2:#8b5a2b;--tx:#fff;--f:'Courier New',monospace;--s1:rgba(91,194,54,.4);--s2:rgba(139,90,43,.45)"><div class="tp"><div class="cd"><span class="lbl">AUBE DANS</span><b class="num" data-t="300">05:00</b></div><div class="gf"><span class="e"><svg class="tki" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.6 9.6C6.4 5 13.6 3.6 20.4 6.6c-1.2.2-2.2.8-3 1.6-3.2-1.4-7.2-.6-9.6 2.2z" fill="currentColor" fill-opacity=".3"/><path d="M13.4 9.2L5.4 20.4"/><path d="M12.4 8.4l1.9 1.4"/></svg></span><div><b>Rose ×3</b><i>léa_ttk</i></div></div></div><div class="tfoot"><h4>Minecraft</h4><span class="pr">6,99 €</span></div></div>
+        <div class="tcard" data-g="mw" style="--bg:#1a2218;--ac:#b5cc3f;--c2:#4a5a2a;--tx:#e6ecd0;--f:Bahnschrift,'Segoe UI',sans-serif;--s1:rgba(120,140,50,.35);--s2:rgba(0,0,0,.6)"><div class="tp"><div class="cd"><span class="lbl">EXTRACTION</span><b class="num" data-t="90">01:30</b></div><div class="gf"><span class="e"><svg class="tki" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.2h14.5l3 3v2.4h-5.2v1.6l-1 4.4H9.6l.9-4.4H3z" fill="currentColor" fill-opacity=".3"/><path d="M17.5 8.2v3.4M6.5 11.4h5"/></svg></span><div><b>Rose ×3</b><i>léa_ttk</i></div></div></div><div class="tfoot"><h4>MW4</h4><span class="pr">6,99 €</span></div></div>
+        <div class="tcard" data-g="gt" style="--bg:#2a0f4a;--ac:#ff3d8b;--c2:#38c8ff;--tx:#fff;--f:Impact,'Arial Black',sans-serif;--s1:rgba(255,61,139,.45);--s2:rgba(56,200,255,.4)"><div class="tp"><div class="cd"><span class="lbl">BRAQUAGE</span><b class="num" data-t="195">03:15</b></div><div class="gf"><span class="e"><svg class="tki" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.6 21.2c-.1-4.4.3-7.6 2.2-10.6"/><path d="M14.8 10.6C13.6 6.6 8.8 5.4 4.8 7.8c3.2-.4 5.2.6 6.6 3zM14.8 10.6c1.6-3.4 5.2-4.4 8-2.2-3 0-4.6 1-5.6 2.8z" fill="currentColor" fill-opacity=".3"/><path d="M14.8 10.6c-1.6-3.2-.8-6.6 2-8.6-.6 3 0 5.2.2 8.2zM14.8 10.6c-3.4-.6-4.6 1-5.4 3"/></svg></span><div><b>Rose ×3</b><i>léa_ttk</i></div></div></div><div class="tfoot"><h4>GTA6</h4><span class="pr">6,99 €</span></div></div>
       </div>
       <p class="tcredit">Inspirés par ces jeux. Tikitok Overlays n'est affilié à aucun de leurs éditeurs.</p>
     </div>
@@ -987,6 +993,7 @@
   <div class="wrap">Tikitok Overlays n'est pas affilié à TikTok. © <span id="y"></span> Tikitok Overlays · <a href="#confidentialite" style="color:inherit;text-decoration:underline">Confidentialité</a></div>
 </footer>
 
+<script src="tk-icons.js"></script>
 <script src="icons.js"></script>
 <script src="config.js"></script>
 <script>
@@ -1030,9 +1037,13 @@
     "Sans carte bancaire : tu fais ta demande dans l'appli, ta clé arrive sur Discord sous 24 h.": "No bank card: you make your request in the app, and your key arrives on Discord within 24 h."
   });
 
-  Object.assign(EN, {"Fais défiler":"Scroll","01 · L'appli":"01 · The app","Tout un live,":"A whole stream,","en une appli.":"in one app.","Tikitok Overlays s'installe sur ton PC et se branche à ton live en un clic. Démontons-la pour voir ce qu'il y a dedans.":"Tikitok Overlays installs on your PC and plugs into your stream in one click. Let's take it apart to see what's inside.","02 · Tout ce qu'elle fait":"02 · Everything it does","Une tornade":"A whirlwind","d'overlays.":"of overlays.","Alertes, chat, objectifs, jeux, classements, thèmes… Fais défiler, on passe tout en revue.":"Alerts, chat, goals, games, leaderboards, themes… Keep scrolling, we go through it all.","03 · Alertes et cadeaux":"03 · Alerts and gifts","Un cadeau.":"One gift.","Un effet.":"One effect.","04 · Le chat":"04 · The chat","Ton chat,":"Your chat,","en vedette.":"in the spotlight.","05 · Les jeux":"05 · The games","Ils jouent":"They play","avec toi.":"with you.","Des jeux collectifs : la roue, le dé 3D, les boss et les courses. Les spectateurs font monter la jauge ensemble.":"Group games: the wheel, the 3D die, bosses and races. Your viewers fill the meter together.","06 · À ton image":"06 · Your own style","Un style":"A style","qui claque.":"that pops.","Couleurs, polices, contours de caméra et thèmes de saison comme Halloween. Et de nouveaux overlays à chaque mise à jour.":"Colors, fonts, camera frames and seasonal themes like Halloween. And new overlays with every update.","Essaie toi-même":"Try it yourself","Envoie un cadeau.":"Send a gift.","Regarde ce qui se passe.":"See what happens.","Choisis un cadeau : l'alerte, la fontaine de cœurs, le chat et l'objectif réagissent comme dans ton vrai live.":"Pick a gift: the alert, the heart fountain, the chat and the goal react just like in your real stream.","Clique sur un cadeau":"Click a gift","🎃 Objectif":"🎃 Goal"});
+  Object.assign(EN, {"Fais défiler":"Scroll","01 · L'appli":"01 · The app","Tout un live,":"A whole stream,","en une appli.":"in one app.","Tikitok Overlays s'installe sur ton PC et se branche à ton live en un clic. Démontons-la pour voir ce qu'il y a dedans.":"Tikitok Overlays installs on your PC and plugs into your stream in one click. Let's take it apart to see what's inside.","02 · Tout ce qu'elle fait":"02 · Everything it does","Une tornade":"A whirlwind","d'overlays.":"of overlays.","Alertes, chat, objectifs, jeux, classements, thèmes… Fais défiler, on passe tout en revue.":"Alerts, chat, goals, games, leaderboards, themes… Keep scrolling, we go through it all.","03 · Alertes et cadeaux":"03 · Alerts and gifts","Un cadeau.":"One gift.","Un effet.":"One effect.","04 · Le chat":"04 · The chat","Ton chat,":"Your chat,","en vedette.":"in the spotlight.","05 · Les jeux":"05 · The games","Ils jouent":"They play","avec toi.":"with you.","Des jeux collectifs : la roue, le dé 3D, les boss et les courses. Les spectateurs font monter la jauge ensemble.":"Group games: the wheel, the 3D die, bosses and races. Your viewers fill the meter together.","06 · À ton image":"06 · Your own style","Un style":"A style","qui claque.":"that pops.","Couleurs, polices, contours de caméra et thèmes de saison comme Halloween. Et de nouveaux overlays à chaque mise à jour.":"Colors, fonts, camera frames and seasonal themes like Halloween. And new overlays with every update.","Essaie toi-même":"Try it yourself","Envoie un cadeau.":"Send a gift.","Regarde ce qui se passe.":"See what happens.","Choisis un cadeau : l'alerte, la fontaine de cœurs, le chat et l'objectif réagissent comme dans ton vrai live.":"Pick a gift: the alert, the heart fountain, the chat and the goal react just like in your real stream.","Clique sur un cadeau":"Click a gift","Objectif":"Goal"});
 
   Object.assign(EN, {"NOUVEAU":"NEW","Thèmes de jeux : Fortnite, Valorant, GTA6…":"Game themes: Fortnite, Valorant, GTA6…","Nouveau":"New","Pack Thèmes":"Themes Pack","Des overlays refaits de zéro pour les jeux que tu streames : chat, cadeaux, objectifs, classement, victoire… chaque jeu a son style et ses animations, prêts à l'emploi. Les thèmes ne sont pas personnalisables.":"Overlays rebuilt from scratch for the games you stream: chat, gifts, goals, leaderboard, victory… each game has its own style and animations, ready to use. Themes can't be customized.","6,99 €":"€6.99","paiement unique":"one-time payment","Prendre le pack":"Get the pack","Victoire royale, tempête, butin":"Victory royale, storm, loot","Lames, ACE, crédits":"Blades, ACE, credits","HUD, ultime, moment fort":"HUD, ultimate, play of the game","Hotbar, cœurs, succès":"Hotbar, hearts, advancements","Radar, killstreak, objectif":"Radar, killstreak, objective","Niveau de recherche, argent, missions":"Wanted level, money, missions","Inspirés par ces jeux. Tikitok Overlays n'est affilié à aucun de leurs éditeurs.":"Inspired by these games. Tikitok Overlays is not affiliated with any of their publishers."});
+
+  Object.assign(EN, {"Packs Thèmes":"Theme Packs","Un pack par jeu : 8 overlays refaits de zéro, prêts à l'emploi. Les thèmes ne sont pas personnalisables.":"One pack per game: 8 overlays rebuilt from scratch, ready to use. Themes can't be customized.","par pack · achat unique":"per pack · one-time payment","Prendre un pack":"Get a pack","LA TEMPÊTE SE FERME":"STORM CLOSING","SPIKE POSÉ":"SPIKE PLANTED","POINT DE CAPTURE":"CAPTURE POINT","AUBE DANS":"DAWN IN","EXTRACTION":"EXTRACTION","BRAQUAGE":"HEIST"});
+
+  Object.assign(EN, {"Tous les packs de thèmes inclus tant que l'abonnement est actif":"All theme packs included while your subscription is active","Un pack par jeu : 8 overlays refaits de zéro, prêts à l'emploi. Ce n'est pas un abonnement : tu le gardes. L'abonnement Pro les débloque tous tant qu'il est actif.":"One pack per game: 8 overlays rebuilt from scratch, ready to use. It's not a subscription: you keep it. A Pro subscription unlocks them all while it's active."});
 
   const ALT = {"Le panneau Design de Tikitok Overlays avec l'aperçu de la roue":"The Design panel of Tikitok Overlays, with the wheel preview","Aperçu du live dans un téléphone, avec le chat à côté":"Stream preview inside a phone, with the chat beside it","Cinq contours de caméra : pellicule, viseur, polaroïd, néon, Halloween":"Five camera frames: film strip, viewfinder, polaroid, neon, Halloween","Huit styles de roue de la fortune":"Eight prize wheel styles","Overlays au style Halloween":"Halloween-style overlays"};
   Object.assign(ALT, { "Des contours de caméra pour ton live": "Camera frames for your stream" });
@@ -1208,45 +1219,6 @@
       shot.parentElement.addEventListener('pointermove', (e) => { const r = shot.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5; shot.style.transform = 'perspective(1100px) rotateY(' + (x * 7) + 'deg) rotateX(' + (-y * 5) + 'deg)'; });
       shot.parentElement.addEventListener('pointerleave', () => { shot.style.transform = ''; });
     }
-    // la scène : cœurs qui montent, cadeaux qui arrivent, chat qui défile, objectif qui se remplit
-    const st = document.querySelector('.stage'); if (!st) return;
-    const $ = (id) => document.getElementById(id), rnd = (a, b) => a + Math.random() * (b - a);
-    const GIFTS = [['🌹', 'léa_ttk', 'Rose ×3'], ['🦁', 'maxplays', 'Lion'], ['💎', 'nora.live', 'Galaxie'], ['🚀', 'tomtom', 'Fusée ×2'], ['👑', 'kenzo_', 'Couronne'], ['🍩', 'ayaa', 'Donut ×5']];
-    const CHAT = [['léa_ttk', '🔥🔥🔥'], ['maxplays', 'GG !'], ['nora.live', 'trop fort'], ['tomtom', 'je suis là'], ['ayaa', '❤️❤️'], ['kenzo_', 'lets goooo'], ['mila', 'incroyable'], ['sam.p', '👏👏']];
-    const HW = () => document.documentElement.classList.contains('hw');
-    const GIFTS1 = [['🎃', 'léa_ttk', 'Citrouille ×3'], ['👻', 'maxplays', 'Fantôme'], ['🦇', 'nora.live', 'Chauve-souris'], ['💀', 'tomtom', 'Crâne ×2'], ['🕷️', 'kenzo_', 'Araignée'], ['🧙', 'ayaa', 'Sorcière']];
-    const CHAT1 = [['léa_ttk', 'mouahaha 😈'], ['maxplays', 'j\'ai peur 😱'], ['nora.live', '🎃🎃🎃'], ['tomtom', 'booo !'], ['ayaa', '🦇🦇'], ['kenzo_', 'trop flippant'], ['mila', '👻'], ['sam.p', 'joyeux halloween']];
-    const HEARTS1 = ['🎃', '🦇', '👻', '🕸️', '🔥', '💀'];
-    const skin = () => { const h = HW(); $('stGl').textContent = h ? '🎃 1 000' : '❤ 1 000'; $('stO1').textContent = h ? '🎃 ×5' : '🎁 ×5'; $('stO2').textContent = h ? '💀 LVL 13' : '⭐ LVL 12'; $('stO3').textContent = h ? '+1 000 🦇' : '+1 000 ❤'; };
-    new MutationObserver(skin).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] }); skin();
-    const COL = ['#ff2d86', '#ff7ac0', '#ffb347', '#19e6ff', '#c6ff3d', '#ff4d6d'];
-    let ci = 0, gi = 0, goal = 0, viewers = 1284;
-    const addChat = () => {
-      const CH = HW() ? CHAT1 : CHAT, [n, t] = CH[ci++ % CH.length], d = document.createElement('div'), b = document.createElement('b'); b.textContent = n; d.append(b, t); $('stC').append(d);
-      while ($('stC').children.length > 6) $('stC').firstChild.remove();
-    };
-    const heart = () => {
-      const h = document.createElement('span'); h.textContent = HW() ? HEARTS1[(Math.random() * HEARTS1.length) | 0] : '❤'; h.style.color = COL[(Math.random() * COL.length) | 0];
-      h.style.left = rnd(0, 44) + 'px'; h.style.setProperty('--dx', rnd(-26, 26) + 'px'); h.style.setProperty('--rot', rnd(-24, 24) + 'deg'); h.style.fontSize = rnd(16, 28) + 'px';
-      $('stH').append(h); setTimeout(() => h.remove(), 3500);
-    };
-    const gift = () => {
-      const GL = HW() ? GIFTS1 : GIFTS, [e, n, g] = GL[gi++ % GL.length], a = $('stA');
-      a.replaceChildren(); const b = document.createElement('b'); b.textContent = e; a.append(b, n + ' · ' + g);
-      a.classList.add('on'); setTimeout(() => a.classList.remove('on'), 2600);
-    };
-    for (let i = 0; i < 3; i++) addChat();
-    if (calm) { gift(); $('stGi').style.width = '62%'; $('stG').textContent = '62 %'; return; }
-    let alive = true;
-    document.addEventListener('visibilitychange', () => { alive = !document.hidden; });
-    setInterval(() => { if (alive) { addChat(); } }, 1500);
-    setInterval(() => { if (alive && $('stH').children.length < 14) heart(); }, 260);
-    setInterval(() => { if (alive) gift(); }, 4600); setTimeout(gift, 900);
-    setInterval(() => {
-      if (!alive) return;
-      goal = goal >= 100 ? 0 : goal + rnd(0.8, 2); $('stGi').style.width = goal + '%'; $('stG').textContent = Math.round(goal) + ' %';
-      viewers += Math.round(rnd(-6, 9)); $('stV').textContent = viewers.toLocaleString('fr-FR');
-    }, 220);
   })();
 </script>
 <script>
@@ -1294,24 +1266,24 @@
     }
     // mini overlays : [groupe (chapitre), largeur, hauteur, html, classe]
     const MINIS = [
-      [3, 250, 76, '<small>CADEAU</small><b>Lion ×3</b><span>léa_ttk vient d\'envoyer</span>', 'mn giftm', '🦁'],
-      [3, 250, 76, '<small>CADEAU</small><b>Galaxie</b><span>maxplays vient d\'envoyer</span>', 'mn giftm', '🌌'],
+      [3, 250, 76, '<small>CADEAU</small><b>Lion ×3</b><span>léa_ttk vient d\'envoyer</span>', 'mn giftm', 'lion'],
+      [3, 250, 76, '<small>CADEAU</small><b>Galaxie</b><span>maxplays vient d\'envoyer</span>', 'mn giftm', 'galaxy'],
       [3, 240, 84, '<div class="t">Objectif</div><div class="bar"><i style="width:68%"></i></div><div class="row"><span>68 %</span><b>680 / 1 000</b></div>', 'mn'],
       [3, 160, 96, '<div class="t">Temps</div><div class="big">04:21</div>', 'mn timer'],
       [2, 220, 140, '<div class="t">Top donateurs</div><div class="row"><i class="av"></i>léa_ttk<b>1 240</b></div><div class="row"><i class="av"></i>maxplays<b>980</b></div><div class="row"><i class="av"></i>nora.live<b>610</b></div>', 'mn'],
       [2, 220, 112, '<div class="t">Sondage</div><div class="row">Oui<b>72 %</b></div><div class="bar"><i style="width:72%"></i></div><div class="row">Non<b>28 %</b></div>', 'mn'],
-      [4, 230, 124, '<div class="t">Chat</div><div class="bub"><b>léa_ttk</b>🔥🔥🔥</div><div class="bub"><b>maxplays</b>GG !</div><div class="bub"><b>nora</b>trop fort</div>', 'mn'],
-      [4, 200, 86, '<div class="t">Niveau 12</div><div class="bar"><i style="width:44%"></i></div><div class="row"><span>⭐ Super Fan</span><b>+250 XP</b></div>', 'mn'],
+      [4, 230, 124, '<div class="t">Chat</div><div class="bub"><b>léa_ttk</b>incroyable</div><div class="bub"><b>maxplays</b>GG !</div><div class="bub"><b>nora</b>trop fort</div>', 'mn'],
+      [4, 200, 86, '<div class="t">Niveau 12</div><div class="bar"><i style="width:44%"></i></div><div class="row"><span>' + TKI.svg('star') + ' Super Fan</span><b>+250 XP</b></div>', 'mn'],
       [5, 168, 168, '', 'mn wheel'],
-      [5, 130, 130, '<i><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></i>', 'mn dice'],
+      [5, 130, 130, '<i><b style="grid-area:1/1"></b><b style="grid-area:1/3"></b><b style="grid-area:2/2"></b><b style="grid-area:3/1"></b><b style="grid-area:3/3"></b></i>', 'mn dice'],
       [5, 240, 104, '<div class="t">Boss</div><div class="big">GOBLIN</div><div class="hp"><i style="width:58%"></i></div>', 'mn boss'],
       [6, 270, 116, '<span>REC ●</span>', 'mn cam'],
-      [6, 240, 96, '<div class="t">🎃 Halloween</div><div class="row">Toiles, bave, citrouilles<b>✦</b></div>', 'mn'],
+      [6, 240, 96, '<div class="t">' + TKI.svg('pumpkin') + ' Halloween</div><div class="row">Toiles, bave, citrouilles<b>' + TKI.svg('spark') + '</b></div>', 'mn'],
       [1, 170, 90, '<div class="t">Spectateurs</div><div class="big">1 284</div>', 'mn'],
     ];
     for (const [g, w, h, html, cls, em] of MINIS) {
       const el = document.createElement('div'); el.className = 'pc mini ' + cls;
-      el.innerHTML = em ? '<div class="ge">' + em + '</div><div>' + html + '</div>' : html;
+      el.innerHTML = em ? '<div class="ge">' + TKI.svg(em) + '</div><div>' + html + '</div>' : html;
       add(el, w, h, { g, rad: 300 + R() * 420 });
     }
     const SLOTS = [[-150, -170, -4], [150, -60, 3], [-110, 90, -2], [170, 170, 4], [10, -10, 0]];
@@ -1407,20 +1379,20 @@
 
     // ---------- démo « essaie toi-même » ----------
     const DEM = [
-      { e: '🦁', n: 'Lion', d: 'léa_ttk', v: 29999, col: '#ff7a1a', ft: 'LION', hearts: 14, goal: 14, chat: ['léa_ttk', 'LION !!! 🦁🔥'] },
-      { e: '🌌', n: 'Galaxie', d: 'maxplays', v: 1000, col: '#b44dff', ft: 'GALAXIE', hearts: 8, goal: 7, chat: ['maxplays', 'pour le live 🌌'] },
-      { e: '🌹', n: 'Rose', d: 'nora.live', v: 1, col: '#ff3d8b', ft: 'ROSE', hearts: 3, goal: 1, chat: ['nora.live', 'une petite rose 🌹'] },
-      { e: '🚀', n: 'Fusée', d: 'tomtom', v: 500, col: '#38c8ff', ft: 'FUSÉE', hearts: 10, goal: 5, chat: ['tomtom', 'decolage !! 🚀'] },
+      { e: 'lion', n: 'Lion', d: 'léa_ttk', v: 29999, col: '#ff7a1a', ft: 'LION', hearts: 14, goal: 14, chat: ['léa_ttk', 'LION !!!'] },
+      { e: 'galaxy', n: 'Galaxie', d: 'maxplays', v: 1000, col: '#b44dff', ft: 'GALAXIE', hearts: 8, goal: 7, chat: ['maxplays', 'pour le live'] },
+      { e: 'rose', n: 'Rose', d: 'nora.live', v: 1, col: '#ff3d8b', ft: 'ROSE', hearts: 3, goal: 1, chat: ['nora.live', 'une petite rose'] },
+      { e: 'rocket', n: 'Fusée', d: 'tomtom', v: 500, col: '#38c8ff', ft: 'FUSÉE', hearts: 10, goal: 5, chat: ['tomtom', 'decolage !!'] },
     ];
     const gl = $('gifts'); if (!gl) return;
     const fmt = (n) => n.toLocaleString(document.documentElement.lang === 'en' ? 'en-US' : 'fr-FR');
     let goal = 0, viewers = 1284, nh = 0;
     DEM.forEach((g, i) => {
       const b = document.createElement('button'); b.type = 'button'; b.className = 'gift';
-      b.innerHTML = '<span class="gi">' + g.e + '</span><span><b>' + g.n + '</b><small>' + g.d + '</small></span><span class="dv">+' + fmt(g.v) + ' ❤</span>';
+      b.innerHTML = '<span class="gi">' + TKI.svg(g.e) + '</span><span><b>' + g.n + '</b><small>' + g.d + '</small></span><span class="dv">+' + fmt(g.v) + ' ' + TKI.svg('heart') + '</span>';
       b.onclick = () => send(i, b); gl.append(b);
     });
-    const CHATL = [['léa_ttk', '🔥🔥🔥'], ['maxplays', 'GG !'], ['nora.live', 'trop fort'], ['tomtom', 'je suis là'], ['ayaa', '❤️❤️'], ['kenzo_', 'lets goooo']];
+    const CHATL = [['léa_ttk', 'incroyable'], ['maxplays', 'GG !'], ['nora.live', 'trop fort'], ['tomtom', 'je suis là'], ['ayaa', 'bravo !'], ['kenzo_', 'lets goooo']];
     let ci = 0;
     const chat = (n, t) => { const d = document.createElement('div'), bb = document.createElement('b'); bb.textContent = n; d.append(bb, t); const c = $('dmC'); c.append(d); while (c.children.length > 6) c.firstChild.remove(); };
     for (let i = 0; i < 4; i++) chat(...CHATL[ci++ % CHATL.length]);
@@ -1429,12 +1401,12 @@
       const g = DEM[i], a = $('dmA'), f = $('dmF');
       gl.querySelectorAll('.gift').forEach((x) => x.classList.toggle('on', x === btn));
       const al = document.createElement('div'); al.className = 'al'; al.style.setProperty('--c', g.col);
-      al.innerHTML = '<span class="ae">' + g.e + '</span><span class="at"><small>CADEAU</small><b>' + g.n + '</b><span>' + g.d + '</span></span>';
+      al.innerHTML = '<span class="ae">' + TKI.svg(g.e) + '</span><span class="at"><small>CADEAU</small><b>' + g.n + '</b><span>' + g.d + '</span></span>';
       a.append(al); while (a.children.length > 2) a.firstChild.remove();
       setTimeout(() => { al.classList.add('out'); setTimeout(() => al.remove(), 420); }, 2600);
       f.style.setProperty('--fc', g.col); f.classList.remove('on'); void f.offsetWidth; f.classList.add('on');
       const H = $('dmH'); for (let k = 0; k < g.hearts; k++) setTimeout(() => {
-        const s = document.createElement('span'); s.textContent = ['🎃', '🦇', '👻', '🔥', '❤'][(Math.random() * 5) | 0]; s.style.left = rnd(0, 44) + 'px'; s.style.setProperty('--dx', rnd(-26, 26) + 'px'); s.style.setProperty('--rot', rnd(-24, 24) + 'deg'); H.append(s); setTimeout(() => s.remove(), 3100);
+        const s = document.createElement('span'); const k = (Math.random() * 5) | 0; s.innerHTML = TKI.svg(['pumpkin', 'bat', 'ghost', 'flame', 'heart'][k]); s.style.color = ['#ff7a1a', '#b44dff', '#d8d0ff', '#ff9a3c', '#ff3d8b'][k]; s.style.left = rnd(0, 44) + 'px'; s.style.setProperty('--dx', rnd(-26, 26) + 'px'); s.style.setProperty('--rot', rnd(-24, 24) + 'deg'); H.append(s); setTimeout(() => s.remove(), 3100);
       }, k * 90);
       chat(...g.chat);
       goal = goal + g.goal >= 100 ? 0 : goal + g.goal; $('dmGi').style.width = goal + '%'; $('dmG').textContent = Math.round(goal) + ' %';
@@ -1449,6 +1421,15 @@
     addEventListener('scroll', up, { passive: true }); up();
     b.onclick = () => scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
     new MutationObserver(() => { b.title = b.ariaLabel = document.documentElement.lang === 'en' ? 'Back to top' : 'Retour en haut'; }).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+  })();
+</script>
+<script>
+  // les comptes à rebours des cartes de packs défilent vraiment (puis recommencent)
+  (() => {
+    const nums = [...document.querySelectorAll('.tcard .num')]; if (!nums.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const f = (s) => String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+    const cur = nums.map((n) => Number(n.dataset.t));
+    setInterval(() => { if (document.hidden) return; nums.forEach((n, i) => { cur[i] = cur[i] <= 0 ? Number(n.dataset.t) : cur[i] - 1; n.textContent = f(cur[i]); }); }, 1000);
   })();
 </script>
 </body>
