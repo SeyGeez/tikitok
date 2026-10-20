@@ -653,7 +653,7 @@
   #stage::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: var(--scrim, 0); background: linear-gradient(90deg, rgba(7,3,12,.92) 0, rgba(7,3,12,.55) 42%, rgba(7,3,12,0) 70%); }
   .ch .chips { justify-content: flex-start; margin: 0; }
   .mn.giftm .ge { font-size: 32px; } .mn.giftm > div:last-child { min-width: 0; }
-  .mn.wheel { padding: 0; background: none; border: 0; } .mn.wheel::before, .mn.cam::before { display: none; }
+  .mn.wheel { padding: 0; background: none; border: 0; box-shadow: none !important; overflow: visible; } .mn.wheel::before, .mn.cam::before { display: none; }
   .legend .tier { margin-right: 6px; }
 
 
@@ -1274,7 +1274,7 @@
       [2, 220, 112, '<div class="t">Sondage</div><div class="row">Oui<b>72 %</b></div><div class="bar"><i style="width:72%"></i></div><div class="row">Non<b>28 %</b></div>', 'mn'],
       [4, 230, 124, '<div class="t">Chat</div><div class="bub"><b>léa_ttk</b>incroyable</div><div class="bub"><b>maxplays</b>GG !</div><div class="bub"><b>nora</b>trop fort</div>', 'mn'],
       [4, 200, 86, '<div class="t">Niveau 12</div><div class="bar"><i style="width:44%"></i></div><div class="row"><span>' + TKI.svg('star') + ' Super Fan</span><b>+250 XP</b></div>', 'mn'],
-      [5, 168, 168, '', 'mn wheel'],
+      [5, 168, 168, '<i></i>', 'mn wheel'],
       [5, 190, 104, '<div class="t">Dé 3D</div><div class="row"><span class="big">5</span><b>lancé par léa_ttk</b></div>', 'mn'],
       [5, 240, 104, '<div class="t">Boss</div><div class="big">GOBLIN</div><div class="hp"><i style="width:58%"></i></div>', 'mn boss'],
       [6, 270, 116, '<span>REC ●</span>', 'mn cam'],
