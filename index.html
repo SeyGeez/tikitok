@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.github.com https://api.web3forms.com; form-action 'self' https://api.web3forms.com; base-uri 'self'; object-src 'none'">
 <title>Tikitok Overlays — overlays et alertes pour ton live TikTok</title>
 <meta name="description" content="Overlays, alertes, roue, contours de caméra et commandes du chat pour TikTok LIVE Studio. Gratuit pour commencer, Pro pour aller plus loin.">
 <link rel="icon" href="favicon.ico" sizes="any">
@@ -546,6 +547,119 @@
   .gal-dots button.on { width: 30px; border-radius: 6px; background: var(--grad); }
   @media (max-width: 760px) { .gal-ctl { display: flex; } .gal-head { align-items: flex-end; } .gal-ctl button { width: 42px; height: 42px; } }
   .hwtog { display: none !important; }   /* le thème Halloween est le seul thème du site */
+
+  /* =====================================================================
+     MONDE v4 : fond noir à particules, scène 3D qui se démonte, chapitres numérotés (inspiration : sites « scroll story »)
+     ===================================================================== */
+  body { background: #07030c !important; }
+  body::before, body::after { display: none !important; }
+  html.hw #hwDeco .embers, html.hw #hwDeco .fog { display: none; }
+  #fx { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+  #stage { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; perspective: 1500px; perspective-origin: 50% 46%; transition: opacity .4s; }
+  #world { position: absolute; left: 50%; top: 50%; width: 0; height: 0; transform-style: preserve-3d; will-change: transform; }
+  .pc { position: absolute; left: 0; top: 0; transform-style: preserve-3d; backface-visibility: hidden; will-change: transform, opacity; border-radius: 10px; overflow: hidden; }
+  .pc.tile { background-repeat: no-repeat; box-shadow: 0 0 0 1px rgba(255,255,255,.06); }
+  .pc.mini { box-shadow: 0 18px 40px rgba(0,0,0,.55), 0 0 28px rgba(255,122,26,.2); }
+  header { position: fixed; top: 0; left: 0; right: 0; z-index: 60; margin: 0; background: linear-gradient(180deg, rgba(7,3,12,.9), rgba(7,3,12,0)); }
+  header .wrap { height: 70px; border-radius: 0; background: transparent; border: 0; box-shadow: none; backdrop-filter: none; padding: 0; }
+  header .wrap::after, html.hw header::after { display: none !important; }
+  header.solid { background: rgba(7,3,12,.82); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(255,150,60,.18); }
+  main, footer { position: relative; z-index: 2; }
+
+  /* points de navigation à droite : le chapitre en cours est nommé */
+  #dots { position: fixed; right: 22px; top: 50%; transform: translateY(-50%); z-index: 55; display: flex; flex-direction: column; gap: 13px; align-items: flex-end; }
+  #dots button { display: flex; align-items: center; gap: 10px; padding: 0; border: 0; background: none; cursor: pointer; color: rgba(255,255,255,.5); font: 800 11px Consolas, "Courier New", monospace; letter-spacing: .24em; text-transform: uppercase; }
+  #dots button span { opacity: 0; transform: translateX(8px); transition: opacity .25s, transform .25s; color: #fff; }
+  #dots button i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.28); transition: background .25s, transform .25s, box-shadow .25s; }
+  #dots button:hover span, #dots button.on span { opacity: 1; transform: none; }
+  #dots button.on i { background: #ff7a1a; transform: scale(1.5); box-shadow: 0 0 14px #ff7a1a; }
+  @media (max-width: 900px) { #dots { display: none; } }
+
+  /* chapitres */
+  .ch { position: relative; min-height: 118vh; display: flex; align-items: center; padding: 90px 0; }
+  .ch.c0 { min-height: 128vh; align-items: flex-start; padding-top: 14vh; }
+  .chin { width: min(1180px, 100% - 48px); margin: 0 auto; }
+  .chin.mid { text-align: center; }
+  .chin.left { max-width: 1180px; } .chin.left > * { max-width: 520px; }
+  .ch .eyebrow::before, .ch .eyebrow::after, .essai .pilltag::before { display: none !important; }
+  .ch .eyebrow { font: 800 13px Consolas, "Courier New", monospace; letter-spacing: .38em; text-transform: uppercase; color: #ff7a1a; margin-bottom: 20px; text-shadow: 0 0 16px rgba(255,122,26,.45); }
+  .ch h1 { font-size: clamp(50px, 8.4vw, 118px); font-weight: 800; letter-spacing: -.045em; line-height: .96; margin: 0 auto 26px; max-width: 14ch; }
+  .ch h2 { font-size: clamp(38px, 5.6vw, 76px); font-weight: 800; letter-spacing: -.04em; line-height: .98; margin: 0 0 24px; }
+  .ch h1 em, .ch h2 em, .essai h2 em { font-style: normal; background: linear-gradient(100deg, #ffb347, #ff7a1a 45%, #ff3d8b); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 0 22px rgba(255,122,26,.35)); }
+  .ch .lead { color: #c3b4de; font-size: clamp(17px, 1.7vw, 21px); line-height: 1.55; margin: 0 0 30px; }
+  .chin.mid .lead { margin-inline: auto; max-width: 640px; }
+  .ch .cta { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .ch .legal { margin: 26px auto 0; max-width: 560px; }
+  .scrollhint { margin-top: 60px; display: grid; justify-items: center; gap: 10px; color: rgba(255,255,255,.5); font: 800 11px Consolas, monospace; letter-spacing: .3em; text-transform: uppercase; }
+  .scrollhint i { width: 1px; height: 48px; background: linear-gradient(#ff7a1a, transparent); animation: sh 1.8s ease-in-out infinite; }
+  @keyframes sh { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+  .legend { display: flex; gap: 10px; margin: 0 0 8px; }
+  .chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+  .chips li { display: inline-flex; align-items: center; gap: 10px; padding: 9px 16px 9px 10px; border-radius: 999px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,150,60,.25); font-size: 15px; backdrop-filter: blur(6px); }
+  .ch .chin > * { opacity: 0; transform: translateY(26px); transition: opacity .7s, transform .7s; }
+  .ch.vu .chin > * { opacity: 1; transform: none; }
+  .ch.vu .chin > *:nth-child(2) { transition-delay: .08s; } .ch.vu .chin > *:nth-child(3) { transition-delay: .16s; } .ch.vu .chin > *:nth-child(4) { transition-delay: .24s; } .ch.vu .chin > *:nth-child(5) { transition-delay: .32s; }
+  .nostage .ch .chin > * { opacity: 1; transform: none; }
+
+  /* essaie toi-même */
+  .essai { padding: 110px 0 120px; text-align: center; }
+  .essai .wrap { width: min(1120px, 100% - 40px); }
+  .pilltag { display: inline-block; padding: 8px 20px; border-radius: 999px; border: 1px solid rgba(255,122,26,.45); background: rgba(255,122,26,.08); color: #ffb066; font: 800 12px Consolas, monospace; letter-spacing: .28em; text-transform: uppercase; box-shadow: 0 0 24px rgba(255,122,26,.18); margin-bottom: 22px; }
+  .essai h2 { font-size: clamp(34px, 5vw, 64px); font-weight: 800; letter-spacing: -.04em; line-height: 1; margin: 0 0 18px; }
+  .essai .lead2.mid { margin: 0 auto 44px; max-width: 620px; }
+  .demo { display: grid; grid-template-columns: minmax(280px, .9fr) minmax(280px, 1.1fr); gap: 40px; align-items: center; text-align: left; }
+  @media (max-width: 860px) { .demo { grid-template-columns: 1fr; } }
+  .gifts { display: grid; gap: 12px; }
+  .gifthd { font: 800 12px Consolas, monospace; letter-spacing: .26em; text-transform: uppercase; color: #ffb066; margin-bottom: 4px; }
+  .gift { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-radius: 18px; border: 1px solid rgba(255,150,60,.2); background: rgba(255,255,255,.04); color: inherit; font: inherit; text-align: left; cursor: pointer; transition: transform .18s, border-color .18s, box-shadow .18s, background .18s; }
+  .gift:hover { transform: translateX(6px); border-color: rgba(255,122,26,.6); background: rgba(255,122,26,.08); }
+  .gift.on { border-color: #ff7a1a; box-shadow: 0 0 30px rgba(255,122,26,.3); background: rgba(255,122,26,.12); }
+  .gift .gi { width: 52px; height: 52px; flex: none; display: grid; place-items: center; border-radius: 14px; background: rgba(0,0,0,.35); font-size: 30px; border: 1px solid rgba(255,255,255,.1); }
+  .gift b { display: block; font-size: 18px; } .gift small { color: #a99bc4; font-size: 13px; }
+  .gift .dv { margin-left: auto; font: 800 13px Consolas, monospace; color: #8cff2e; }
+  .phoneW { display: grid; place-items: center; }
+  .phone { position: relative; width: min(300px, 70vw); aspect-ratio: 9 / 18; border-radius: 34px; overflow: hidden; border: 8px solid #151021; box-shadow: 0 0 0 1px rgba(255,150,60,.35), 0 30px 80px rgba(0,0,0,.7), 0 0 70px rgba(255,122,26,.25); background: #0a0610; isolation: isolate; }
+  .phone .vid { position: absolute; inset: -20%; z-index: -1; background: radial-gradient(60% 50% at 30% 30%, #ff7a1a 0, transparent 60%), radial-gradient(55% 50% at 78% 62%, #6a2bd0 0, transparent 62%), radial-gradient(50% 40% at 40% 92%, #3fae12 0, transparent 62%), #12060c; filter: blur(22px); opacity: .85; animation: vidm 12s ease-in-out infinite alternate; }
+  @keyframes vidm { to { transform: rotate(14deg) scale(1.15); } }
+  .ph-top { position: absolute; top: 14px; left: 12px; right: 12px; display: flex; justify-content: space-between; font: 800 11px Consolas, monospace; letter-spacing: .08em; }
+  .ph-top .live { padding: 4px 9px; border-radius: 6px; background: #ff7a1a; box-shadow: 0 0 14px rgba(255,122,26,.7); } .ph-top .vw { padding: 4px 9px; border-radius: 6px; background: rgba(0,0,0,.45); }
+  .ph-goal { position: absolute; top: 46px; left: 12px; right: 12px; padding: 8px 10px; border-radius: 12px; background: rgba(0,0,0,.45); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(6px); }
+  .ph-goal .gl { display: flex; justify-content: space-between; font: 800 11px Consolas, monospace; margin-bottom: 6px; }
+  .ph-goal .gb { height: 8px; border-radius: 8px; background: rgba(255,255,255,.14); overflow: hidden; } .ph-goal .gb i { display: block; height: 100%; width: 0; border-radius: 8px; background: linear-gradient(90deg, #8cff2e, #ffb347); box-shadow: 0 0 12px #8cff2e; transition: width .7s cubic-bezier(.2,.8,.2,1); }
+  .ph-alerts { position: absolute; left: 10px; right: 10px; top: 104px; display: flex; flex-direction: column; gap: 8px; }
+  .al { display: flex; align-items: center; gap: 10px; padding: 8px 12px 8px 8px; border-radius: 14px; border: 2px solid var(--c, #3aa0ff); background: linear-gradient(100deg, rgba(13,27,94,.96), rgba(22,48,143,.9)); box-shadow: 0 8px 20px rgba(0,0,0,.5), 0 0 18px color-mix(in srgb, var(--c, #3aa0ff) 45%, transparent); animation: alIn .5s cubic-bezier(.2,1.4,.4,1) both; }
+  .al.out { animation: alOut .4s forwards; } @keyframes alIn { from { opacity: 0; transform: translateX(-60px) scale(.85); } to { opacity: 1; transform: none; } } @keyframes alOut { to { opacity: 0; transform: translateX(-30px); } }
+  .al .ae { width: 38px; height: 38px; flex: none; display: grid; place-items: center; border-radius: 10px; background: color-mix(in srgb, var(--c, #3aa0ff) 35%, #000); font-size: 24px; }
+  .al .at { min-width: 0; line-height: 1.15; } .al .at small { display: block; font: 800 9px Consolas, monospace; letter-spacing: .2em; color: var(--c, #3aa0ff); } .al .at b { font-size: 14px; text-transform: uppercase; font-style: italic; } .al .at span { display: block; font-size: 11px; color: #bcd; }
+  .ph-hearts { position: absolute; right: 8px; bottom: 110px; top: 200px; width: 70px; pointer-events: none; }
+  .ph-hearts span { position: absolute; bottom: 0; font-size: 22px; animation: dmRise 3s ease-in forwards; }
+  @keyframes dmRise { 0% { transform: translate(0,0) scale(.4); opacity: 0; } 12% { opacity: 1; transform: translate(0,-20px) scale(1); } 100% { transform: translate(var(--dx), -330px) scale(1.15) rotate(var(--rot)); opacity: 0; } }
+  .ph-chat { position: absolute; left: 10px; right: 70px; bottom: 14px; display: flex; flex-direction: column; justify-content: flex-end; gap: 5px; height: 130px; overflow: hidden; -webkit-mask: linear-gradient(transparent, #000 40%); mask: linear-gradient(transparent, #000 40%); }
+  .ph-chat div { font: 600 12px "Segoe UI", sans-serif; padding: 5px 10px; border-radius: 12px; background: rgba(0,0,0,.5); width: fit-content; max-width: 100%; animation: pop .3s cubic-bezier(.2,1.2,.3,1); } .ph-chat div b { color: #ffb347; margin-right: 6px; }
+  @keyframes pop { from { transform: translateY(12px) scale(.9); opacity: 0; } }
+  .ph-flash { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: radial-gradient(ellipse at 50% 40%, var(--fc, #ffb21e), transparent 65%); } .ph-flash.on { animation: fl .9s ease-out; } @keyframes fl { 0% { opacity: .75; } 100% { opacity: 0; } }
+
+  /* mini overlays (les panneaux qui tournent dans la scène) */
+  .mn { font-family: "Segoe UI", sans-serif; color: #fff; background: linear-gradient(150deg, rgba(34,14,52,.96), rgba(14,8,26,.97)); border: 1px solid rgba(255,150,60,.35); padding: 12px 14px; }
+  .mn::before { content: ""; position: absolute; left: 14px; top: 0; width: 46px; height: 4px; border-radius: 0 0 5px 5px; background: linear-gradient(90deg, #ff7a1a, #ff3d8b); }
+  .mn .t { font: 800 11px Consolas, monospace; letter-spacing: .2em; text-transform: uppercase; color: #ffb066; margin-bottom: 8px; }
+  .mn .row { display: flex; align-items: center; gap: 8px; margin: 5px 0; font-size: 13px; } .mn .row b { margin-left: auto; color: #ff7a1a; }
+  .mn .av { width: 22px; height: 22px; border-radius: 50%; background: linear-gradient(135deg, #8b3dff, #ff7a1a); flex: none; }
+  .mn .bar { height: 10px; border-radius: 10px; background: rgba(255,255,255,.12); overflow: hidden; } .mn .bar i { display: block; height: 100%; border-radius: 10px; background: linear-gradient(90deg, #8cff2e, #ffb347); }
+  .mn .big { font: 900 34px Impact, "Arial Black", sans-serif; letter-spacing: .02em; line-height: 1; }
+  .mn .bub { padding: 6px 12px; border-radius: 14px; background: rgba(255,255,255,.09); font-size: 12px; margin: 4px 0; width: fit-content; } .mn .bub b { color: #ffb347; margin-right: 5px; }
+  .mn.wheel { display: grid; place-items: center; padding: 10px; } .mn.wheel i { width: 132px; height: 132px; border-radius: 50%; background: conic-gradient(#ff7a1a 0 16%, #8b3dff 0 33%, #8cff2e 0 50%, #ff3d8b 0 66%, #ffd24a 0 83%, #38c8ff 0); border: 5px solid #fff; box-shadow: 0 0 30px rgba(255,122,26,.5), inset 0 0 20px rgba(0,0,0,.4); position: relative; } .mn.wheel i::after { content: ""; position: absolute; left: 50%; top: -12px; margin-left: -9px; border: 9px solid transparent; border-top: 18px solid #fff; }
+  .mn.dice { display: grid; place-items: center; background: none; border: 0; } .mn.dice::before { display: none; } .mn.dice i { width: 96px; height: 96px; border-radius: 20px; background: linear-gradient(145deg, #fff, #cfc9de); display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); padding: 14px; box-shadow: 0 12px 30px rgba(0,0,0,.5), 0 0 30px rgba(255,122,26,.35); transform: rotate(-12deg); } .mn.dice i b { width: 16px; height: 16px; border-radius: 50%; background: #1b1130; place-self: center; }
+  .mn.cam { padding: 0; background: linear-gradient(135deg, #3a1a6a, #ff7a1a); border: 4px solid #8cff2e; box-shadow: 0 0 24px rgba(140,255,46,.5), inset 0 0 40px rgba(0,0,0,.4); } .mn.cam::before { display: none; } .mn.cam span { position: absolute; left: 10px; bottom: 6px; font: 800 11px Consolas, monospace; letter-spacing: .2em; color: #fff; }
+  .mn.giftm { display: flex; align-items: center; gap: 12px; border-color: #b44dff; box-shadow: 0 0 22px rgba(180,77,255,.4); } .mn.giftm .ge { width: 52px; height: 52px; border-radius: 12px; background: linear-gradient(160deg, #b44dff, #5a1f8f); display: grid; place-items: center; font-size: 32px; flex: none; } .mn.giftm small { font: 800 9px Consolas, monospace; letter-spacing: .2em; color: #b44dff; display: block; } .mn.giftm b { font-size: 20px; text-transform: uppercase; font-style: italic; display: block; } .mn.giftm span { font-size: 12px; color: #c9b8e8; }
+  .mn.boss .hp { height: 16px; border-radius: 4px; background: #2a0f12; border: 1px solid #ff3d4a; overflow: hidden; margin-top: 8px; } .mn.boss .hp i { display: block; height: 100%; background: linear-gradient(90deg, #ff3d4a, #ff9a3c); }
+  .mn.timer { text-align: center; } .mn.timer .big { font-size: 46px; color: #ffb066; }
+  #stage::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: var(--scrim, 0); background: linear-gradient(90deg, rgba(7,3,12,.92) 0, rgba(7,3,12,.55) 42%, rgba(7,3,12,0) 70%); }
+  .ch .chips { justify-content: flex-start; margin: 0; }
+  .mn.giftm .ge { font-size: 32px; } .mn.giftm > div:last-child { min-width: 0; }
+  .mn.wheel { padding: 0; background: none; border: 0; } .mn.wheel::before, .mn.cam::before { display: none; }
+  .legend .tier { margin-right: 6px; }
+
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Tikitok Overlays","applicationCategory":"MultimediaApplication","operatingSystem":"Windows","description":"Overlays, alertes, roue de la fortune, contours de caméra et commandes du chat pour TikTok LIVE Studio.","url":"https://tikitokoverlays.com/","image":"https://tikitokoverlays.com/img/logo.png","inLanguage":["fr","en"],"offers":[{"@type":"Offer","name":"Gratuit","price":"0","priceCurrency":"EUR"},{"@type":"Offer","name":"Pro mensuel","price":"20","priceCurrency":"EUR"},{"@type":"Offer","name":"Pro annuel","price":"120","priceCurrency":"EUR"}]}</script>
 </head>
@@ -569,89 +683,117 @@
   </div>
 </header>
 
-<main>
-<!-- ============ HÉROS ============ -->
-<div class="hero">
-  <div class="wrap">
-    <div class="hero-l">
-      <span class="eyebrow">Pour TikTok LIVE Studio</span>
-      <h1>Un live qui a de la <em>gueule</em>.</h1>
-      <p class="lead">Overlays, alertes, roue de la fortune, contours de caméra et commandes du chat. Tu règles tout dans une appli simple, avec l'aperçu de ton live sur un téléphone.</p>
-      <div class="cta">
-        <a class="btn" href="#telecharger" data-link="free"><svg class="dl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg>Télécharger gratuitement</a>
-        <a class="btn ghost" href="#offres">Voir les offres Pro</a>
-      </div>
-      <p class="legal">Tikitok Overlays est un outil indépendant, <b>non affilié à TikTok ni à ByteDance</b>. <span>TikTok est une marque de ses propriétaires.</span></p>
-      <div class="chips"><span class="chip">Windows</span><span class="chip">Aucun compte à créer</span><span class="chip">Fonctionne avec ton live en cours</span></div>
-    </div>
-    <div class="hero-r">
-      <i class="moon" aria-hidden="true"></i>
-      <div class="stage" aria-hidden="true" data-dyn>
-        <div class="phone"><div class="screen">
-          <div class="vid"></div>
-          <div class="s-top"><span class="s-live">LIVE</span><span class="s-vw">👁 <b id="stV">1 284</b></span></div>
-          <div class="s-goal"><div class="gl"><span id="stGl">❤ 1 000</span><b id="stG">0 %</b></div><div class="gb"><i id="stGi"></i></div></div>
-          <div class="s-alert" id="stA"></div>
-          <div class="s-hearts" id="stH"></div>
-          <div class="s-chat" id="stC"></div>
-        </div></div>
-        <span class="orb o1" id="stO1">🎁 ×5</span><span class="orb o2" id="stO2">⭐ LVL 12</span><span class="orb o3" id="stO3">+1 000 ❤</span>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- ============ MONDE : scène 3D fixe (les panneaux de l'appli se démontent et tourbillonnent pendant le défilement) ============ -->
+<canvas id="fx" aria-hidden="true"></canvas>
+<div id="stage" aria-hidden="true" data-dyn><div id="world"></div></div>
+<nav id="dots" aria-label="Chapitres" data-dyn></nav>
 
-<!-- ============ APERÇU : galerie ============ -->
-<section id="apercu" class="gal">
-  <div class="wrap gal-head">
-    <div>
-      <span class="eyebrow">Aperçu</span>
-      <h2>Vois ton live sans te prendre la tête.</h2>
+<main>
+<section class="ch c0" id="accueil" data-ch="Tikitok">
+  <div class="chin mid">
+    <span class="eyebrow">Pour TikTok LIVE Studio</span>
+    <h1>Un live qui a de la <em>gueule</em>.</h1>
+    <p class="lead">Overlays, alertes, roue de la fortune, contours de caméra et commandes du chat. Tu règles tout dans une appli simple, avec l'aperçu de ton live sur un téléphone.</p>
+    <div class="cta">
+      <a class="btn" href="#telecharger" data-link="free"><svg class="dl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg>Télécharger gratuitement</a>
+      <a class="btn ghost" href="#offres">Voir les offres Pro</a>
     </div>
-    <div class="gal-ctl"><button type="button" id="galPrev" aria-label="Précédent">←</button><button type="button" id="galNext" aria-label="Suivant">→</button></div>
+    <p class="legal">Tikitok Overlays est un outil indépendant, <b>non affilié à TikTok ni à ByteDance</b>. <span>TikTok est une marque de ses propriétaires.</span></p>
+    <div class="scrollhint" aria-hidden="true"><span>Fais défiler</span><i></i></div>
   </div>
-  <div class="gal-track wrap" id="galTrack">
-    <figure class="slide"><img src="img/design.jpg" alt="Le panneau Design de Tikitok Overlays avec l'aperçu de la roue" loading="lazy"><figcaption>Tout se règle ici, avec l'aperçu en direct.</figcaption></figure>
-    <figure class="slide"><img src="img/preview.jpg" alt="Aperçu du live dans un téléphone, avec le chat à côté" loading="lazy"><figcaption>Ton live et le chat, comme tes spectateurs les voient.</figcaption></figure>
-    <figure class="slide"><img src="img/roues.jpg" alt="Huit styles de roue de la fortune" loading="lazy"><figcaption>Des roues, des styles, des effets.</figcaption></figure>
-    <figure class="slide"><img src="img/cameras.jpg" alt="Des contours de caméra pour ton live" loading="lazy"><figcaption>Des contours de caméra.</figcaption></figure>
-    <figure class="slide"><img src="img/halloween.jpg" alt="Overlays au style Halloween" loading="lazy"><figcaption>Des thèmes de saison, comme Halloween.</figcaption></figure>
-    <div class="slide more"><div><b>Et plus (+)</b><span>De nouveaux overlays à chaque mise à jour.</span></div></div>
-  </div>
-  <div class="wrap"><div class="gal-dots" id="galDots" role="tablist" aria-label="Images"></div></div>
 </section>
 
-<!-- ============ FONCTIONS : une liste, deux niveaux ============ -->
-<section id="fonctions" class="spec">
-  <div class="wrap">
-    <span class="eyebrow">Tout ce qu'il faut</span>
-    <h2>Une boîte à outils<br>pour animer ton live.</h2>
+<section class="ch c1" id="appli" data-ch="L'appli">
+  <div class="chin left">
+    <span class="eyebrow">01 · L'appli</span>
+    <h2>Tout un live,<br><em>en une appli.</em></h2>
+    <p class="lead">Tikitok Overlays s'installe sur ton PC et se branche à ton live en un clic. Démontons-la pour voir ce qu'il y a dedans.</p>
+  </div>
+</section>
+
+<section class="ch c2" id="fonctions" data-ch="Tout">
+  <div class="chin left">
+    <span class="eyebrow">02 · Tout ce qu'elle fait</span>
+    <h2>Une tornade<br><em>d'overlays.</em></h2>
+    <p class="lead">Alertes, chat, objectifs, jeux, classements, thèmes… Fais défiler, on passe tout en revue.</p>
     <div class="legend"><span class="tier free">Gratuit</span><span class="tier pro">PRO</span></div>
-    <div class="cat">
-      <div class="cat-h"><span class="cat-n">01</span><h3>Le live à l'écran</h3></div>
-      <ul class="rows">
-        <li class="row reveal"><div class="ic" data-i="gifts"></div><div class="rt"><h4>Cadeaux, follows, spectateurs</h4><p>Les cadeaux, les nouveaux abonnés et le nombre de spectateurs s'affichent à l'écran, avec le son que tu veux.</p></div><span class="tier free">Gratuit</span></li>
-        <li class="row reveal"><div class="ic" data-i="top"></div><div class="rt"><h4>Top donateurs et sondages</h4><p>Le classement du live, des sondages en direct et un tirage au sort avec suspense.</p></div><span class="tier free">Gratuit</span></li>
-        <li class="row reveal"><div class="ic" data-i="timer"></div><div class="rt"><h4>Compte à rebours</h4><p>Chaque cadeau, follow ou Super Fan ajoute du temps.</p></div><span class="tier free">Gratuit</span></li>
-        <li class="row reveal"><div class="ic" data-i="nPreview"></div><div class="rt"><h4>Aperçu sur téléphone</h4><p>Vois ton live comme tes spectateurs, avec le chat à côté.</p></div><span class="tier free">Gratuit</span></li>
-        <li class="row reveal"><div class="ic" data-i="goal"></div><div class="rt"><h4>Objectifs de likes et de follows</h4><p>Des barres qui montent en direct (l'objectif en diamants reste gratuit).</p></div><span class="tier pro">PRO</span></li>
-      </ul>
-    </div>
-    <div class="cat">
-      <div class="cat-h"><span class="cat-n">02</span><h3>Le chat</h3></div>
-      <ul class="rows">
-        <li class="row reveal"><div class="ic" data-i="chat"></div><div class="rt"><h4>Chat à l'écran</h4><p>Les messages de ton chat dans ton overlay, avec le niveau et les Super Fans mis en avant.</p></div><span class="tier pro">PRO</span></li>
-        <li class="row reveal"><div class="ic" data-i="commands"></div><div class="rt"><h4>Commandes du chat</h4><p>!niveau, !pieces, !top, !live et les tiens : « !discord », « !regles »…</p></div><span class="tier pro">PRO</span></li>
-        <li class="row reveal"><div class="ic" data-i="levels"></div><div class="rt"><h4>Niveaux et fidélité</h4><p>XP, niveaux et pièces de chaque spectateur gardés d'un live à l'autre. Les Super Fans sont mis en avant.</p></div><span class="tier pro">PRO</span></li>
-      </ul>
-    </div>
-    <div class="cat">
-      <div class="cat-h"><span class="cat-n">03</span><h3>Les jeux</h3></div>
-      <ul class="rows">
-        <li class="row reveal"><div class="ic" data-i="wheel"></div><div class="rt"><h4>Roue de la fortune</h4><p>Huit styles, des confettis, un cadeau qui la lance toute seule.</p></div><span class="tier pro">PRO</span></li>
-        <li class="row reveal"><div class="ic" data-i="boss"></div><div class="rt"><h4>Boss, hype, courses</h4><p>Des jeux collectifs : les spectateurs font monter la jauge ensemble.</p></div><span class="tier pro">PRO</span></li>
-        <li class="row reveal"><div class="ic" data-i="giftCannon"></div><div class="rt"><h4>Cadeau → action</h4><p>Un cadeau déclenche une touche ou un clic, même dans un jeu.</p></div><span class="tier pro">PRO</span></li>
-      </ul>
+  </div>
+</section>
+
+<section class="ch c3" id="f-cadeaux" data-ch="Cadeaux">
+  <div class="chin left">
+    <span class="eyebrow">03 · Alertes et cadeaux</span>
+    <h2>Un cadeau.<br><em>Un effet.</em></h2>
+    <p class="lead">Les cadeaux, les nouveaux abonnés et le nombre de spectateurs s'affichent à l'écran, avec le son que tu veux.</p>
+    <ul class="chips">
+      <li><span class="tier free">Gratuit</span>Cadeaux, follows, spectateurs</li>
+      <li><span class="tier free">Gratuit</span>Compte à rebours</li>
+      <li><span class="tier pro">PRO</span>Objectifs de likes et de follows</li>
+      <li><span class="tier pro">PRO</span>Cadeau → action</li>
+    </ul>
+  </div>
+</section>
+
+<section class="ch c4" id="f-chat" data-ch="Chat">
+  <div class="chin left">
+    <span class="eyebrow">04 · Le chat</span>
+    <h2>Ton chat,<br><em>en vedette.</em></h2>
+    <p class="lead">Les messages de ton chat dans ton overlay, avec le niveau et les Super Fans mis en avant.</p>
+    <ul class="chips">
+      <li><span class="tier pro">PRO</span>Chat à l'écran</li>
+      <li><span class="tier pro">PRO</span>Commandes du chat</li>
+      <li><span class="tier pro">PRO</span>Niveaux et fidélité</li>
+      <li><span class="tier free">Gratuit</span>Aperçu sur téléphone</li>
+    </ul>
+  </div>
+</section>
+
+<section class="ch c5" id="f-jeux" data-ch="Jeux">
+  <div class="chin left">
+    <span class="eyebrow">05 · Les jeux</span>
+    <h2>Ils jouent<br><em>avec toi.</em></h2>
+    <p class="lead">Des jeux collectifs : la roue, le dé 3D, les boss et les courses. Les spectateurs font monter la jauge ensemble.</p>
+    <ul class="chips">
+      <li><span class="tier pro">PRO</span>Roue de la fortune</li>
+      <li><span class="tier pro">PRO</span>Dé 3D</li>
+      <li><span class="tier pro">PRO</span>Boss, hype, courses</li>
+      <li><span class="tier free">Gratuit</span>Top donateurs et sondages</li>
+    </ul>
+  </div>
+</section>
+
+<section class="ch c6" id="f-themes" data-ch="Thèmes">
+  <div class="chin left">
+    <span class="eyebrow">06 · À ton image</span>
+    <h2>Un style<br><em>qui claque.</em></h2>
+    <p class="lead">Couleurs, polices, contours de caméra et thèmes de saison comme Halloween. Et de nouveaux overlays à chaque mise à jour.</p>
+    <ul class="chips">
+      <li><span class="tier free">Gratuit</span>Couleurs, polices et thèmes au choix</li>
+      <li><span class="tier pro">PRO</span>Contours de caméra</li>
+      <li><span class="tier free">Gratuit</span>Et plus (+)</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ ESSAIE TOI-MÊME ============ -->
+<section class="essai" id="apercu" data-ch="Essai">
+  <div class="wrap">
+    <span class="pilltag">Essaie toi-même</span>
+    <h2>Envoie un cadeau.<br><em>Regarde ce qui se passe.</em></h2>
+    <p class="lead2 mid">Choisis un cadeau : l'alerte, la fontaine de cœurs, le chat et l'objectif réagissent comme dans ton vrai live.</p>
+    <div class="demo">
+      <div class="gifts" id="gifts">
+        <div class="gifthd">Clique sur un cadeau</div>
+      </div>
+      <div class="phoneW"><div class="phone" id="phone">
+        <div class="vid"></div>
+        <div class="ph-top"><span class="live">LIVE</span><span class="vw">👁 <b id="dmV">1 284</b></span></div>
+        <div class="ph-goal"><div class="gl"><span>🎃 Objectif</span><b id="dmG">0 %</b></div><div class="gb"><i id="dmGi"></i></div></div>
+        <div class="ph-alerts" id="dmA"></div>
+        <div class="ph-hearts" id="dmH"></div>
+        <div class="ph-chat" id="dmC"></div>
+        <div class="ph-flash" id="dmF"></div>
+      </div></div>
     </div>
   </div>
 </section>
@@ -805,10 +947,14 @@
     "Et plus (+)": "And more (+)",
     "De nouveaux overlays à chaque mise à jour.": "New overlays with every update.",
     "Le live à l'écran": "The stream on screen", "Le chat": "The chat", "Les jeux": "Games",
+    "Dé 3D": "3D dice",
+    "Un dé qui roule à l'écran, lancé par une commande du chat ou un cadeau. À 6 ou 20 faces.": "A die that rolls on screen, triggered by a chat command or a gift. 6 or 20 sides.",
     "Tout ce qui est marqué « Gratuit » dans la liste": "Everything marked “Free” in the list",
     "Tout ce qui est marqué « PRO » dans la liste": "Everything marked “PRO” in the list",
     "Sans carte bancaire : tu fais ta demande dans l'appli, ta clé arrive sur Discord sous 24 h.": "No bank card: you make your request in the app, and your key arrives on Discord within 24 h."
   });
+
+  Object.assign(EN, {"Fais défiler":"Scroll","01 · L'appli":"01 · The app","Tout un live,":"A whole stream,","en une appli.":"in one app.","Tikitok Overlays s'installe sur ton PC et se branche à ton live en un clic. Démontons-la pour voir ce qu'il y a dedans.":"Tikitok Overlays installs on your PC and plugs into your stream in one click. Let's take it apart to see what's inside.","02 · Tout ce qu'elle fait":"02 · Everything it does","Une tornade":"A whirlwind","d'overlays.":"of overlays.","Alertes, chat, objectifs, jeux, classements, thèmes… Fais défiler, on passe tout en revue.":"Alerts, chat, goals, games, leaderboards, themes… Keep scrolling, we go through it all.","03 · Alertes et cadeaux":"03 · Alerts and gifts","Un cadeau.":"One gift.","Un effet.":"One effect.","04 · Le chat":"04 · The chat","Ton chat,":"Your chat,","en vedette.":"in the spotlight.","05 · Les jeux":"05 · The games","Ils jouent":"They play","avec toi.":"with you.","Des jeux collectifs : la roue, le dé 3D, les boss et les courses. Les spectateurs font monter la jauge ensemble.":"Group games: the wheel, the 3D die, bosses and races. Your viewers fill the meter together.","06 · À ton image":"06 · Your own style","Un style":"A style","qui claque.":"that pops.","Couleurs, polices, contours de caméra et thèmes de saison comme Halloween. Et de nouveaux overlays à chaque mise à jour.":"Colors, fonts, camera frames and seasonal themes like Halloween. And new overlays with every update.","Essaie toi-même":"Try it yourself","Envoie un cadeau.":"Send a gift.","Regarde ce qui se passe.":"See what happens.","Choisis un cadeau : l'alerte, la fontaine de cœurs, le chat et l'objectif réagissent comme dans ton vrai live.":"Pick a gift: the alert, the heart fountain, the chat and the goal react just like in your real stream.","Clique sur un cadeau":"Click a gift","🎃 Objectif":"🎃 Goal"});
 
   const ALT = {"Le panneau Design de Tikitok Overlays avec l'aperçu de la roue":"The Design panel of Tikitok Overlays, with the wheel preview","Aperçu du live dans un téléphone, avec le chat à côté":"Stream preview inside a phone, with the chat beside it","Cinq contours de caméra : pellicule, viseur, polaroïd, néon, Halloween":"Five camera frames: film strip, viewfinder, polaroid, neon, Halloween","Huit styles de roue de la fortune":"Eight prize wheel styles","Overlays au style Halloween":"Halloween-style overlays"};
   Object.assign(ALT, { "Des contours de caméra pour ton live": "Camera frames for your stream" });
@@ -1023,6 +1169,199 @@
       goal = goal >= 100 ? 0 : goal + rnd(0.8, 2); $('stGi').style.width = goal + '%'; $('stG').textContent = Math.round(goal) + ' %';
       viewers += Math.round(rnd(-6, 9)); $('stV').textContent = viewers.toLocaleString('fr-FR');
     }, 220);
+  })();
+</script>
+<script>
+  // ============ MONDE v4 : particules, scène 3D qui se démonte, points de chapitres, démo « essaie toi-même » ============
+  (() => {
+    const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const world = document.getElementById('world'), stage = document.getElementById('stage'), cv = document.getElementById('fx');
+    if (!world || !cv) return;
+    const $ = (id) => document.getElementById(id), rnd = (a, b) => a + Math.random() * (b - a);
+    const clamp = (v, a, b) => Math.min(b, Math.max(a, v)), lerp = (a, b, t) => a + (b - a) * t;
+    const ease = (t) => (t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    let seed = 7; const R = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }; // aléa fixe : la scène est toujours la même
+    const HW = true;
+
+    // ---------- particules carrées (braises) ----------
+    const cx = cv.getContext('2d'); let W = 0, H = 0, DPR = 1; const P = [];
+    const COLS = ['#ff7a1a', '#ffb347', '#ff3d8b', '#8cff2e', '#b44dff'];
+    const fit = () => { DPR = Math.min(devicePixelRatio || 1, 1.5); W = cv.width = Math.round(innerWidth * DPR); H = cv.height = Math.round(innerHeight * DPR); };
+    fit(); addEventListener('resize', fit);
+    for (let i = 0; i < 120; i++) P.push({ x: Math.random(), y: Math.random(), s: rnd(1.5, 4.2), v: rnd(.015, .07), d: rnd(-.01, .01), c: COLS[(Math.random() * COLS.length) | 0], a: rnd(.25, .9), z: rnd(.2, 1.2), t: rnd(0, 6) });
+    let sy = 0;
+    const paint = (dt) => {
+      cx.clearRect(0, 0, W, H);
+      for (const p of P) {
+        p.y -= p.v * dt * .06; p.t += dt * .002; p.x += p.d * dt * .02 + Math.sin(p.t) * .0004;
+        if (p.y < -.05) { p.y = 1.05; p.x = Math.random(); } if (p.x < -.05) p.x = 1.05; if (p.x > 1.05) p.x = -.05;
+        const yy = ((p.y * H - sy * p.z * .35 * DPR) % (H + 40) + H + 40) % (H + 40) - 20;
+        cx.globalAlpha = p.a * (.55 + .45 * Math.sin(p.t * 3));
+        cx.fillStyle = p.c; cx.fillRect(Math.round(p.x * W), Math.round(yy), p.s * DPR, p.s * DPR);
+      }
+      cx.globalAlpha = 1;
+    };
+
+    // ---------- pièces de la scène ----------
+    const IMG = 'img/design.jpg', IW = 2800, IH = 1762, COLN = 4, ROWN = 3;
+    const TW = 230, TH = Math.round(TW * (IH / ROWN) / (IW / COLN)); // une tuile ; l'ensemble fait 4 × 3 tuiles
+    const FULLW = TW * COLN, FULLH = TH * ROWN;
+    const pieces = [];
+    const add = (el, w, h, o) => { el.style.width = w + 'px'; el.style.height = h + 'px'; el.style.marginLeft = -w / 2 + 'px'; el.style.marginTop = -h / 2 + 'px'; world.append(el); pieces.push(Object.assign({ el, w, h, a0: R() * Math.PI * 2, rad: 330 + R() * 470, y0: (R() - .5) * 640, sp: (R() > .5 ? 1 : -1) * (.5 + R() * .5), tilt: (R() - .5) * 50, g: 0, tile: false }, o)); };
+    // 12 tuiles = la capture de l'appli
+    for (let r = 0; r < ROWN; r++) for (let c = 0; c < COLN; c++) {
+      const el = document.createElement('div'); el.className = 'pc tile';
+      el.style.backgroundImage = 'url(' + IMG + ')'; el.style.backgroundSize = FULLW + 'px ' + FULLH + 'px'; el.style.backgroundPosition = -c * TW + 'px ' + -r * TH + 'px';
+      add(el, TW, TH, { tile: true, gx: (c - (COLN - 1) / 2) * TW, gy: (r - (ROWN - 1) / 2) * TH, rad: 380 + R() * 380 });
+    }
+    // mini overlays : [groupe (chapitre), largeur, hauteur, html, classe]
+    const MINIS = [
+      [3, 250, 76, '<small>CADEAU</small><b>Lion ×3</b><span>léa_ttk vient d\'envoyer</span>', 'mn giftm', '🦁'],
+      [3, 250, 76, '<small>CADEAU</small><b>Galaxie</b><span>maxplays vient d\'envoyer</span>', 'mn giftm', '🌌'],
+      [3, 240, 84, '<div class="t">Objectif</div><div class="bar"><i style="width:68%"></i></div><div class="row"><span>68 %</span><b>680 / 1 000</b></div>', 'mn'],
+      [3, 160, 96, '<div class="t">Temps</div><div class="big">04:21</div>', 'mn timer'],
+      [2, 220, 140, '<div class="t">Top donateurs</div><div class="row"><i class="av"></i>léa_ttk<b>1 240</b></div><div class="row"><i class="av"></i>maxplays<b>980</b></div><div class="row"><i class="av"></i>nora.live<b>610</b></div>', 'mn'],
+      [2, 220, 112, '<div class="t">Sondage</div><div class="row">Oui<b>72 %</b></div><div class="bar"><i style="width:72%"></i></div><div class="row">Non<b>28 %</b></div>', 'mn'],
+      [4, 230, 124, '<div class="t">Chat</div><div class="bub"><b>léa_ttk</b>🔥🔥🔥</div><div class="bub"><b>maxplays</b>GG !</div><div class="bub"><b>nora</b>trop fort</div>', 'mn'],
+      [4, 200, 86, '<div class="t">Niveau 12</div><div class="bar"><i style="width:44%"></i></div><div class="row"><span>⭐ Super Fan</span><b>+250 XP</b></div>', 'mn'],
+      [5, 168, 168, '', 'mn wheel'],
+      [5, 130, 130, '<i><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b><b></b></i>', 'mn dice'],
+      [5, 240, 104, '<div class="t">Boss</div><div class="big">GOBLIN</div><div class="hp"><i style="width:58%"></i></div>', 'mn boss'],
+      [6, 230, 150, '<span>REC ●</span>', 'mn cam'],
+      [6, 240, 96, '<div class="t">🎃 Halloween</div><div class="row">Toiles, bave, citrouilles<b>✦</b></div>', 'mn'],
+      [1, 170, 90, '<div class="t">Spectateurs</div><div class="big">1 284</div>', 'mn'],
+    ];
+    for (const [g, w, h, html, cls, em] of MINIS) {
+      const el = document.createElement('div'); el.className = 'pc mini ' + cls;
+      el.innerHTML = em ? '<div class="ge">' + em + '</div><div>' + html + '</div>' : html;
+      add(el, w, h, { g, rad: 300 + R() * 420 });
+    }
+    const SLOTS = [[-150, -170, -4], [150, -60, 3], [-110, 90, -2], [170, 170, 4], [10, -10, 0]];
+    { const cnt = {}; for (const p of pieces) if (p.g) { p.gi = cnt[p.g] = (cnt[p.g] || 0) + 1; p.gi--; } }
+    const MAXCH = 7;
+
+    // ---------- chapitres, points de navigation ----------
+    const secs = [...document.querySelectorAll('.ch, .essai, #offres, #telecharger, #faq, #contact')];
+    const NAMES = { offres: ['Offres', 'Pricing'], telecharger: ['Télécharger', 'Download'], faq: ['Questions', 'FAQ'], contact: ['Contact', 'Contact'], accueil: ['Accueil', 'Home'], appli: ['Appli', 'App'], fonctions: ['Tout', 'All'], 'f-cadeaux': ['Cadeaux', 'Gifts'], 'f-chat': ['Chat', 'Chat'], 'f-jeux': ['Jeux', 'Games'], 'f-themes': ['Thèmes', 'Themes'], apercu: ['Essai', 'Try it'] };
+    const dotsEl = $('dots'), dotBtns = [];
+    for (const s of secs) {
+      const b = document.createElement('button'); b.type = 'button'; b.innerHTML = '<span></span><i></i>'; b.onclick = () => s.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: s.classList.contains('ch') ? 'center' : 'start' });
+      dotsEl.append(b); dotBtns.push(b);
+    }
+    const dotLabels = () => { const en = document.documentElement.lang === 'en'; secs.forEach((s, i) => { const n = NAMES[s.id] || [s.dataset.ch || s.id, s.dataset.ch || s.id]; dotBtns[i].firstChild.textContent = n[en ? 1 : 0]; dotBtns[i].setAttribute('aria-label', n[en ? 1 : 0]); }); };
+    dotLabels(); new MutationObserver(dotLabels).observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+
+    // révélation des textes
+    const chs = [...document.querySelectorAll('.ch')];
+    
+
+    // ---------- moteur : défilement → étape u (0 = accueil, 6 = dernier chapitre) ----------
+    let mx = 0, my = 0, tmx = 0, tmy = 0;
+    if (matchMedia('(pointer: fine)').matches) addEventListener('pointermove', (e) => { tmx = e.clientX / innerWidth - .5; tmy = e.clientY / innerHeight - .5; }, { passive: true });
+    const hdr = document.querySelector('header');
+    const stepU = () => {
+      const mid = scrollY + innerHeight * .5, cs = chs.map((c) => c.offsetTop + c.offsetHeight / 2);
+      if (!cs.length) return 0;
+      if (mid <= cs[0]) return 0;
+      for (let i = 1; i < cs.length; i++) if (mid <= cs[i]) return i - 1 + (mid - cs[i - 1]) / (cs[i] - cs[i - 1]);
+      const last = chs[chs.length - 1], end = last.offsetTop + last.offsetHeight;
+      return cs.length - 1 + clamp((mid - cs[cs.length - 1]) / Math.max(1, end - cs[cs.length - 1]), 0, 1);
+    };
+    const place = (u) => {
+      const vw = innerWidth, mob = vw < 860, sc = clamp(vw / 1440, .5, 1.12) * (mob ? .8 : 1);
+      const ex = clamp(u, 0, 1), e = ease(ex);
+      const shift = mob ? 0 : e * vw * .2;
+      mx += (tmx - mx) * .06; my += (tmy - my) * .06;
+      world.style.transform = 'translate3d(' + shift / sc + 'px,' + (mob ? 0 : 20) + 'px,0) scale(' + sc + ') rotateX(' + (-my * 6) + 'deg) rotateY(' + (mx * 9 + e * -8) + 'deg)';
+      stage.style.opacity = u > MAXCH - .55 ? clamp(1 - (u - (MAXCH - .55)) / .5, 0, 1) : 1;
+      const dim = mob ? .42 : 1;
+      for (const p of pieces) {
+        // état « vortex » : la pièce tourne autour de l'axe vertical, de plus en plus loin au fil des chapitres
+        const ang = p.a0 + u * .75 * p.sp, rad = p.rad * (.9 + .1 * Math.sin(u * .8 + p.a0));
+        let x = Math.cos(ang) * rad, z = Math.sin(ang) * rad * .8 - 160, y = p.y0 + Math.sin(ang * 1.4 + p.a0) * 70;
+        let ry = -ang * 57.3 * .35 + p.tilt, rz = p.tilt * .5, rx = p.tilt * -.4, s = 1, op;
+        if (p.tile) {
+          // les tuiles forment la capture au départ, puis s'éclatent
+          x = lerp(p.gx, x, e); y = lerp(p.gy, y, e); z = lerp(0, z, e) + Math.sin(Math.PI * ex) * 260;
+          ry = lerp(0, ry, e); rx = lerp(0, rx, e); rz = lerp(0, rz, e);
+          op = lerp(.42, .55, e);
+        } else {
+          // les mini overlays sortent de l'écran de la capture
+          const k = clamp((u - .12) / .8, 0, 1), ke = ease(k);
+          x = lerp(0, x, ke); y = lerp(0, y, ke); z = lerp(-60, z, ke) + Math.sin(Math.PI * k) * 200; s = lerp(.35, 1, ke);
+          op = k * .75;
+        }
+        // mise en avant : le groupe du chapitre en cours passe devant et grossit
+        if (p.g) {
+          const f = clamp(1 - Math.abs(u - p.g) / .85, 0, 1), fe = ease(f);
+          const sl = SLOTS[p.gi % SLOTS.length]; x = lerp(x, sl[0], fe); y = lerp(y, sl[1], fe); z = lerp(z, 220, fe);
+          ry = lerp(ry, -10, fe); rx = lerp(rx, 3, fe); rz = lerp(rz, sl[2], fe);
+          s = lerp(s, 1.1, fe); op = lerp(op, 1, fe);
+        } else if (!p.tile) op *= .6;
+        if (p.tile && u > .9) op = Math.min(op, .5);
+        p.el.style.opacity = (op * dim).toFixed(3);
+        p.el.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,' + z.toFixed(1) + 'px) rotateX(' + rx.toFixed(1) + 'deg) rotateY(' + ry.toFixed(1) + 'deg) rotateZ(' + rz.toFixed(1) + 'deg) scale(' + s.toFixed(3) + ')';
+      }
+      stage.style.setProperty('--scrim', mob ? .72 : (ex * .9).toFixed(2));
+    };
+
+    // pastille active
+    const spy = () => {
+      const m = scrollY + innerHeight * .5; let on = 0;
+      secs.forEach((s, i) => { if (s.offsetTop <= m) on = i; });
+      dotBtns.forEach((b, i) => b.classList.toggle('on', i === on));
+      hdr.classList.toggle('solid', scrollY > 60);
+      for (const c of chs) { const r = c.getBoundingClientRect(); c.classList.toggle('vu', r.top < innerHeight * .7 && r.bottom > innerHeight * .3); }
+    };
+
+    let last = 0, dirty = true, uCur = 0, uTgt = 0;
+    const tick = (t) => {
+      const dt = Math.min(50, t - last || 16); last = t;
+      sy = scrollY; uTgt = stepU(); uCur += (uTgt - uCur) * (calm ? 1 : .14);
+      if (Math.abs(uTgt - uCur) < .0005) uCur = uTgt;
+      if (!document.hidden) { place(uCur); if (!calm) paint(dt); }
+      requestAnimationFrame(tick);
+    };
+    addEventListener('scroll', spy, { passive: true }); addEventListener('resize', () => { spy(); }, { passive: true });
+    spy(); uCur = uTgt = stepU(); place(uCur); paint(16);
+    if (calm) { addEventListener('scroll', () => { sy = scrollY; place(stepU()); }, { passive: true }); } else requestAnimationFrame(tick);
+    addEventListener('load', () => { uCur = uTgt = stepU(); place(uCur); spy(); });
+
+    // ---------- démo « essaie toi-même » ----------
+    const DEM = [
+      { e: '🦁', n: 'Lion', d: 'léa_ttk', v: 29999, col: '#ff7a1a', ft: 'LION', hearts: 14, goal: 14, chat: ['léa_ttk', 'LION !!! 🦁🔥'] },
+      { e: '🌌', n: 'Galaxie', d: 'maxplays', v: 1000, col: '#b44dff', ft: 'GALAXIE', hearts: 8, goal: 7, chat: ['maxplays', 'pour le live 🌌'] },
+      { e: '🌹', n: 'Rose', d: 'nora.live', v: 1, col: '#ff3d8b', ft: 'ROSE', hearts: 3, goal: 1, chat: ['nora.live', 'une petite rose 🌹'] },
+      { e: '🚀', n: 'Fusée', d: 'tomtom', v: 500, col: '#38c8ff', ft: 'FUSÉE', hearts: 10, goal: 5, chat: ['tomtom', 'decolage !! 🚀'] },
+    ];
+    const gl = $('gifts'); if (!gl) return;
+    const fmt = (n) => n.toLocaleString(document.documentElement.lang === 'en' ? 'en-US' : 'fr-FR');
+    let goal = 0, viewers = 1284, nh = 0;
+    DEM.forEach((g, i) => {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'gift';
+      b.innerHTML = '<span class="gi">' + g.e + '</span><span><b>' + g.n + '</b><small>' + g.d + '</small></span><span class="dv">+' + fmt(g.v) + ' ❤</span>';
+      b.onclick = () => send(i, b); gl.append(b);
+    });
+    const CHATL = [['léa_ttk', '🔥🔥🔥'], ['maxplays', 'GG !'], ['nora.live', 'trop fort'], ['tomtom', 'je suis là'], ['ayaa', '❤️❤️'], ['kenzo_', 'lets goooo']];
+    let ci = 0;
+    const chat = (n, t) => { const d = document.createElement('div'), bb = document.createElement('b'); bb.textContent = n; d.append(bb, t); const c = $('dmC'); c.append(d); while (c.children.length > 6) c.firstChild.remove(); };
+    for (let i = 0; i < 4; i++) chat(...CHATL[ci++ % CHATL.length]);
+    setInterval(() => { if (!document.hidden) chat(...CHATL[ci++ % CHATL.length]); }, 2600);
+    function send(i, btn) {
+      const g = DEM[i], a = $('dmA'), f = $('dmF');
+      gl.querySelectorAll('.gift').forEach((x) => x.classList.toggle('on', x === btn));
+      const al = document.createElement('div'); al.className = 'al'; al.style.setProperty('--c', g.col);
+      al.innerHTML = '<span class="ae">' + g.e + '</span><span class="at"><small>CADEAU</small><b>' + g.n + '</b><span>' + g.d + '</span></span>';
+      a.append(al); while (a.children.length > 2) a.firstChild.remove();
+      setTimeout(() => { al.classList.add('out'); setTimeout(() => al.remove(), 420); }, 2600);
+      f.style.setProperty('--fc', g.col); f.classList.remove('on'); void f.offsetWidth; f.classList.add('on');
+      const H = $('dmH'); for (let k = 0; k < g.hearts; k++) setTimeout(() => {
+        const s = document.createElement('span'); s.textContent = ['🎃', '🦇', '👻', '🔥', '❤'][(Math.random() * 5) | 0]; s.style.left = rnd(0, 44) + 'px'; s.style.setProperty('--dx', rnd(-26, 26) + 'px'); s.style.setProperty('--rot', rnd(-24, 24) + 'deg'); H.append(s); setTimeout(() => s.remove(), 3100);
+      }, k * 90);
+      chat(...g.chat);
+      goal = goal + g.goal >= 100 ? 0 : goal + g.goal; $('dmGi').style.width = goal + '%'; $('dmG').textContent = Math.round(goal) + ' %';
+      viewers += Math.round(rnd(8, 40)); $('dmV').textContent = fmt(viewers);
+    }
   })();
 </script>
 </body>
