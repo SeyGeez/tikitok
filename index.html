@@ -467,6 +467,71 @@
     background: linear-gradient(#d4cbe6, #d4cbe6) 50% 0 / 1.5px var(--len) no-repeat, radial-gradient(circle 5px at 50% calc(var(--len) + 2px), #050309 96%, transparent), radial-gradient(circle 9px at 50% calc(var(--len) + 15px), #050309 96%, transparent), radial-gradient(circle 1.6px at 40% calc(var(--len) + 1px), #ff4d2e 96%, transparent), radial-gradient(circle 1.6px at 60% calc(var(--len) + 1px), #ff4d2e 96%, transparent), radial-gradient(ellipse 14px 1.8px at 50% calc(var(--len) + 13px), #050309 96%, transparent); }
   @keyframes spiderLen { 0%, 100% { --len: 40px; } 50% { --len: 130px; } }
   @media (prefers-reduced-motion: reduce) { html.hw #hwDeco .spider { animation: none; --len: 90px; } }
+
+  /* =====================================================================
+     MISE EN PAGE v3 : galerie qui défile, liste de fonctions (au lieu d'une grille de cartes), frise d'installation
+     ===================================================================== */
+  /* galerie */
+  .gal { padding: 96px 0 30px; }
+  .gal-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+  .gal-ctl { display: flex; gap: 10px; flex: none; }
+  .gal-ctl button { width: 50px; height: 50px; border-radius: 50%; border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.05); color: #fff; font: 800 20px var(--font-d); cursor: pointer; transition: transform .15s, border-color .15s, box-shadow .15s; }
+  .gal-ctl button:hover { border-color: var(--cyan); box-shadow: 0 0 22px rgba(25,230,255,.3); transform: translateY(-2px); }
+  html.hw .gal-ctl button:hover { box-shadow: 0 0 22px rgba(140,255,46,.3); }
+  .gal-track { display: flex; gap: 22px; overflow-x: auto; scroll-snap-type: x mandatory; padding: 34px max(20px, calc((100vw - 1120px) / 2)) 36px; scroll-padding-inline: max(20px, calc((100vw - 1120px) / 2)); scrollbar-width: none; }
+  .gal-track::-webkit-scrollbar { display: none; }
+  .slide { flex: 0 0 min(880px, 84vw); height: clamp(260px, 44vw, 520px); scroll-snap-align: start; margin: 0; position: relative; border-radius: 22px; overflow: hidden; border: 1px solid rgba(255,255,255,.14); background: #0a0c18; box-shadow: 0 30px 80px rgba(0,0,0,.55), 0 0 60px rgba(139,92,255,.14); }
+  .slide img { width: 100%; height: 100%; object-fit: cover; object-position: top left; cursor: zoom-in; transition: transform .6s; }
+  .slide:hover img { transform: scale(1.03); }
+  .slide figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 56px 24px 20px; background: linear-gradient(transparent, rgba(4,5,11,.94)); font: 700 clamp(16px, 2vw, 21px) var(--font-d); pointer-events: none; }
+  .slide.more { display: grid; place-items: center; text-align: center; flex-basis: min(420px, 78vw); background: radial-gradient(400px circle at 30% 20%, rgba(139,92,255,.35), transparent 60%), radial-gradient(400px circle at 80% 90%, rgba(255,45,134,.28), transparent 60%), var(--solid); }
+  .slide.more b { display: block; font: 800 clamp(36px, 5vw, 58px) var(--font-d); letter-spacing: -.03em; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .slide.more span { display: block; margin-top: 10px; color: var(--muted); font-size: 17px; padding: 0 26px; }
+  html.hw .slide { border-color: rgba(255,150,60,.35); box-shadow: 0 30px 80px rgba(0,0,0,.6), 0 0 60px rgba(255,122,26,.16); }
+  html.hw .slide.more { background: radial-gradient(400px circle at 30% 20%, rgba(255,122,26,.32), transparent 60%), radial-gradient(400px circle at 80% 90%, rgba(124,52,214,.4), transparent 60%), var(--solid); }
+
+  /* liste de fonctions : un titre de rubrique collé à gauche, des lignes à droite */
+  .spec { padding-top: 70px; }
+  .legend { display: flex; gap: 10px; margin: 22px 0 8px; }
+  .cat { display: grid; grid-template-columns: minmax(190px, .32fr) 1fr; gap: 40px; padding: 40px 0; border-top: 1px solid var(--line); }
+  .cat-h { position: sticky; top: 104px; align-self: start; }
+  .cat-n { font: 800 13px var(--font-d); letter-spacing: .24em; color: var(--cyan); }
+  .cat-h h3 { margin-top: 10px; font-size: clamp(30px, 3.6vw, 46px); font-weight: 800; letter-spacing: -.03em; line-height: 1.02; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .rows { list-style: none; margin: 0; padding: 0; }
+  .row { position: relative; display: grid; grid-template-columns: 48px 1fr auto; gap: 20px; align-items: center; padding: 20px 16px; border-bottom: 1px solid var(--line); transition: background .25s, padding-left .25s; }
+  .row:first-child { padding-top: 6px; }
+  .row::before { content: ""; position: absolute; left: 0; top: 14%; bottom: 14%; width: 3px; border-radius: 3px; background: var(--grad); transform: scaleY(0); transition: transform .25s; }
+  .row:hover { background: linear-gradient(90deg, rgba(139,92,255,.12), transparent 80%); padding-left: 26px; }
+  .row:hover::before { transform: scaleY(1); }
+  html.hw .row:hover { background: linear-gradient(90deg, rgba(255,122,26,.12), transparent 80%); }
+  .row .ic { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 14px; background: linear-gradient(135deg, rgba(25,230,255,.14), rgba(139,92,255,.22)); border: 1px solid rgba(25,230,255,.3); }
+  html.hw .row .ic { background: linear-gradient(135deg, rgba(255,122,26,.2), rgba(124,52,214,.28)); border-color: rgba(255,150,60,.4); }
+  .row h4 { margin: 0; font: 800 clamp(18px, 2.1vw, 24px) var(--font-d); letter-spacing: -.01em; }
+  .row p { margin: 4px 0 0; color: var(--muted); font-size: 15px; max-width: 560px; }
+  .tier { display: inline-block; font: 800 11px var(--font-d); letter-spacing: .14em; text-transform: uppercase; padding: 5px 11px; border-radius: 999px; white-space: nowrap; }
+  .tier.free { color: var(--green); border: 1px solid rgba(198,255,61,.4); background: rgba(198,255,61,.07); }
+  .tier.pro { color: #fff; background: var(--grad); box-shadow: 0 0 14px rgba(139,92,255,.45); }
+  html.hw .tier.pro { box-shadow: 0 0 14px rgba(255,122,26,.5); }
+  @media (max-width: 860px) { .cat { grid-template-columns: 1fr; gap: 14px; padding: 30px 0; } .cat-h { position: static; } .row { grid-template-columns: 44px 1fr; } .row .tier { grid-column: 2; justify-self: start; } }
+
+  /* offres : plus courtes, la liste ci-dessus dit déjà tout */
+  .plans { grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); }
+  @media (max-width: 760px) { .plans { grid-template-columns: 1fr; } }
+  .plan ul { gap: 12px; margin-bottom: 26px; }
+  .paystrip { display: flex; align-items: center; justify-content: space-between; gap: 18px 30px; flex-wrap: wrap; margin-top: 30px; padding: 20px 24px; border-radius: 18px; border: 1px dashed rgba(255,255,255,.2); background: rgba(255,255,255,.03); }
+  .paystrip p { margin: 0; color: #d9d3e8; max-width: 470px; }
+  html.hw .paystrip { border-color: rgba(255,150,60,.35); }
+
+  /* installation : une frise, pas quatre cartes */
+  .tl { list-style: none; margin: 46px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); counter-reset: t; position: relative; }
+  .tl::before { content: ""; position: absolute; left: 20px; right: 20px; top: 20px; height: 2px; background: linear-gradient(90deg, var(--pink), var(--violet), var(--cyan)); opacity: .55; }
+  .tl li { position: relative; padding: 0 22px 0 0; }
+  .tl li::before { counter-increment: t; content: counter(t); display: grid; place-items: center; position: relative; z-index: 1; width: 42px; height: 42px; margin-bottom: 18px; border-radius: 50%; background: var(--solid); border: 2px solid var(--cyan); font: 800 18px var(--font-d); box-shadow: 0 0 20px rgba(25,230,255,.4); }
+  html.hw .tl li::before { border-color: #ff7a1a; box-shadow: 0 0 20px rgba(255,122,26,.5); }
+  .tl h3 { font-size: 20px; margin-bottom: 6px; }
+  .tl p { margin: 0; color: var(--muted); font-size: 15px; }
+  @media (max-width: 800px) { .tl { grid-template-columns: 1fr; gap: 28px; } .tl::before { left: 20px; right: auto; top: 0; bottom: 0; width: 2px; height: auto; } .tl li { padding: 0 0 0 62px; } .tl li::before { position: absolute; left: 0; top: 0; margin: 0; } }
+  @media (max-width: 760px) { .gal-head { align-items: flex-start; } .gal-ctl { display: none; } }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Tikitok Overlays","applicationCategory":"MultimediaApplication","operatingSystem":"Windows","description":"Overlays, alertes, roue de la fortune, contours de caméra et commandes du chat pour TikTok LIVE Studio.","url":"https://tikitokoverlays.com/","image":"https://tikitokoverlays.com/img/logo.png","inLanguage":["fr","en"],"offers":[{"@type":"Offer","name":"Gratuit","price":"0","priceCurrency":"EUR"},{"@type":"Offer","name":"Pro mensuel","price":"20","priceCurrency":"EUR"},{"@type":"Offer","name":"Pro annuel","price":"120","priceCurrency":"EUR"}]}</script>
 </head>
@@ -521,82 +586,57 @@
     </div>
   </div>
 </div>
-<div class="marq" aria-hidden="true"><div class="marq-t"><span>Alertes</span><span>Roue de la fortune</span><span>Chat à l'écran</span><span>Compte à rebours</span><span>Commandes du chat</span><span>Contours de caméra</span><span>Niveaux et fidélité</span><span>Aperçu sur téléphone</span><span>Cadeau → action</span><span>Boss, hype, courses</span><span>Alertes</span><span>Roue de la fortune</span><span>Chat à l'écran</span><span>Compte à rebours</span><span>Commandes du chat</span><span>Contours de caméra</span><span>Niveaux et fidélité</span><span>Aperçu sur téléphone</span><span>Cadeau → action</span><span>Boss, hype, courses</span></div></div>
-<div class="shotwrap"><div class="wrap"><div class="shot reveal"><img src="img/design.jpg" alt="Le panneau Design de Tikitok Overlays avec l'aperçu de la roue"></div></div></div>
 
-<!-- ============ FONCTIONS ============ -->
-<section id="fonctions">
+<!-- ============ APERÇU : galerie ============ -->
+<section id="apercu" class="gal">
+  <div class="wrap gal-head">
+    <div>
+      <span class="eyebrow">Aperçu</span>
+      <h2>Vois ton live sans te prendre la tête.</h2>
+    </div>
+    <div class="gal-ctl"><button type="button" id="galPrev" aria-label="Précédent">←</button><button type="button" id="galNext" aria-label="Suivant">→</button></div>
+  </div>
+  <div class="gal-track" id="galTrack">
+    <figure class="slide"><img src="img/design.jpg" alt="Le panneau Design de Tikitok Overlays avec l'aperçu de la roue" loading="lazy"><figcaption>Tout se règle ici, avec l'aperçu en direct.</figcaption></figure>
+    <figure class="slide"><img src="img/preview.jpg" alt="Aperçu du live dans un téléphone, avec le chat à côté" loading="lazy"><figcaption>Ton live et le chat, comme tes spectateurs les voient.</figcaption></figure>
+    <figure class="slide"><img src="img/roues.jpg" alt="Huit styles de roue de la fortune" loading="lazy"><figcaption>Des roues, des styles, des effets.</figcaption></figure>
+    <figure class="slide"><img src="img/cameras.jpg" alt="Des contours de caméra pour ton live" loading="lazy"><figcaption>Des contours de caméra.</figcaption></figure>
+    <figure class="slide"><img src="img/halloween.jpg" alt="Overlays au style Halloween" loading="lazy"><figcaption>Des thèmes de saison, comme Halloween.</figcaption></figure>
+    <div class="slide more"><div><b>Et plus (+)</b><span>De nouveaux overlays à chaque mise à jour.</span></div></div>
+  </div>
+</section>
+
+<!-- ============ FONCTIONS : une liste, deux niveaux ============ -->
+<section id="fonctions" class="spec">
   <div class="wrap">
     <span class="eyebrow">Tout ce qu'il faut</span>
     <h2>Une boîte à outils<br>pour animer ton live.</h2>
-    <div class="features">
-      <div class="feat reveal"><div class="ic" data-i="gifts"></div><h3>Cadeaux, follows, spectateurs</h3><p>Les cadeaux, les nouveaux abonnés et le nombre de spectateurs s'affichent à l'écran, avec le son que tu veux.</p></div>
-      <div class="feat reveal"><div class="ic" data-i="top"></div><h3>Top donateurs et sondages</h3><p>Le classement du live, des sondages en direct et un tirage au sort avec suspense.</p></div>
-      <div class="feat reveal"><span class="pro">PRO</span><div class="ic" data-i="chat"></div><h3>Chat à l'écran</h3><p>Les messages de ton chat dans ton overlay, avec le niveau et les Super Fans mis en avant.</p></div>
-      <div class="feat reveal"><span class="pro">PRO</span><div class="ic" data-i="goal"></div><h3>Objectifs de likes et de follows</h3><p>Des barres qui montent en direct (l'objectif en diamants reste gratuit).</p></div>
-      <div class="feat reveal"><div class="ic" data-i="nPreview"></div><h3>Aperçu sur téléphone</h3><p>Vois ton live comme tes spectateurs, avec le chat à côté.</p></div>
-      <div class="feat reveal"><span class="pro">PRO</span><div class="ic" data-i="wheel"></div><h3>Roue de la fortune</h3><p>Huit styles, des confettis, un cadeau qui la lance toute seule.</p></div>
-      <div class="feat reveal"><span class="pro">PRO</span><div class="ic" data-i="commands"></div><h3>Commandes du chat</h3><p>!niveau, !pieces, !top, !live et les tiens : « !discord », « !regles »…</p></div>
-      <div class="feat reveal"><span class="pro">PRO</span><div class="ic" data-i="levels"></div><h3>Niveaux et fidélité</h3><p>XP, niveaux et pièces de chaque spectateur gardés d'un live à l'autre. Les Super Fans sont mis en avant.</p></div>
-      <div class="feat reveal"><div class="ic" data-i="timer"></div><h3>Compte à rebours</h3><p>Chaque cadeau, follow ou Super Fan ajoute du temps.</p></div>
-      <div class="feat reveal"><span class="pro">PRO</span><div class="ic" data-i="boss"></div><h3>Boss, hype, courses</h3><p>Des jeux collectifs : les spectateurs font monter la jauge ensemble.</p></div>
-      <div class="feat reveal"><span class="pro">PRO</span><div class="ic" data-i="giftCannon"></div><h3>Cadeau → action</h3><p>Un cadeau déclenche une touche ou un clic, même dans un jeu.</p></div>
+    <div class="legend"><span class="tier free">Gratuit</span><span class="tier pro">PRO</span></div>
+    <div class="cat">
+      <div class="cat-h"><span class="cat-n">01</span><h3>Le live à l'écran</h3></div>
+      <ul class="rows">
+        <li class="row reveal"><div class="ic" data-i="gifts"></div><div class="rt"><h4>Cadeaux, follows, spectateurs</h4><p>Les cadeaux, les nouveaux abonnés et le nombre de spectateurs s'affichent à l'écran, avec le son que tu veux.</p></div><span class="tier free">Gratuit</span></li>
+        <li class="row reveal"><div class="ic" data-i="top"></div><div class="rt"><h4>Top donateurs et sondages</h4><p>Le classement du live, des sondages en direct et un tirage au sort avec suspense.</p></div><span class="tier free">Gratuit</span></li>
+        <li class="row reveal"><div class="ic" data-i="timer"></div><div class="rt"><h4>Compte à rebours</h4><p>Chaque cadeau, follow ou Super Fan ajoute du temps.</p></div><span class="tier free">Gratuit</span></li>
+        <li class="row reveal"><div class="ic" data-i="nPreview"></div><div class="rt"><h4>Aperçu sur téléphone</h4><p>Vois ton live comme tes spectateurs, avec le chat à côté.</p></div><span class="tier free">Gratuit</span></li>
+        <li class="row reveal"><div class="ic" data-i="goal"></div><div class="rt"><h4>Objectifs de likes et de follows</h4><p>Des barres qui montent en direct (l'objectif en diamants reste gratuit).</p></div><span class="tier pro">PRO</span></li>
+      </ul>
     </div>
-  </div>
-</section>
-
-<!-- ============ APERÇU ============ -->
-<section id="apercu" class="alt">
-  <div class="wrap">
-    <div class="split">
-      <div class="txt reveal">
-        <span class="eyebrow">Aperçu</span>
-        <h2>Vois ton live sans te prendre la tête.</h2>
-        <p>Dès que tu cliques sur « Connecter », l'appli ouvre un téléphone avec ton vrai live, et le chat juste à côté. Tu vérifies tes overlays comme tes spectateurs les voient.</p>
-        <ul><li>Le live et le chat côte à côte</li><li>Bascule en un clic sur tes overlays seuls</li><li>Un bouton de test pour tout voir sans être en direct</li></ul>
-      </div>
-      <div class="frame reveal"><img src="img/preview.jpg" alt="Aperçu du live dans un téléphone, avec le chat à côté"></div>
+    <div class="cat">
+      <div class="cat-h"><span class="cat-n">02</span><h3>Le chat</h3></div>
+      <ul class="rows">
+        <li class="row reveal"><div class="ic" data-i="chat"></div><div class="rt"><h4>Chat à l'écran</h4><p>Les messages de ton chat dans ton overlay, avec le niveau et les Super Fans mis en avant.</p></div><span class="tier pro">PRO</span></li>
+        <li class="row reveal"><div class="ic" data-i="commands"></div><div class="rt"><h4>Commandes du chat</h4><p>!niveau, !pieces, !top, !live et les tiens : « !discord », « !regles »…</p></div><span class="tier pro">PRO</span></li>
+        <li class="row reveal"><div class="ic" data-i="levels"></div><div class="rt"><h4>Niveaux et fidélité</h4><p>XP, niveaux et pièces de chaque spectateur gardés d'un live à l'autre. Les Super Fans sont mis en avant.</p></div><span class="tier pro">PRO</span></li>
+      </ul>
     </div>
-  </div>
-</section>
-
-<section>
-  <div class="wrap">
-    <div class="split rev">
-      <div class="frame reveal"><img src="img/cameras.jpg" alt="Cinq contours de caméra : pellicule, viseur, polaroïd, néon, Halloween"></div>
-      <div class="txt reveal">
-        <span class="eyebrow">Contours de caméra</span>
-        <h2>Cinq cadres qui ont du caractère.</h2>
-        <p>Pellicule de cinéma, viseur de caméra avec son point REC, polaroïd, tube néon qui grésille, et un cadre Halloween avec de la bave qui coule. Ton pseudo écrit dessus, tes couleurs si tu veux.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="alt">
-  <div class="wrap">
-    <div class="split">
-      <div class="txt reveal">
-        <span class="eyebrow">La roue</span>
-        <h2>Une roue qui fait le show.</h2>
-        <p>Elle prend son élan, le pointeur claque sur chaque cheville, et à l'arrêt la case gagnante s'allume dans une pluie de confettis. Casino, néon, bonbon, galaxie, vinyle…</p>
-        <ul><li>8 styles, du plus sage au plus fou</li><li>Un cadeau précis la lance automatiquement</li><li>Tu choisis les cases et les effets</li></ul>
-      </div>
-      <div class="frame reveal"><img src="img/roues.jpg" alt="Huit styles de roue de la fortune"></div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ HALLOWEEN ============ -->
-<section class="hw">
-  <div class="wrap">
-    <div class="split rev">
-      <div class="frame reveal"><img src="img/halloween.jpg" alt="Overlays au style Halloween"></div>
-      <div class="txt reveal">
-        <span class="eyebrow">Saison d'Halloween</span>
-        <h2>Tout ton live en mode hanté.</h2>
-        <p>Un style Halloween pour chaque overlay : toiles d'araignée, bave verte, chauves-souris, citrouilles. L'appli peut aussi se mettre aux couleurs de la nuit, avec des sons d'ambiance : glas, rire de sorcière, fantôme, porte qui grince.</p>
-      </div>
+    <div class="cat">
+      <div class="cat-h"><span class="cat-n">03</span><h3>Les jeux</h3></div>
+      <ul class="rows">
+        <li class="row reveal"><div class="ic" data-i="wheel"></div><div class="rt"><h4>Roue de la fortune</h4><p>Huit styles, des confettis, un cadeau qui la lance toute seule.</p></div><span class="tier pro">PRO</span></li>
+        <li class="row reveal"><div class="ic" data-i="boss"></div><div class="rt"><h4>Boss, hype, courses</h4><p>Des jeux collectifs : les spectateurs font monter la jauge ensemble.</p></div><span class="tier pro">PRO</span></li>
+        <li class="row reveal"><div class="ic" data-i="giftCannon"></div><div class="rt"><h4>Cadeau → action</h4><p>Un cadeau déclenche une touche ou un clic, même dans un jeu.</p></div><span class="tier pro">PRO</span></li>
+      </ul>
     </div>
   </div>
 </section>
@@ -612,14 +652,9 @@
         <div class="price">0 €</div>
         <p>L'essentiel pour un live propre.</p>
         <ul>
-          <li>Cadeaux, follows, spectateurs, partages</li>
-          <li>Top donateurs, top like live et objectif en diamants</li>
-          <li>Compte à rebours</li>
-          <li>Sondage, tirage au sort, alerte plein écran</li>
-          <li>Aperçu de ton live sur téléphone</li>
+          <li>Tout ce qui est marqué « Gratuit » dans la liste</li>
           <li>Couleurs, polices et thèmes au choix</li>
           <li>4 sons personnalisés</li>
-          <li class="no">Chat à l'écran, roue, commandes, niveaux, jeux…</li>
         </ul>
         <a class="btn ghost" href="#telecharger" data-link="free">Télécharger</a>
       </div>
@@ -631,33 +666,16 @@
         <p id="priceNote" data-dyn>Sans engagement : tu arrêtes quand tu veux.</p>
         <ul>
           <li>Tout ce qui est gratuit</li>
-          <li>Chat à l'écran, objectifs de likes et de follows</li>
-          <li>Roue de la fortune, 8 styles</li>
-          <li>Commandes du chat personnalisées</li>
-          <li>Niveaux, XP, Super Fans, pièces</li>
-          <li>Boss, hype, courses</li>
-          <li>Cadeau → touche ou clic, traduction du chat</li>
+          <li>Tout ce qui est marqué « PRO » dans la liste</li>
           <li>Contours de caméra, sons illimités</li>
           <li>Mises à jour automatiques</li>
         </ul>
-        <a class="btn" href="#paiement" data-link="subscribe">Prendre l'abonnement</a>
+        <a class="btn" href="#telecharger" data-link="subscribe">Prendre l'abonnement</a>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ============ PAIEMENT ============ -->
-<section id="paiement" class="alt">
-  <div class="wrap">
-    <span class="eyebrow">Paiement</span>
-    <h2>Simple, sans carte bancaire.</h2>
-    <p style="color:var(--muted);font-size:18px;max-width:640px;margin:16px 0 0">Tu fais ta demande directement dans l'appli. Tu choisis ta formule et ton moyen de paiement, et ta clé t'arrive sur Discord.</p>
-    <div class="chips" style="justify-content:flex-start"><span class="chip pay">Carte cadeau Eneba</span><span class="chip pay">Paysafecard</span><span class="chip pay">PayPal (amis et proches)</span></div>
-    <div class="steps">
-      <div class="step reveal"><h3>Choisis ta formule</h3><p>Dans l'appli : Réglages, puis « Prendre l'abonnement ». Mensuel à {{m}} ou annuel à {{y}}.</p></div>
-      <div class="step reveal"><h3>Paye</h3><p>L'appli te montre exactement quoi acheter et où, selon le moyen choisi.</p></div>
-      <div class="step reveal"><h3>Envoie ta demande</h3><p>Ton pseudo Discord et ta preuve de paiement partent en un seul clic.</p></div>
-      <div class="step reveal"><h3>Reçois ta clé</h3><p>Sous 24 h maximum, sur Discord. Elle débloque tout, tout de suite.</p></div>
+    <div class="paystrip reveal">
+      <p>Sans carte bancaire : tu fais ta demande dans l'appli, ta clé arrive sur Discord sous 24 h.</p>
+      <div class="chips" style="margin:0"><span class="chip pay">Carte cadeau Eneba</span><span class="chip pay">Paysafecard</span><span class="chip pay">PayPal (amis et proches)</span></div>
     </div>
     <p class="note">Mises à jour incluses pendant toute la durée de l'abonnement. La clé est personnelle et liée à ton PC : ne la partage pas.</p>
   </div>
@@ -668,13 +686,13 @@
   <div class="wrap">
     <span class="eyebrow">C'est parti</span>
     <h2>En place en trois minutes.</h2>
-    <div class="steps">
-      <div class="step reveal"><h3>Installe</h3><p>Télécharge Tikitok Overlays et lance l'installation. Rien d'autre à configurer.</p></div>
-      <div class="step reveal"><h3>Connecte-toi</h3><p>Entre ton pseudo TikTok pendant que tu es en direct.</p></div>
-      <div class="step reveal"><h3>Ajoute à LIVE Studio</h3><p>Copie le lien d'un overlay et colle-le dans une source « Link ».</p></div>
-      <div class="step reveal"><h3>Joue !</h3><p>Choisis tes styles, tes sons, et regarde le résultat sur le téléphone.</p></div>
-    </div>
-    <p style="margin-top:36px"><a class="btn" href="#" data-link="free"><svg class="dl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg>Télécharger Tikitok Overlays</a> <span id="dlInfo" data-dyn style="margin-left:14px;color:var(--muted);font-size:14px"></span></p>
+    <ol class="tl">
+      <li class="reveal"><h3>Installe</h3><p>Télécharge Tikitok Overlays et lance l'installation. Rien d'autre à configurer.</p></li>
+      <li class="reveal"><h3>Connecte-toi</h3><p>Entre ton pseudo TikTok pendant que tu es en direct.</p></li>
+      <li class="reveal"><h3>Ajoute à LIVE Studio</h3><p>Copie le lien d'un overlay et colle-le dans une source « Link ».</p></li>
+      <li class="reveal"><h3>Joue !</h3><p>Choisis tes styles, tes sons, et regarde le résultat sur le téléphone.</p></li>
+    </ol>
+    <p style="margin-top:40px"><a class="btn" href="#" data-link="free"><svg class="dl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg>Télécharger Tikitok Overlays</a> <span id="dlInfo" data-dyn style="margin-left:14px;color:var(--muted);font-size:14px"></span></p>
   </div>
 </section>
 
@@ -763,8 +781,22 @@
   // ================================
   // ---------- langues : le français est dans la page, l'anglais dans ce dictionnaire ----------
   const EN = {"Confidentialité":"Privacy","Ce que Tikitok et Tikitok Lite envoient à notre serveur, pourquoi, et combien de temps nous le gardons.":"What Tikitok and Tikitok Lite send to our server, why, and how long we keep it.","Ce qui est envoyé":"What is sent","À l'activation de ta clé : ta clé d'abonnement, un code de ton PC (une empreinte anonyme, ni ton nom ni ton identifiant Windows) et la version de l'appli.":"When you activate your key: your subscription key, a code for your PC (an anonymous fingerprint, not your name or Windows ID) and the app version.","Toutes les minutes, tant que Tikitok Lite est ouvert : un signe de vie qui indique si l'appli est ouverte et si tu es en live (oui ou non).":"Every minute while Tikitok Lite is open: a heartbeat saying whether the app is open and whether you are live (yes or no).","Ton adresse IP sert seulement à limiter les abus pendant la demande ; elle n'est pas enregistrée dans notre base d'abonnements.":"Your IP address is only used to limit abuse during the request; it is not stored in our subscriptions database.","Ce qui n'est jamais envoyé":"What is never sent","Le contenu de ton live, tes spectateurs, tes messages, tes identifiants TikTok ou Discord (sauf le pseudo Discord que tu nous donnes pour ta clé). L'appli parle à TikTok directement depuis ton PC.":"The content of your live, your viewers, your messages, your TikTok or Discord logins (except the Discord username you give us for your key). The app talks to TikTok directly from your PC.","La version gratuite envoie seulement un signe de vie anonyme toutes les 5 minutes : un numéro au hasard propre à l'installation, la version de l'appli et « en live : oui ou non ». Jamais ton pseudo TikTok ni le contenu de ton live. Tu peux le désactiver dans Réglages → Statistiques anonymes.":"The free version only sends an anonymous heartbeat every 5 minutes: a random number specific to the installation, the app version and \"live: yes or no\". Never your TikTok username or the content of your live. You can turn it off in Settings → Anonymous statistics.","Pourquoi et combien de temps":"Why and how long","Pour vérifier que ton abonnement est valide, le limiter à 2 PC, t'aider en cas de problème et protéger le service contre les copies illégales. Nous gardons ces informations tant que ton abonnement existe, et les journaux de sécurité 90 jours au maximum.":"To check your subscription is valid, limit it to 2 PCs, help you when something goes wrong and protect the service against illegal copies. We keep this information while your subscription exists, and security logs for 90 days at most.","Le serveur est hébergé au Canada (OVHcloud, Beauharnois), un pays reconnu par l'Union européenne comme offrant un niveau de protection adéquat.":"The server is hosted in Canada (OVHcloud, Beauharnois), a country recognised by the European Union as providing an adequate level of protection.","Tes droits":"Your rights","Tu peux demander à voir, corriger ou supprimer tes données à tout moment : écris-nous depuis la section Contact.":"You can ask to see, correct or delete your data at any time: write to us from the Contact section.","Contactez-nous":"Contact us","Contact":"Contact","Une question ? Écris-nous.":"A question? Write to us.","Abonnement, clé de licence, bug, idée de fonction ou simple curiosité : on lit tout. Réponse en général sous 24 h.":"Subscription, license key, bug, feature idea or just curiosity: we read everything. We usually reply within 24 hours.","Pour qu'on t'aide plus vite, indique-nous :":"To help you faster, tell us:","ce que tu voulais faire et ce qui s'est passé à la place,":"what you wanted to do and what happened instead,","la version de Tikitok (en bas de la fenêtre de l'appli),":"your Tikitok version (at the bottom of the app window),","une capture d'écran si possible,":"a screenshot if possible,","pour une clé d'abonnement : ton pseudo Discord et le « Code de ce PC » (Réglages).":"for a subscription key: your Discord username and the \"PC code\" (Settings).","Tikitok Overlays est un outil indépendant,":"Tikitok Overlays is an independent tool,","non affilié à TikTok ni à ByteDance":"not affiliated with TikTok or ByteDance","TikTok est une marque de ses propriétaires.":"TikTok is a trademark of its respective owners.","0 €":"€0","Fonctions":"Features","Aperçu":"Preview","Offres":"Pricing","Questions":"FAQ","Télécharger":"Download","Pour TikTok LIVE Studio":"For TikTok LIVE Studio","Un live qui a de la":"A live with","gueule":"attitude","Overlays, alertes, roue de la fortune, contours de caméra et commandes du chat. Tu règles tout dans une appli simple, avec l'aperçu de ton live sur un téléphone.":"Overlays, alerts, a prize wheel, camera frames and chat commands. Set everything up in one simple app, with a phone preview of your stream.","Télécharger gratuitement":"Download for free","Voir les offres Pro":"See Pro pricing","Aucun compte à créer":"No account needed","Fonctionne avec ton live en cours":"Works with your live stream","Tout ce qu'il faut":"Everything you need","Une boîte à outils":"A toolbox","pour animer ton live.":"to liven up your stream.","Cadeaux, follows, spectateurs":"Gifts, follows, viewers","Les cadeaux, les nouveaux abonnés et le nombre de spectateurs s'affichent à l'écran, avec le son que tu veux.":"Gifts, new followers and the viewer count show up on screen, with the sound you choose.","Top donateurs et sondages":"Top gifters and polls","Le classement du live, des sondages en direct et un tirage au sort avec suspense.":"The live leaderboard, live polls and a suspenseful giveaway draw.","Chat à l'écran":"On-screen chat","Les messages de ton chat dans ton overlay, avec le niveau et les Super Fans mis en avant.":"Your chat messages in your overlay, with levels and Super Fans highlighted.","Objectifs de likes et de follows":"Like and follow goals","Des barres qui montent en direct (l'objectif en diamants reste gratuit).":"Progress bars that fill up live (the diamonds goal stays free).","Aperçu sur téléphone":"Phone preview","Vois ton live comme tes spectateurs, avec le chat à côté.":"See your stream the way your viewers do, with the chat next to it.","Roue de la fortune":"Prize wheel","Huit styles, des confettis, un cadeau qui la lance toute seule.":"Eight styles, confetti, and a gift that spins it automatically.","Commandes du chat":"Chat commands","!niveau, !pieces, !top, !live et les tiens : « !discord », « !regles »…":"!niveau, !pieces, !top, !live and your own: \"!discord\", \"!rules\"…","Niveaux et fidélité":"Levels and loyalty","XP, niveaux et pièces de chaque spectateur gardés d'un live à l'autre. Les Super Fans sont mis en avant.":"Each viewer's XP, level and coins are kept from one stream to the next. Super Fans are highlighted.","Compte à rebours":"Countdown timer","Chaque cadeau, follow ou Super Fan ajoute du temps.":"Every gift, follow or Super Fan adds time.","Boss, hype, courses":"Boss fights, hype, races","Des jeux collectifs : les spectateurs font monter la jauge ensemble.":"Group games: your viewers fill the meter together.","Cadeau → action":"Gift → action","Un cadeau déclenche une touche ou un clic, même dans un jeu.":"A gift triggers a key press or a click, even inside a game.","Vois ton live sans te prendre la tête.":"See your stream without the hassle.","Dès que tu cliques sur « Connecter », l'appli ouvre un téléphone avec ton vrai live, et le chat juste à côté. Tu vérifies tes overlays comme tes spectateurs les voient.":"As soon as you click \"Connect\", the app opens a phone showing your real stream, with the chat right beside it. You check your overlays exactly like your viewers see them.","Le live et le chat côte à côte":"The stream and chat side by side","Bascule en un clic sur tes overlays seuls":"Switch to your overlays only in one click","Un bouton de test pour tout voir sans être en direct":"A test button to see everything without going live","Contours de caméra":"Camera frames","Cinq cadres qui ont du caractère.":"Five frames with character.","Pellicule de cinéma, viseur de caméra avec son point REC, polaroïd, tube néon qui grésille, et un cadre Halloween avec de la bave qui coule. Ton pseudo écrit dessus, tes couleurs si tu veux.":"Film strip, camera viewfinder with its REC dot, polaroid, buzzing neon tube, and a Halloween frame with dripping slime. Your name on it, your colors if you want.","La roue":"The wheel","Une roue qui fait le show.":"A wheel that puts on a show.","Elle prend son élan, le pointeur claque sur chaque cheville, et à l'arrêt la case gagnante s'allume dans une pluie de confettis. Casino, néon, bonbon, galaxie, vinyle…":"It winds up, the pointer clacks over every peg, and when it stops the winning slice lights up in a shower of confetti. Casino, neon, candy, galaxy, vinyl…","8 styles, du plus sage au plus fou":"8 styles, from the tame to the wild","Un cadeau précis la lance automatiquement":"A specific gift spins it automatically","Tu choisis les cases et les effets":"You choose the slices and the effects","Saison d'Halloween":"Halloween season","Tout ton live en mode hanté.":"Your whole stream, haunted.","Un style Halloween pour chaque overlay : toiles d'araignée, bave verte, chauves-souris, citrouilles. L'appli peut aussi se mettre aux couleurs de la nuit, avec des sons d'ambiance : glas, rire de sorcière, fantôme, porte qui grince.":"A Halloween style for every overlay: cobwebs, green slime, bats, pumpkins. The app itself can also go dark, with spooky sounds: tolling bell, witch's cackle, ghost, creaking door.","Gratuit pour commencer.":"Free to start.","Pro pour tout débloquer.":"Pro to unlock everything.","Gratuit":"Free","L'essentiel pour un live propre.":"The essentials for a clean stream.","Cadeaux, follows, spectateurs, partages":"Gifts, follows, viewers, shares","Top donateurs, top like live et objectif en diamants":"Top donors, top likers and diamond goal","Top donateurs et objectif en diamants":"Top gifters and diamonds goal","Sondage, tirage au sort, alerte plein écran":"Polls, giveaway draw, full-screen alert","Aperçu de ton live sur téléphone":"Phone preview of your stream","Couleurs, polices et thèmes au choix":"Your choice of colors, fonts and themes","4 sons personnalisés":"4 custom sounds","Chat à l'écran, roue, commandes, niveaux, jeux…":"On-screen chat, wheel, commands, levels, games…","LE PLUS COMPLET":"MOST COMPLETE","Mensuel":"Monthly","Annuel":"Yearly","Tout ce qui est gratuit":"Everything in Free","Chat à l'écran, objectifs de likes et de follows":"On-screen chat, like and follow goals","Roue de la fortune, 8 styles":"Prize wheel, 8 styles","Commandes du chat personnalisées":"Custom chat commands","Niveaux, XP, Super Fans, pièces":"Levels, XP, Super Fans, coins","Boss, hype, courses":"Boss fights, hype, races","Cadeau → touche ou clic, traduction du chat":"Gift → key or click, chat translation","Contours de caméra, sons illimités":"Camera frames, unlimited sounds","Mises à jour automatiques":"Automatic updates","Prendre l'abonnement":"Subscribe","Paiement":"Payment","Simple, sans carte bancaire.":"Simple, no bank card needed.","Tu fais ta demande directement dans l'appli. Tu choisis ta formule et ton moyen de paiement, et ta clé t'arrive sur Discord.":"You make your request right inside the app. Pick your plan and payment method, and your key arrives on Discord.","Carte cadeau Eneba":"Eneba gift card","PayPal (amis et proches)":"PayPal (friends & family)","Choisis ta formule":"Pick your plan","Dans l'appli : Réglages, puis « Prendre l'abonnement ». Mensuel à {{m}} ou annuel à {{y}}.":"In the app: Settings, then \"Subscribe\". {{m}} monthly or {{y}} yearly.","Paye":"Pay","L'appli te montre exactement quoi acheter et où, selon le moyen choisi.":"The app shows you exactly what to buy and where, depending on the method you chose.","Envoie ta demande":"Send your request","Ton pseudo Discord et ta preuve de paiement partent en un seul clic.":"Your Discord name and proof of payment go out in a single click.","Reçois ta clé":"Get your key","Sous 24 h maximum, sur Discord. Elle débloque tout, tout de suite.":"Within 24 hours at most, on Discord. It unlocks everything right away.","Mises à jour incluses pendant toute la durée de l'abonnement. La clé est personnelle et liée à ton PC : ne la partage pas.":"Updates are included for the whole length of your subscription. The key is personal and tied to your PC: don't share it.","C'est parti":"Let's go","En place en trois minutes.":"Up and running in three minutes.","Installe":"Install","Télécharge Tikitok Overlays et lance l'installation. Rien d'autre à configurer.":"Download Tikitok Overlays and run the installer. Nothing else to set up.","Connecte-toi":"Connect","Entre ton pseudo TikTok pendant que tu es en direct.":"Enter your TikTok username while you are live.","Ajoute à LIVE Studio":"Add it to LIVE Studio","Copie le lien d'un overlay et colle-le dans une source « Link ».":"Copy an overlay's link and paste it into a \"Link\" source.","Joue !":"Play!","Choisis tes styles, tes sons, et regarde le résultat sur le téléphone.":"Pick your styles and sounds, and watch the result on the phone.","Télécharger Tikitok Overlays":"Download Tikitok Overlays","Les questions qu'on pose souvent.":"Frequently asked questions.","Est-ce que je dois rester sur mon PC ?":"Do I have to stay on my PC?","Oui : Tikitok Overlays tourne sur ton ordinateur pendant ton live. C'est lui qui se connecte à TikTok et joue les sons. Tu peux réduire la fenêtre, les overlays continuent.":"Yes: Tikitok Overlays runs on your computer during your stream. It connects to TikTok and plays the sounds. You can minimize the window, the overlays keep running.","Est-ce que ça marche avec TikTok LIVE Studio ?":"Does it work with TikTok LIVE Studio?","Oui, c'est fait pour. Chaque overlay a un lien que tu ajoutes comme source « Link ». Tu peux aussi n'utiliser qu'un seul lien pour tous tes overlays grâce à la Scène.":"Yes, it's made for it. Each overlay has a link that you add as a \"Link\" source. You can also use a single link for all your overlays with the Scene tab.","Qu'est-ce que je perds sans l'abonnement ?":"What do I miss without a subscription?","Les fonctions Pro (chat à l'écran, objectifs de likes, roue, commandes, niveaux, jeux, actions, contours de caméra…) sont verrouillées. Le reste est gratuit, sans limite de temps.":"Pro features (on-screen chat, like goals, wheel, commands, levels, games, actions, camera frames…) are locked. Everything else is free, with no time limit.","Comment je paye, et quand je reçois ma clé ?":"How do I pay, and when do I get my key?","Dans l'appli, tu choisis mensuel ({{m}}) ou annuel ({{y}}, soit {{free}} mois offerts), puis ton moyen de paiement : carte cadeau Eneba, Paysafecard ou PayPal en « amis et proches ». Tu envoies ta demande avec ta preuve de paiement, et tu reçois ta clé sur Discord sous 24 h maximum. Garde tes messages privés Discord ouverts.":"In the app, you pick monthly ({{m}}) or yearly ({{y}}, that's {{free}} months free), then your payment method: Eneba gift card, Paysafecard or PayPal \"friends & family\". You send your request with your proof of payment, and you get your key on Discord within 24 hours at most. Keep your Discord private messages open.","Je peux utiliser ma clé sur plusieurs ordinateurs ?":"Can I use my key on several computers?","Non : la clé est personnelle et liée à ton PC. Si tu changes d'ordinateur, contacte-nous.":"No: the key is personal and tied to your PC. If you change computers, contact us.","Mes données sont-elles en sécurité ?":"Is my data safe?","Tout est enregistré sur ton ordinateur. Tikitok Overlays ne te demande jamais ton mot de passe TikTok.":"Everything is stored on your computer. Tikitok Overlays never asks for your TikTok password.","Je peux changer les couleurs, les polices, les sons ?":"Can I change the colors, fonts and sounds?","Oui. Chaque overlay a ses couleurs, ses formes, ses polices et ses sons, avec un aperçu en direct, et des thèmes prêts à l'emploi en un clic.":"Yes. Every overlay has its own colors, shapes, fonts and sounds, with a live preview, plus ready-made themes in one click.","Tikitok Overlays n'est pas affilié à TikTok. ©":"Tikitok Overlays is not affiliated with TikTok. ©","Is the app available in English?":"Is the app available in English?"};
-  Object.assign(EN, { "Alertes": "Alerts" });
+  Object.assign(EN, {
+    "Tout se règle ici, avec l'aperçu en direct.": "Everything is set up here, with a live preview.",
+    "Ton live et le chat, comme tes spectateurs les voient.": "Your stream and chat, the way your viewers see them.",
+    "Des roues, des styles, des effets.": "Wheels, styles, effects.",
+    "Des contours de caméra.": "Camera frames.",
+    "Des thèmes de saison, comme Halloween.": "Seasonal themes, like Halloween.",
+    "Et plus (+)": "And more (+)",
+    "De nouveaux overlays à chaque mise à jour.": "New overlays with every update.",
+    "Le live à l'écran": "The stream on screen", "Le chat": "The chat", "Les jeux": "Games",
+    "Tout ce qui est marqué « Gratuit » dans la liste": "Everything marked “Free” in the list",
+    "Tout ce qui est marqué « PRO » dans la liste": "Everything marked “PRO” in the list",
+    "Sans carte bancaire : tu fais ta demande dans l'appli, ta clé arrive sur Discord sous 24 h.": "No bank card: you make your request in the app, and your key arrives on Discord within 24 h."
+  });
+
   const ALT = {"Le panneau Design de Tikitok Overlays avec l'aperçu de la roue":"The Design panel of Tikitok Overlays, with the wheel preview","Aperçu du live dans un téléphone, avec le chat à côté":"Stream preview inside a phone, with the chat beside it","Cinq contours de caméra : pellicule, viseur, polaroïd, néon, Halloween":"Five camera frames: film strip, viewfinder, polaroid, neon, Halloween","Huit styles de roue de la fortune":"Eight prize wheel styles","Overlays au style Halloween":"Halloween-style overlays"};
+  Object.assign(ALT, { "Des contours de caméra pour ton live": "Camera frames for your stream" });
   const TXT = { fr: { title: 'Tikitok Overlays — overlays et alertes pour ton live TikTok', desc: 'Overlays, alertes, roue, contours de caméra et commandes du chat pour TikTok LIVE Studio. Gratuit pour commencer, Pro pour aller plus loin.', plans: { monthly: ['20 €', 'par mois', 'Sans engagement : tu arrêtes quand tu veux.'], yearly: ['120 €', 'par an', 'Soit 10 € par mois : 6 mois offerts.'] }, ver: (v, mo) => `Version ${v} · ${mo} Mo · Windows` },
     en: { title: 'Tikitok Overlays — overlays and alerts for your TikTok LIVE', desc: 'Overlays, alerts, a prize wheel, camera frames and chat commands for TikTok LIVE Studio. Free to start, Pro to go further.', plans: { monthly: ['€20', 'per month', 'No commitment: cancel whenever you want.'], yearly: ['€120', 'per year', "That's €10 a month: 6 months free."] }, ver: (v, mo) => `Version ${v} · ${mo} MB · Windows` } };
   const CT = {
@@ -903,9 +935,16 @@
     const close = () => lb.classList.remove('on');
     lb.addEventListener('click', close);
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
-    document.querySelectorAll('.shot img, .frame img').forEach((im) => im.addEventListener('click', () => { big.src = im.src; big.alt = im.alt; lb.classList.add('on'); }));
+    document.querySelectorAll('.shot img, .frame img, .slide img').forEach((im) => im.addEventListener('click', () => { big.src = im.src; big.alt = im.alt; lb.classList.add('on'); }));
   })();
 
+  // galerie : flèches (et le doigt / la molette font défiler tout seuls)
+  (() => {
+    const tr = document.getElementById('galTrack'); if (!tr) return;
+    const step = () => (tr.querySelector('.slide') ? tr.querySelector('.slide').getBoundingClientRect().width + 22 : 600);
+    document.getElementById('galPrev').onclick = () => tr.scrollBy({ left: -step(), behavior: 'smooth' });
+    document.getElementById('galNext').onclick = () => tr.scrollBy({ left: step(), behavior: 'smooth' });
+  })();
   // ---------- v2 : barre de progression, lueur des cartes, inclinaison de la capture, scène du héros ----------
   (() => {
     const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
