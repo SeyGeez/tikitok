@@ -36,8 +36,8 @@ window.SITE_CONFIG = {
       { nom: 'Prince', compte: 'user4992772884992773v2' },
     ],
     pseudoDiscord: '',               // ton pseudo Discord personnel (vide = non affiché)
-    serveurDiscordBientot: true,     // true = affiche « un serveur Discord est en cours de création » ; false = masque ce message
-    lienServeurDiscord: '',          // quand le serveur existe : colle ici son lien d'invitation (https://discord.gg/…) : un bouton « Rejoindre » apparaît
+    serveurDiscordBientot: false,    // true = affiche « un serveur Discord est en cours de création » ; false = masque ce message
+    lienServeurDiscord: 'https://discord.gg/ZhuHfnvVk5',        // quand le serveur existe : colle ici son lien d'invitation (https://discord.gg/…) : un bouton « Rejoindre » apparaît
   },
 
   // ---------- Formulaire de contact (les messages arrivent dans ta boîte mail, sans que ton adresse soit visible) ----------

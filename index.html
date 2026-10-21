@@ -550,11 +550,18 @@
   body { background: #07030c !important; }
   body::before, body::after { display: none !important; }
   html.hw #hwDeco .embers, html.hw #hwDeco .fog { display: none; }
+  /* barre de défilement maison : fine, sombre, curseur dégradé orange-rose */
+  ::-webkit-scrollbar { width: 12px; height: 12px; }
+  ::-webkit-scrollbar-track { background: #0c0614; border-left: 1px solid rgba(255,150,60,.12); }
+  ::-webkit-scrollbar-thumb { border-radius: 99px; border: 3px solid #0c0614; background: linear-gradient(180deg, #ff9a3c, #ff3d8b); min-height: 48px; }
+  ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #ffb066, #ff5fa0); }
+  ::-webkit-scrollbar-corner { background: #0c0614; }
   #fx { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
   #stage { position: fixed; inset: 0; z-index: 1; pointer-events: none; overflow: hidden; perspective: 1500px; perspective-origin: 50% 46%; transition: opacity .4s; }
   #world { position: absolute; left: 50%; top: 50%; width: 0; height: 0; transform-style: preserve-3d; will-change: transform; }
   .pc { position: absolute; left: 0; top: 0; transform-style: preserve-3d; backface-visibility: hidden; will-change: transform, opacity; border-radius: 10px; overflow: hidden; }
   .pc.tile { background-repeat: no-repeat; box-shadow: 0 0 0 1px rgba(255,255,255,.06); }
+  .pc.card { background-size: cover; background-position: center; box-shadow: 0 16px 38px rgba(0,0,0,.6), 0 0 0 1px rgba(255,150,60,.25), 0 0 26px rgba(255,122,26,.18); }
   .pc.mini { box-shadow: 0 18px 40px rgba(0,0,0,.55), 0 0 28px rgba(255,122,26,.2); }
   header { position: fixed; top: 0; left: 0; right: 0; z-index: 60; margin: 0; background: linear-gradient(180deg, rgba(7,3,12,.9), rgba(7,3,12,0)); }
   header .wrap { height: 70px; border-radius: 0; background: transparent; border: 0; box-shadow: none; backdrop-filter: none; padding: 0; }
@@ -1286,6 +1293,15 @@
       el.innerHTML = em ? '<div class="ge">' + TKI.svg(em) + '</div><div>' + html + '</div>' : html;
       add(el, w, h, { g, rad: 300 + R() * 420 });
     }
+    // la tornade : une trentaine de cartes (captures de l'appli) en spirale autour d'un axe vertical, étroite en bas et large en haut
+    const TORN = ['img/design.jpg', 'img/preview.jpg', 'img/halloween.jpg', 'img/cameras.jpg', 'img/roues.jpg'], NT = 30;
+    for (let i = 0; i < NT; i++) {
+      const GM = { 1: 3, 0: 4, 4: 5, 2: 6 };   // 4 cartes passent devant, une par chapitre (cadeaux, chat, jeux, thèmes)
+      const w = GM[i] ? 400 : 250 + ((i * 37) % 70), h = Math.round(w * (i % 5 === 3 ? .43 : i % 5 === 4 ? .5 : .63));
+      const el = document.createElement('div'); el.className = 'pc card';
+      el.style.backgroundImage = 'url(' + TORN[i % TORN.length] + ')';
+      add(el, w, h, { tor: true, g: GM[i] || 0, a0: i * 2.399963, ty: (i / (NT - 1)) * 2 - 1, sp: 1, tilt: ((i * 53) % 21) - 10 });
+    }
     const SLOTS = [[-150, -170, -4], [150, -60, 3], [-110, 90, -2], [170, 170, 4], [10, -10, 0]];
     { const cnt = {}; for (const p of pieces) if (p.g) { p.gi = cnt[p.g] = (cnt[p.g] || 0) + 1; p.gi--; } }
     const MAXCH = 7;
@@ -1330,11 +1346,19 @@
         const ang = p.a0 + u * .75 * p.sp, rad = p.rad * (.9 + .1 * Math.sin(u * .8 + p.a0));
         let x = Math.cos(ang) * rad, z = Math.sin(ang) * rad * .8 - 160, y = p.y0 + Math.sin(ang * 1.4 + p.a0) * 70;
         let ry = -ang * 57.3 * .35 + p.tilt, rz = p.tilt * .5, rx = p.tilt * -.4, s = 1, op;
-        if (p.tile) {
+        if (p.tor) {
+          // la tornade : visible autour du chapitre « Tout » (u = 2), elle tourne sur elle-même et s'élargit vers le haut
+          const k = clamp(1 - Math.abs(u - 2) / 1.5, 0, 1), ke = ease(k);
+          const a = p.a0 + u * 1.7, h01 = (p.ty + 1) / 2, r = (170 + h01 * h01 * 620) * (.55 + .45 * ke);
+          x = Math.cos(a) * r; z = Math.sin(a) * r * .85 - 220; y = p.ty * -330 + Math.sin(u * 2 + p.a0) * 14;
+          ry = -a * 57.3 + 90 + p.tilt; rx = p.tilt * .5; rz = p.tilt * .4; s = lerp(.25, 1, ke);
+          const depth = clamp((Math.sin(a) + 1) / 2, 0, 1);   // 1 = devant, 0 = derrière
+          op = ke * (.3 + .7 * depth) * .95;
+        } else if (p.tile) {
           // les tuiles forment la capture au départ, puis s'éclatent
           x = lerp(p.gx, x, e); y = lerp(p.gy, y, e); z = lerp(0, z, e) + Math.sin(Math.PI * ex) * 260;
           ry = lerp(0, ry, e); rx = lerp(0, rx, e); rz = lerp(0, rz, e);
-          op = lerp(0, .55, clamp(u * 2.5, 0, 1));
+          op = lerp(0, .7, clamp(u * 2.5, 0, 1));
         } else {
           // les mini overlays sortent de l'écran de la capture
           const k = clamp((u - .12) / .8, 0, 1), ke = ease(k);
@@ -1347,7 +1371,7 @@
           const sl = SLOTS[p.gi % SLOTS.length]; x = lerp(x, sl[0], fe); y = lerp(y, sl[1], fe); z = lerp(z, 220, fe);
           ry = lerp(ry, -10, fe); rx = lerp(rx, 3, fe); rz = lerp(rz, sl[2], fe);
           s = lerp(s, 1.1, fe); op = lerp(op, 1, fe);
-        } else if (!p.tile) op *= .6;
+        } else if (!p.tile && !p.tor) op *= .6;
         if (p.tile) op *= clamp(1 - (u - .85) / .6, 0, 1);
         p.el.style.opacity = (op * dim).toFixed(3);
         p.el.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,' + z.toFixed(1) + 'px) rotateX(' + rx.toFixed(1) + 'deg) rotateY(' + ry.toFixed(1) + 'deg) rotateZ(' + rz.toFixed(1) + 'deg) scale(' + s.toFixed(3) + ')';

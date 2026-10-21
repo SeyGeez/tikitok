@@ -21,6 +21,8 @@
     pumpkin: `<ellipse cx="12" cy="14.2" rx="9" ry="6.6" ${F}/><path d="M12 7.8c-1.4 1.6-1.4 11 0 12.8M7.4 8.9c-2.4 2.5-2.4 8.7 0 11.2M16.6 8.9c2.4 2.5 2.4 8.7 0 11.2"/><path d="M12 7.8V4.6c.3-1 1.2-1.6 2.3-1.6"/>`,
     star: `<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z" ${F}/>`,
     eye: `<path d="M2 12s3.6-6.8 10-6.8S22 12 22 12s-3.6 6.8-10 6.8S2 12 2 12z"/><circle cx="12" cy="12" r="3" ${F}/>`,
+    chat: `<path d="M4 5.5h16v11H10l-5 4v-4H4z" ${F}/><path d="M8 10h8M8 13h5"/>`,
+    help: `<circle cx="12" cy="12" r="9" ${F}/><path d="M9.3 9.4c.3-1.6 1.5-2.4 2.9-2.4 1.6 0 2.8 1 2.8 2.4 0 2-2.7 2.1-2.7 4"/><circle cx="12.3" cy="16.8" r=".9" fill="currentColor"/>`,
     spark: `<path d="M12 2.4l2.3 7.3 7.3 2.3-7.3 2.3L12 21.6l-2.3-7.3L2.4 12l7.3-2.3z" fill="currentColor" fill-opacity=".85" stroke-width="1.2"/>`,
   };
   const svg = (name, cls) => P[name] ? `<svg class="tki${cls ? ' ' + cls : ''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[name]}</svg>` : '';
