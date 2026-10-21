@@ -1568,7 +1568,7 @@
 </script>
 <script>(() => { const h = document.documentElement; if (!h.classList.contains('w3d')) return;
   // un seul fichier (la 3D complète) ; si le réseau a un raté, on réessaie deux fois avant de revenir à l'ancienne scène
-  const go = (n) => import('./monde3d.bundle.js?a=' + n).catch((e) => (n > 0 ? new Promise((r) => setTimeout(r, 1500)).then(() => go(n - 1)) : Promise.reject(e)));
+  const go = (n) => import('./monde3d.bundle.js?v=20261021c&a=' + n).catch((e) => (n > 0 ? new Promise((r) => setTimeout(r, 1500)).then(() => go(n - 1)) : Promise.reject(e)));
   go(2).catch((e) => { console.warn('Scène 3D indisponible :', e); h.classList.remove('w3d'); }); })();</script>
 <script>(() => { const links = [...document.querySelectorAll('header nav a[href^="#"]:not(.btn)')], secs = links.map((a) => document.querySelector(a.getAttribute('href')));
   const spy = () => { const y = innerHeight * .4; let on = -1; secs.forEach((s, i) => { if (!s) return; const r = s.getBoundingClientRect(); if (r.top <= y && r.bottom > y) on = i; }); links.forEach((a, i) => a.classList.toggle('on', i === on)); };
