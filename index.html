@@ -729,8 +729,59 @@
   #totop svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
   /* la transition Accueil -> L'appli dure plus longtemps : on voit bien l'image de l'accueil s'éclater */
   #appli { min-height: 520vh; }
+
+  /* ---------- scène 3D (si WebGL) : la caméra voyage de l'Accueil de l'appli jusqu'à ses écrans ---------- */
+  .monde { display: none; }
+  html.w3d .monde { display: block; position: fixed; inset: 0; z-index: 1; --voile: 0; pointer-events: none; transition: opacity .4s; }
+  html.w3d #stage, html.w3d #fx, html.w3d .hfs { display: none !important; }
+  #monde-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity .8s; }
+  .monde.pret #monde-canvas { opacity: 1; } .monde.apres { opacity: 0; }
+  .monde .voile { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5,3,12,.78) 0, rgba(5,3,12,.35) 38%, transparent 62%); opacity: var(--voile); }
+  html.w3d .ch.c0 { min-height: 170vh; align-items: flex-start; padding-top: 12vh; }
+  html.w3d .c0 h1 { font-size: clamp(34px, 4.2vw, 60px); margin: 8px auto 10px; }
+  html.w3d .c0 .lead { font-size: 16px; margin-bottom: 14px; max-width: 52ch; }
+  html.w3d .c0 .cta { margin-bottom: 0; }
+  html.w3d .c0 .legal { position: absolute; left: 50%; transform: translateX(-50%); bottom: 7vh; width: min(560px, 86%); margin: 0; }
+  html.w3d .c0 .chips, html.w3d .c0 .scrollhint { display: none; }
+  @media (max-width: 760px), (max-aspect-ratio: 20/23) { html.w3d .c0 .lead { display: none; } html.w3d .ch.c0 { padding-top: 14vh; } }
+  html.w3d #appli { min-height: 170vh; } html.w3d .ch.c2 { min-height: 150vh; } html.w3d .ch.c3, html.w3d .ch.c4, html.w3d .ch.c5, html.w3d .ch.c6 { min-height: 130vh; }
+
+  /* ---------- en-tête : capsule de verre flottante, repères mono, indicateur de section ---------- */
+  @property --ca { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+  header { position: fixed; top: 14px; left: 50%; right: auto; transform: translateX(-50%); width: min(1180px, calc(100% - 28px)); height: 60px; padding: 0 10px 0 16px; margin: 0; z-index: 60;
+    border-radius: 18px; border: 1px solid transparent; backdrop-filter: blur(20px) saturate(1.5); -webkit-backdrop-filter: blur(20px) saturate(1.5);
+    background: linear-gradient(rgba(14,9,26,.58), rgba(14,9,26,.58)) padding-box, linear-gradient(120deg, rgba(139,92,255,.55), rgba(255,255,255,.08) 38%, rgba(255,79,160,.45)) border-box;
+    box-shadow: 0 14px 40px rgba(0,0,0,.45), 0 0 34px rgba(139,92,255,.16), inset 0 1px 0 rgba(255,255,255,.07); transition: background .3s, box-shadow .3s, height .3s; }
+  header.solid { height: 54px; background: linear-gradient(rgba(10,6,20,.82), rgba(10,6,20,.82)) padding-box, linear-gradient(120deg, rgba(139,92,255,.6), rgba(255,255,255,.1) 38%, rgba(255,79,160,.5)) border-box; box-shadow: 0 16px 44px rgba(0,0,0,.55), 0 0 40px rgba(139,92,255,.2), inset 0 1px 0 rgba(255,255,255,.08); border-bottom: 1px solid transparent; }
+  header .wrap { height: 100%; padding: 0; gap: 14px; max-width: none; width: 100%; margin: 0; }
+  header .logo { gap: 11px; }
+  header .logo img { width: 34px; height: 34px; filter: drop-shadow(0 0 12px rgba(255,120,80,.55)) drop-shadow(0 0 8px rgba(139,92,255,.5)); transition: transform .35s; }
+  header .logo:hover img { transform: rotate(-8deg) scale(1.08); }
+  header .logo .lg { display: grid; line-height: 1; gap: 3px; }
+  header .logo b { font: 900 17px var(--font-d, inherit); letter-spacing: .2em; color: #fff; }
+  header .logo small { font: 800 8.5px Consolas, "Courier New", monospace; letter-spacing: .5em; background: linear-gradient(90deg, #ff9a6b, #ff4fa0 60%, #b56bff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  header nav { margin-left: auto; display: flex; gap: 4px; align-items: center; }
+  header nav a:not(.btn) { position: relative; padding: 9px 13px; border-radius: 12px; font: 700 11.5px Consolas, "Courier New", monospace; letter-spacing: .15em; text-transform: uppercase; color: #a79fc4; transition: color .2s, background .2s; }
+  header nav a:not(.btn)::after { left: 13px; right: 13px; bottom: 5px; height: 2px; background: linear-gradient(90deg, #ff9a6b, #ff4fa0); box-shadow: 0 0 10px #ff4fa0; transform: scaleX(0); transform-origin: left; transition: transform .3s; }
+  header nav a:not(.btn):hover { color: #fff; background: rgba(255,255,255,.06); }
+  header nav a:not(.btn).on { color: #fff; } header nav a:not(.btn).on::after { transform: scaleX(1); }
+  header nav a:not(.btn)::before { content: ""; position: absolute; left: 4px; top: 50%; width: 4px; height: 4px; margin-top: -2px; border-radius: 50%; background: #ff4fa0; box-shadow: 0 0 8px #ff4fa0; opacity: 0; transition: opacity .25s; }
+  header nav a:not(.btn).on::before { opacity: 1; }
+  header .cta-h { display: inline-flex; align-items: center; gap: 9px; margin-left: 10px; padding: 10px 18px 10px 14px; border-radius: 13px; font: 800 13.5px var(--font-d, inherit); letter-spacing: .02em; color: #fff; border: 1.5px solid transparent; box-shadow: 0 0 22px rgba(255,79,160,.28);
+    background: linear-gradient(#140a24, #140a24) padding-box, conic-gradient(from var(--ca), #ff9a6b, #ff4fa0, #8b5cff, #ff9a6b) border-box; animation: caSpin 5s linear infinite; transition: box-shadow .25s, transform .25s; }
+  header .cta-h svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  header .cta-h:hover { transform: translateY(-1px); box-shadow: 0 0 30px rgba(255,79,160,.55); background: linear-gradient(120deg, #ff9a6b, #ff4fa0 55%, #8b5cff) padding-box, conic-gradient(from var(--ca), #ff9a6b, #ff4fa0, #8b5cff, #ff9a6b) border-box; }
+  @keyframes caSpin { to { --ca: 360deg; } }
+  header .lng { padding: 3px; border-radius: 12px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); margin-left: 4px; }
+  header .lng button { padding: 5px 9px; border-radius: 9px; font: 800 10.5px Consolas, "Courier New", monospace; letter-spacing: .12em; color: #8f86ad; }
+  header .lng button.on { background: linear-gradient(120deg, #8b5cff, #ff4fa0); color: #fff; box-shadow: 0 0 14px rgba(139,92,255,.5); }
+  @media (max-width: 900px) { header nav a:not(.btn) { display: none; } header { width: calc(100% - 20px); top: 10px; } header .logo small { display: none; } }
+  @media (max-width: 420px) { header .logo .lg { display: none; } header .cta-h span { font-size: 13px; } }
+  @media (prefers-reduced-motion: reduce) { header .cta-h { animation: none; } }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Tikitok Overlays","applicationCategory":"MultimediaApplication","operatingSystem":"Windows","description":"Overlays, alertes, roue de la fortune, contours de caméra et commandes du chat pour TikTok LIVE Studio.","url":"https://tikitokoverlays.com/","image":"https://tikitokoverlays.com/img/logo.png","inLanguage":["fr","en"],"offers":[{"@type":"Offer","name":"Gratuit","price":"0","priceCurrency":"EUR"},{"@type":"Offer","name":"Pro mensuel","price":"20","priceCurrency":"EUR"},{"@type":"Offer","name":"Pro annuel","price":"120","priceCurrency":"EUR"}]}</script>
+<script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.js"}}</script>
+<script>(() => { try { const c = document.createElement('canvas'); if ((c.getContext('webgl2') || c.getContext('webgl')) && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('w3d'); } catch { /* pas de WebGL : on garde l'ancienne scène */ } })();</script>
 </head>
 <body>
 
@@ -738,14 +789,14 @@
 <div id="banner" class="banner" data-dyn hidden></div>
 <header>
   <div class="wrap">
-    <a class="logo" href="#"><img src="icon-192.png" alt="">Tikitok Overlays</a>
+    <a class="logo" href="#" aria-label="Tikitok Overlays"><img src="icon-192.png" alt=""><span class="lg"><b>TIKITOK</b><small>OVERLAYS</small></span></a>
     <nav>
       <a href="#fonctions">Fonctions</a>
       <a href="#apercu">Aperçu</a>
       <a href="#offres">Offres</a>
       <a href="#faq">Questions</a>
       <a href="#contact">Contactez-nous</a>
-      <a class="btn" href="#telecharger" style="padding:9px 18px">Télécharger</a>
+      <a class="btn cta-h" href="#telecharger"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg><span>Télécharger</span></a>
       <button type="button" class="hwtog" id="hwTog" aria-pressed="false" title="Thème Halloween"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="body" d="M12 6.5c-5 0-9 2.8-9 6.8s4 6.7 9 6.7 9-2.7 9-6.7-4-6.8-9-6.8z"/><path d="M12 6.5c-2.3 1-3.6 3.4-3.6 6.8s1.3 5.8 3.6 6.7M12 6.5c2.3 1 3.6 3.4 3.6 6.8S14.3 19.1 12 20"/><path d="M12 6.5V3.8l2.2-1.3"/><path class="face" d="M7.2 12.6l2-1.5.6 2.1zM16.8 12.6l-2-1.5-.6 2.1zM9.2 16.2l1.4-1 1.4 1 1.4-1 1.4 1-1.2 1.5h-3.2z"/></svg></button>
       <div class="lng" role="group" aria-label="Langue / Language"><button type="button" data-lang="fr">FR</button><button type="button" data-lang="en">EN</button></div>
     </nav>
@@ -755,6 +806,7 @@
 <!-- ============ MONDE : scène 3D fixe (les panneaux de l'appli se démontent et tourbillonnent pendant le défilement) ============ -->
 <canvas id="fx" aria-hidden="true"></canvas>
 <div id="stage" aria-hidden="true" data-dyn><div id="world"></div></div>
+<div class="monde" aria-hidden="true"><canvas id="monde-canvas"></canvas><div class="voile"></div></div>
 <button type="button" id="totop" aria-label="Retour en haut" title="Retour en haut"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 <nav id="dots" aria-label="Chapitres" data-dyn></nav>
 
@@ -1439,7 +1491,7 @@
       if (!calm && !document.hidden) spinT += dt;
       sy = scrollY; uTgt = stepU(); uCur += (uTgt - uCur) * (calm ? 1 : .14);
       if (Math.abs(uTgt - uCur) < .0005) uCur = uTgt;
-      if (!document.hidden) { place(uCur); if (!calm) paint(dt); }
+      if (!document.hidden && !document.documentElement.classList.contains('w3d')) { place(uCur); if (!calm) paint(dt); }
       requestAnimationFrame(tick);
     };
     addEventListener('scroll', spy, { passive: true }); addEventListener('resize', () => { spy(); }, { passive: true });
@@ -1502,5 +1554,9 @@
     setInterval(() => { if (document.hidden) return; nums.forEach((n, i) => { cur[i] = cur[i] <= 0 ? Number(n.dataset.t) : cur[i] - 1; n.textContent = f(cur[i]); }); }, 1000);
   })();
 </script>
+<script>if (document.documentElement.classList.contains('w3d')) import('./monde3d.js').catch((e) => { console.warn('Scène 3D indisponible :', e); document.documentElement.classList.remove('w3d'); });</script>
+<script>(() => { const links = [...document.querySelectorAll('header nav a[href^="#"]:not(.btn)')], secs = links.map((a) => document.querySelector(a.getAttribute('href')));
+  const spy = () => { const y = innerHeight * .4; let on = -1; secs.forEach((s, i) => { if (!s) return; const r = s.getBoundingClientRect(); if (r.top <= y && r.bottom > y) on = i; }); links.forEach((a, i) => a.classList.toggle('on', i === on)); };
+  addEventListener('scroll', spy, { passive: true }); addEventListener('resize', spy); spy(); })();</script>
 </body>
 </html>
