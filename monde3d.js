@@ -112,7 +112,7 @@ for (const [t, list] of Object.entries(count)) list.forEach((p, k) => { if (t !=
 // ---------- la caméra ----------
 const FEAT = { 3: 'alertes', 4: 'objectifs', 5: 'jeux', 6: 'fn' };           // l'écran mis en avant à chaque chapitre
 const WP = [
-  { p: [0, .95, 5.6], t: [0, .72, 0], dx: 0, dy: .16, m: { p: [0, .75, 7.4], t: [0, .6, 0] } },
+  { p: [0, .95, 8.2], t: [0, .72, 0], dx: 0, dy: .075, m: { p: [0, .75, 7.4], t: [0, .6, 0] } },
   { p: [4, 1.4, 4.6], t: [.1, 0, 0], dx: .2, dy: .08, m: { p: [3.6, 1.2, 9.5], t: [0, .3, 0] } },
   { p: [0, 7.5, 15.5], t: [0, .4, 0], dx: .16, m: { p: [0, 8.5, 21], t: [0, 1.2, 0] } },
 ];
@@ -120,7 +120,9 @@ for (let k = 3; k <= NCH; k++) { const y = screens[FEAT[k]].y; WP.push({ p: [0, 
 const yEnd = screens.fn.y - 5; WP.push({ p: [0, yEnd + .5, 11], t: [0, yEnd - .6, 0], dx: .16, m: { p: [0, yEnd + .9, 13], t: [0, yEnd - 1.2, 0] } });
 const va = new THREE.Vector3(), vb = new THREE.Vector3();
 function placeCamera(u) {
-  const w = Math.min(WP.length - 2, Math.floor(u)), q = ease(clamp(u - w)), A = WP[w], B = WP[w + 1];
+  const w = Math.min(WP.length - 2, Math.floor(u)), q = ease(clamp(u - w)), B = WP[w + 1];
+  let A = WP[w];
+  if (w === 0) { const k = ease(clamp(u * 3)); A = { ...A, p: [A.p[0], A.p[1], lerp(8.2, 5.4, k)], dy: lerp(A.dy || 0, 0, k) }; }   // en haut de page l'image est loin (elle tient sous le titre), puis elle se rapproche vite
   const P = (x) => (mobile && x.m ? x.m.p : x.p), T = (x) => (mobile && x.m ? x.m.t : x.t);
   camera.position.copy(va.fromArray(P(A)).lerp(vb.fromArray(P(B)), q));
   const tgt = va.fromArray(T(A)).lerp(vb.fromArray(T(B)), q).clone();
@@ -173,14 +175,15 @@ function placeObject(p, u, rot, focus, fk, t) {
   B.set(Math.sin(th) * p.rayon * wob, (p.y || 0) + Math.sin(t * .6 + p.i) * .06, Math.cos(th) * p.rayon * wob);
   let S = p.S;
   const feat = p.type === 'ecran' && p.nom === fk;
-  if (focus > 0 && !feat) { B.z -= 9 * focus; B.x *= 1 + .5 * focus; S *= 1 - (p.type === 'icone' ? 1 : .35) * focus; }
+  if (focus > 0 && !feat) { const g = ease(clamp(focus * 3)); B.z -= 9 * g; B.x *= 1 + .5 * g; S *= 1 - g; }   // les autres objets disparaissent dès le début de la mise en avant   // pendant qu'un écran est mis en avant, tout le reste disparait : rien ne passe devant le texte
   let thY = th;
-  if (feat) { B.lerp(F.set(0, p.y, 5.15), ease(focus)); thY = lerp(th, 0, ease(focus)); S = lerp(1, .86, ease(focus)); }
+  if (feat) { B.lerp(F.set(.25, p.y, 5.15), ease(focus)); thY = lerp(th, 0, ease(focus)); S = lerp(1, .78, ease(focus)); }
   P.lerp(B, arr);
   o.position.copy(P);
   if (p.type !== 'icone') o.rotation.set(lerp(rx, 0, arr), lerp(ry, thY, arr), 0);
   let s = lerp(sc, S, arr);
   if (!feat) s *= ease(clamp((P.distanceTo(camera.position) - 2.6) / 1.4));       // ce qui frôle la caméra s'efface
+  s *= 1 - ease(clamp((u - NCH) / .35));   // après le dernier chapitre, tout disparait en fondu pour laisser la place à la section suivante
   o.scale.setScalar(Math.max(.001, s)); o.visible = s > .01;
   if (o.userData.glow) o.userData.glow.material.opacity = feat ? ease(focus) * .9 : 0;
 }
@@ -193,13 +196,15 @@ function frame(now) {
   const dt = Math.min((now - last) / 1000 || .016, .0333); last = now; if (!calm) time += dt;
   const target = stepU(); uCur = calm || freezeU !== null ? target : uCur + (target - uCur) * (1 - Math.exp(-8 * dt)); if (Math.abs(target - uCur) < 5e-4) uCur = target;
   const u = uCur;
+  canvas.style.opacity = root.classList.contains('pret') ? String(1 - ease(clamp((u - NCH - .1) / .4))) : '';
+  root.style.setProperty('--glow', String(lerp(1, .5, clamp(u / 2.5)) * (1 - ease(clamp((u - NCH - .1) / .4)))));
   if (prog) prog.style.transform = `scaleX(${clamp(u / (NCH + 1))})`;
   hidden = u > NCH + 1 - .02 && scrollY > cs[NCH] + innerHeight;
   root.classList.toggle('apres', hidden); if (hidden) return;
   placeCamera(u);
   const rot = spiralRot(u);
   let fk = null, focus = 0;
-  if (u >= 2.6 && u <= NCH + .1) { const k = clamp(Math.round(u), 3, NCH); fk = FEAT[k]; focus = clamp(1 - Math.abs(u - k) * 2.4) * 1.25; focus = clamp(focus); }
+  if (u >= 2.6 && u <= NCH + .1) { const k = clamp(Math.round(u), 3, NCH); fk = FEAT[k]; focus = clamp((1 - Math.abs(u - k) * 1.7) * 2.2); /* plateau large : l'écran reste bien en avant tout le chapitre */ }
   for (const p of W) placeObject(p, u, rot, focus, fk, time);
   // particules
   const a = pgeo.attributes.position.array, k = u * .6 + time * .08;
