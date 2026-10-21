@@ -1309,7 +1309,7 @@
     // la tornade : une hélice (escalier en spirale) de grandes captures et de vignettes, avec des icônes qui flottent dedans
     const TORN = [['img/card-alertes.jpg', .625], ['img/card-classements.jpg', .625], ['img/card-jeux.jpg', .625], ['img/card-objectifs.jpg', .625], ['img/card-fn.jpg', .625], ['img/card-gt.jpg', .625],
       ['img/card-mc.jpg', .625], ['img/card-ow.jpg', .625], ['img/card-mw.jpg', .625], ['img/design.jpg', .629], ['img/boutique.jpg', .629]], NT = TORN.length;
-    const GM = { 0: 3, 3: 4, 2: 5, 4: 6 };   // 4 cartes passent devant, une par chapitre (cadeaux, chat, jeux, thèmes)
+    const GM = {};   // 4 cartes passent devant, une par chapitre (cadeaux, chat, jeux, thèmes)
     // trois anneaux superposés (haut, milieu, bas) : chaque carte a sa place, décalée d'un anneau à l'autre
     for (let i = 0; i < NT; i++) {
       const ring = i % 3, j = Math.floor(i / 3), per = ring === 2 ? 3 : 4, w = 270, h = Math.round(w * TORN[i][1]);
@@ -1358,7 +1358,7 @@
     const place = (u) => {
       const vw = innerWidth, mob = vw < 860, sc = clamp(vw / 1440, .5, 1.12) * (mob ? 1.2 : 1);
       const ex = clamp((u - .45) / .55, 0, 1), e = ease(ex);   // l'image reste assemblée jusqu'à u = .45, puis elle s'éclate
-      const tk = ease(clamp(1 - Math.abs(u - 2) / 1.2, 0, 1));   // 1 pendant la tornade
+      const tk = ease(clamp(1 - Math.abs(u - 2) / .8, 0, 1));   // 1 pendant la tornade
       swirlK += (tk - swirlK) * .08;
       const shift = mob ? 0 : e * vw * .2;
       mx += (tmx - mx) * .06; my += (tmy - my) * .06;
@@ -1374,7 +1374,7 @@
         let ry = -ang * 57.3 * .35 + p.tilt, rz = p.tilt * .5, rx = p.tilt * -.4, s = 1, op;
         if (p.tor) {
           // visible autour du chapitre « Tout » (u = 2) : tourne autour de l'axe vertical, un peu plus large en haut
-          const k = clamp(1 - Math.abs(u - 2) / 1.5, 0, 1), ke = ease(k);
+          const k = clamp(1 - Math.abs(u - 2) / .6, 0, 1), ke = ease(k);
           // la spirale : l'angle avance tout le temps, et la carte monte le long de l'hélice (puis réapparait en bas)
           const conv = false, tyc = conv ? ((p.ty + 1 + spinT * .00007 * (p.spr ? 1.3 : 1)) % 2) - 1 : p.ty, edge = conv ? clamp((1 - Math.abs(tyc)) * 3.5, 0, 1) : 1;
           const a = p.a0 + u * 1.1 * (p.spr ? 1.5 : 1) + spinT * .0003 * (p.spr ? 1.4 : 1) + (conv ? tyc * 1.2 : 0), h01 = (tyc + 1) / 2;
@@ -1390,16 +1390,16 @@
           op = lerp(0, .95, clamp(u * 3, 0, 1));
         } else {
           // les mini overlays sortent de l'écran de la capture
-          const k = clamp((u - .12) / .8, 0, 1), ke = ease(k);
+          const k = clamp((u - .5) / .7, 0, 1), ke = ease(k);   // elles sortent seulement quand l'image s'éclate
           x = lerp(0, x, ke); y = lerp(0, y, ke); z = lerp(-60, z, ke) + Math.sin(Math.PI * k) * 200; s = lerp(.35, 1, ke);
           op = k * .75;
         }
         // mise en avant : le groupe du chapitre en cours passe devant et grossit
         if (p.g) {
-          const f = clamp(1 - Math.abs(u - p.g) / .85, 0, 1), fe = ease(f);
+          const f = clamp(1 - Math.abs(u - p.g) / .55, 0, 1), fe = ease(f);
           const sl = SLOTS[p.gi % SLOTS.length]; x = lerp(x, sl[0], fe); y = lerp(y, sl[1], fe); z = lerp(z, 220, fe);
           ry = lerp(ry, -10, fe); rx = lerp(rx, 3, fe); rz = lerp(rz, sl[2], fe);
-          s = lerp(s, 1.1, fe); op = lerp(op, 1, fe);
+          s = lerp(s, 1.1, fe); op = fe;   // une petite carte n'existe que pendant son chapitre : plus rien ne se promène seul
         } else if (!p.tile && !p.tor) op = 0;   // une petite carte n'apparait que quand son chapitre la met en avant : rien ne se promène seul
         if (p.tile) op *= clamp(1 - (u - .85) / .6, 0, 1);
         const fo = op * dim * (p.tor ? 1 : 1 - .95 * tk);   // pendant la tornade, le reste s'efface : rien ne se mélange
