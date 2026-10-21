@@ -780,7 +780,6 @@
   @media (prefers-reduced-motion: reduce) { header .cta-h { animation: none; } }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Tikitok Overlays","applicationCategory":"MultimediaApplication","operatingSystem":"Windows","description":"Overlays, alertes, roue de la fortune, contours de caméra et commandes du chat pour TikTok LIVE Studio.","url":"https://tikitokoverlays.com/","image":"https://tikitokoverlays.com/img/logo.png","inLanguage":["fr","en"],"offers":[{"@type":"Offer","name":"Gratuit","price":"0","priceCurrency":"EUR"},{"@type":"Offer","name":"Pro mensuel","price":"20","priceCurrency":"EUR"},{"@type":"Offer","name":"Pro annuel","price":"120","priceCurrency":"EUR"}]}</script>
-<script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.js"}}</script>
 <script>(() => { try { const c = document.createElement('canvas'); if ((c.getContext('webgl2') || c.getContext('webgl')) && !matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('w3d'); } catch { /* pas de WebGL : on garde l'ancienne scène */ } })();</script>
 </head>
 <body>
@@ -1554,7 +1553,10 @@
     setInterval(() => { if (document.hidden) return; nums.forEach((n, i) => { cur[i] = cur[i] <= 0 ? Number(n.dataset.t) : cur[i] - 1; n.textContent = f(cur[i]); }); }, 1000);
   })();
 </script>
-<script>if (document.documentElement.classList.contains('w3d')) import('./monde3d.js').catch((e) => { console.warn('Scène 3D indisponible :', e); document.documentElement.classList.remove('w3d'); });</script>
+<script>(() => { const h = document.documentElement; if (!h.classList.contains('w3d')) return;
+  // un seul fichier (la 3D complète) ; si le réseau a un raté, on réessaie deux fois avant de revenir à l'ancienne scène
+  const go = (n) => import('./monde3d.bundle.js?a=' + n).catch((e) => (n > 0 ? new Promise((r) => setTimeout(r, 1500)).then(() => go(n - 1)) : Promise.reject(e)));
+  go(2).catch((e) => { console.warn('Scène 3D indisponible :', e); h.classList.remove('w3d'); }); })();</script>
 <script>(() => { const links = [...document.querySelectorAll('header nav a[href^="#"]:not(.btn)')], secs = links.map((a) => document.querySelector(a.getAttribute('href')));
   const spy = () => { const y = innerHeight * .4; let on = -1; secs.forEach((s, i) => { if (!s) return; const r = s.getBoundingClientRect(); if (r.top <= y && r.bottom > y) on = i; }); links.forEach((a, i) => a.classList.toggle('on', i === on)); };
   addEventListener('scroll', spy, { passive: true }); addEventListener('resize', spy); spy(); })();</script>
