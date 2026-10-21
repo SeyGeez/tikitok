@@ -1486,7 +1486,7 @@
       secs.forEach((s, i) => { if (s.offsetTop <= m) on = i; });
       dotBtns.forEach((b, i) => b.classList.toggle('on', i === on));
       hdr.classList.toggle('solid', scrollY > 60);
-      for (const c of chs) { const r = c.getBoundingClientRect(); const w3 = document.documentElement.classList.contains('w3d'), mid = (r.top + r.bottom) / 2; c.classList.toggle('vu', w3 ? Math.abs(mid - innerHeight * .5) < innerHeight * .3 : (r.top < innerHeight * .7 && r.bottom > innerHeight * .3)); }
+      for (const c of chs) { const r = c.getBoundingClientRect(); const w3 = document.documentElement.classList.contains('w3d'), mid = (r.top + r.bottom) / 2; c.classList.toggle('vu', w3 ? Math.abs(mid - innerHeight * .5) < innerHeight * .42 : (r.top < innerHeight * .7 && r.bottom > innerHeight * .3)); }
     };
 
     let last = 0, dirty = true, uCur = 0, uTgt = 0;
