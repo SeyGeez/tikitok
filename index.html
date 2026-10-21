@@ -728,7 +728,7 @@
   #totop.on { opacity: 1; transform: none; pointer-events: auto; } #totop:hover { box-shadow: 0 10px 30px rgba(0,0,0,.5), 0 0 40px rgba(255,45,111,.75); transform: translateY(-3px); }
   #totop svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
   /* la transition Accueil -> L'appli dure plus longtemps : on voit bien l'image de l'accueil s'éclater */
-  #appli { min-height: 260vh; }
+  #appli { min-height: 520vh; }
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Tikitok Overlays","applicationCategory":"MultimediaApplication","operatingSystem":"Windows","description":"Overlays, alertes, roue de la fortune, contours de caméra et commandes du chat pour TikTok LIVE Studio.","url":"https://tikitokoverlays.com/","image":"https://tikitokoverlays.com/img/logo.png","inLanguage":["fr","en"],"offers":[{"@type":"Offer","name":"Gratuit","price":"0","priceCurrency":"EUR"},{"@type":"Offer","name":"Pro mensuel","price":"20","priceCurrency":"EUR"},{"@type":"Offer","name":"Pro annuel","price":"120","priceCurrency":"EUR"}]}</script>
 </head>
@@ -1357,7 +1357,7 @@
     };
     const place = (u) => {
       const vw = innerWidth, mob = vw < 860, sc = clamp(vw / 1440, .5, 1.12) * (mob ? 1.2 : 1);
-      const ex = clamp(u, 0, 1), e = ease(ex);
+      const ex = clamp((u - .45) / .55, 0, 1), e = ease(ex);   // l'image reste assemblée jusqu'à u = .45, puis elle s'éclate
       const tk = ease(clamp(1 - Math.abs(u - 2) / 1.2, 0, 1));   // 1 pendant la tornade
       swirlK += (tk - swirlK) * .08;
       const shift = mob ? 0 : e * vw * .2;
@@ -1387,7 +1387,7 @@
           // les tuiles forment la capture au départ, puis s'éclatent
           x = lerp(p.gx, x, e); y = lerp(p.gy, y, e); z = lerp(0, z, e) + Math.sin(Math.PI * ex) * 260;
           ry = lerp(0, ry, e); rx = lerp(0, rx, e); rz = lerp(0, rz, e);
-          op = lerp(0, .7, clamp(u * 2.5, 0, 1));
+          op = lerp(0, .95, clamp(u * 3, 0, 1));
         } else {
           // les mini overlays sortent de l'écran de la capture
           const k = clamp((u - .12) / .8, 0, 1), ke = ease(k);
