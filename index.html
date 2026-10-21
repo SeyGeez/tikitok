@@ -562,6 +562,13 @@
   .pc { position: absolute; left: 0; top: 0; transform-style: preserve-3d; backface-visibility: hidden; will-change: transform, opacity; border-radius: 10px; overflow: hidden; }
   .pc.tile { background-repeat: no-repeat; box-shadow: 0 0 0 1px rgba(255,255,255,.06); }
   .pc.card { background-size: cover; background-position: center; box-shadow: 0 16px 38px rgba(0,0,0,.6), 0 0 0 1px rgba(255,150,60,.25), 0 0 26px rgba(255,122,26,.18); }
+  @keyframes kb { from { background-size: 100% 100%; background-position: 0 0; } to { background-size: 128% 128%; background-position: 100% 100%; } }
+  @keyframes pan { from { background-position: var(--p0); } to { background-position: var(--p1); } }
+  .pc.card.kb { animation: kb var(--kd, 14s) ease-in-out var(--kl, 0s) infinite alternate; }
+  .pc.card.pn { animation: pan var(--kd, 12s) ease-in-out var(--kl, 0s) infinite alternate; }
+  @media (prefers-reduced-motion: reduce) { .pc.card.kb, .pc.card.pn { animation: none; } }
+  .pc.spr { overflow: visible; border-radius: 0; filter: drop-shadow(0 0 10px currentColor); }
+  .pc.spr svg { width: 100%; height: 100%; display: block; stroke: currentColor; fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
   .pc.mini { box-shadow: 0 18px 40px rgba(0,0,0,.55), 0 0 28px rgba(255,122,26,.2); }
   header { position: fixed; top: 0; left: 0; right: 0; z-index: 60; margin: 0; background: linear-gradient(180deg, rgba(7,3,12,.9), rgba(7,3,12,0)); }
   header .wrap { height: 70px; border-radius: 0; background: transparent; border: 0; box-shadow: none; backdrop-filter: none; padding: 0; }
@@ -1246,7 +1253,7 @@
     const fit = () => { DPR = Math.min(devicePixelRatio || 1, 1.5); W = cv.width = Math.round(innerWidth * DPR); H = cv.height = Math.round(innerHeight * DPR); };
     fit(); addEventListener('resize', fit);
     for (let i = 0; i < 120; i++) P.push({ x: Math.random(), y: Math.random(), s: rnd(1.5, 4.2), v: rnd(.015, .07), d: rnd(-.01, .01), c: COLS[(Math.random() * COLS.length) | 0], a: rnd(.25, .9), z: rnd(.2, 1.2), t: rnd(0, 6) });
-    let sy = 0;
+    let sy = 0, spinT = 0;   // spinT : temps écoulé (ms), fait tourner la tornade même quand on ne défile pas
     const paint = (dt) => {
       cx.clearRect(0, 0, W, H);
       for (const p of P) {
@@ -1277,12 +1284,8 @@
       [3, 250, 76, '<small>CADEAU</small><b>Galaxie</b><span>maxplays vient d\'envoyer</span>', 'mn giftm', 'galaxy'],
       [3, 240, 84, '<div class="t">Objectif</div><div class="bar"><i style="width:68%"></i></div><div class="row"><span>68 %</span><b>680 / 1 000</b></div>', 'mn'],
       [3, 160, 96, '<div class="t">Temps</div><div class="big">04:21</div>', 'mn timer'],
-      [2, 220, 140, '<div class="t">Top donateurs</div><div class="row"><i class="av"></i>léa_ttk<b>1 240</b></div><div class="row"><i class="av"></i>maxplays<b>980</b></div><div class="row"><i class="av"></i>nora.live<b>610</b></div>', 'mn'],
-      [2, 220, 112, '<div class="t">Sondage</div><div class="row">Oui<b>72 %</b></div><div class="bar"><i style="width:72%"></i></div><div class="row">Non<b>28 %</b></div>', 'mn'],
       [4, 230, 124, '<div class="t">Chat</div><div class="bub"><b>léa_ttk</b>incroyable</div><div class="bub"><b>maxplays</b>GG !</div><div class="bub"><b>nora</b>trop fort</div>', 'mn'],
       [4, 200, 86, '<div class="t">Niveau 12</div><div class="bar"><i style="width:44%"></i></div><div class="row"><span>' + TKI.svg('star') + ' Super Fan</span><b>+250 XP</b></div>', 'mn'],
-      [5, 168, 168, '<i></i>', 'mn wheel'],
-      [5, 190, 104, '<div class="t">Dé 3D</div><div class="row"><span class="big">5</span><b>lancé par léa_ttk</b></div>', 'mn'],
       [5, 240, 104, '<div class="t">Boss</div><div class="big">GOBLIN</div><div class="hp"><i style="width:58%"></i></div>', 'mn boss'],
       [6, 270, 116, '<span>REC ●</span>', 'mn cam'],
       [6, 240, 96, '<div class="t">' + TKI.svg('pumpkin') + ' Halloween</div><div class="row">Toiles, bave, citrouilles<b>' + TKI.svg('spark') + '</b></div>', 'mn'],
@@ -1293,14 +1296,23 @@
       el.innerHTML = em ? '<div class="ge">' + TKI.svg(em) + '</div><div>' + html + '</div>' : html;
       add(el, w, h, { g, rad: 300 + R() * 420 });
     }
-    // la tornade : une trentaine de cartes (captures de l'appli) en spirale autour d'un axe vertical, étroite en bas et large en haut
-    const TORN = ['img/design.jpg', 'img/preview.jpg', 'img/halloween.jpg', 'img/cameras.jpg', 'img/roues.jpg'], NT = 18;
+    // la tornade : une hélice (escalier en spirale) de grandes captures et de vignettes, avec des icônes qui flottent dedans
+    const TORN = ['img/design.jpg', 'img/boutique.jpg', 'img/preview.jpg', 'img/halloween.jpg', 'img/live.jpg', 'img/roues.jpg', 'img/cameras.jpg'], TR = [.629, .629, .629, .629, .629, .5, .429], NT = 27;
+    const GM = { 3: 3, 6: 4, 9: 5, 12: 6 };   // 4 grandes cartes passent devant, une par chapitre (cadeaux, chat, jeux, thèmes)
     for (let i = 0; i < NT; i++) {
-      const GM = { 1: 3, 0: 4, 4: 5, 2: 6 };   // 4 cartes passent devant, une par chapitre (cadeaux, chat, jeux, thèmes)
-      const w = GM[i] ? 380 : 210 + ((i * 37) % 40), h = Math.round(w * (i % 5 === 3 ? .43 : i % 5 === 4 ? .5 : .63));
+      const big = i % 3 === 0, k = (i * 2) % TORN.length, w = big ? 300 : 170 + ((i * 29) % 40), h = Math.round(w * TR[k]);
       const el = document.createElement('div'); el.className = 'pc card';
-      el.style.backgroundImage = 'url(' + TORN[i % TORN.length] + ')';
-      add(el, w, h, { tor: true, g: GM[i] || 0, a0: i * 0.95, ty: (i / (NT - 1)) * 2 - 1, sp: 1, tilt: ((i * 53) % 21) - 10 });
+      el.style.backgroundImage = 'url(' + TORN[k] + ')';
+      el.style.setProperty('--kd', (11 + (i * 3) % 9) + 's'); el.style.setProperty('--kl', -((i * 2.3) % 9).toFixed(1) + 's');
+      if (big) el.classList.add('kb');
+      else { el.style.backgroundSize = '300% 300%'; el.style.setProperty('--p0', ((i * 7) % 3) * 50 + '% ' + ((i * 5) % 3) * 50 + '%'); el.style.setProperty('--p1', (((i * 7) % 3) * 50 + 50) % 101 + '% ' + (((i * 5) % 3) * 50 + 50) % 101 + '%'); el.classList.add('pn'); }
+      add(el, w, h, { tor: true, g: GM[i] || 0, a0: i * 1.35, ty: (i / (NT - 1)) * 2 - 1 });
+    }
+    const SPR = ['rose', 'heart', 'gift', 'star', 'flame', 'galaxy', 'lion', 'rocket', 'spark', 'ghost', 'pumpkin', 'bat'], SCOL = ['#ff3d8b', '#ff7a1a', '#ffb347', '#b44dff', '#8cff2e', '#38c8ff'];
+    for (let i = 0; i < 16; i++) {
+      const el = document.createElement('div'); el.className = 'pc spr'; el.style.color = SCOL[i % SCOL.length];
+      el.innerHTML = TKI.svg(SPR[i % SPR.length]);
+      add(el, 54, 54, { tor: true, spr: true, a0: R() * 6.28, ty: R() * 2 - 1, rr: .25 + R() * .55 });
     }
     const SLOTS = [[-150, -170, -4], [150, -60, 3], [-110, 90, -2], [170, 170, 4], [10, -10, 0]];
     { const cnt = {}; for (const p of pieces) if (p.g) { p.gi = cnt[p.g] = (cnt[p.g] || 0) + 1; p.gi--; } }
@@ -1336,25 +1348,28 @@
     const place = (u) => {
       const vw = innerWidth, mob = vw < 860, sc = clamp(vw / 1440, .5, 1.12) * (mob ? .8 : 1);
       const ex = clamp(u, 0, 1), e = ease(ex);
+      const tk = ease(clamp(1 - Math.abs(u - 2) / 1.2, 0, 1));   // 1 pendant la tornade
       const shift = mob ? 0 : e * vw * .2;
       mx += (tmx - mx) * .06; my += (tmy - my) * .06;
-      world.style.transform = 'translate3d(' + shift / sc + 'px,' + (mob ? 0 : 20) + 'px,0) scale(' + sc + ') rotateX(' + (-my * 6) + 'deg) rotateY(' + (mx * 9 + e * -8) + 'deg)';
+      world.style.transform = 'translate3d(' + shift / sc + 'px,' + (mob ? 0 : 20) + 'px,0) scale(' + sc + ') rotateX(' + (-my * 6 + tk * 20) + 'deg) rotateY(' + (mx * 9 + e * -8) + 'deg)';
       stage.style.opacity = u > MAXCH - .55 ? clamp(1 - (u - (MAXCH - .55)) / .5, 0, 1) : 1;
       const dim = mob ? .42 : 1;
-      const tk = ease(clamp(1 - Math.abs(u - 2) / 1.2, 0, 1));
       for (const p of pieces) {
         // état « vortex » : la pièce tourne autour de l'axe vertical, de plus en plus loin au fil des chapitres
         const ang = p.a0 + u * .75 * p.sp, rad = p.rad * (.9 + .1 * Math.sin(u * .8 + p.a0));
         let x = Math.cos(ang) * rad, z = Math.sin(ang) * rad * .8 - 160, y = p.y0 + Math.sin(ang * 1.4 + p.a0) * 70;
         let ry = -ang * 57.3 * .35 + p.tilt, rz = p.tilt * .5, rx = p.tilt * -.4, s = 1, op;
         if (p.tor) {
-          // la tornade : visible autour du chapitre « Tout » (u = 2), elle tourne sur elle-même et s'élargit vers le haut
+          // visible autour du chapitre « Tout » (u = 2) : tourne autour de l'axe vertical, un peu plus large en haut
           const k = clamp(1 - Math.abs(u - 2) / 1.5, 0, 1), ke = ease(k);
-          const a = p.a0 + u * 1.2, h01 = (p.ty + 1) / 2, r = (200 + h01 * 560) * (.6 + .4 * ke);
-          x = Math.cos(a) * r; z = Math.sin(a) * r * .85 - 220; y = p.ty * -400;
-          ry = -a * 57.3 + 90; rx = 0; rz = 0; s = lerp(.25, 1, ke);
+          // la spirale : l'angle avance tout le temps, et la carte monte le long de l'hélice (puis réapparait en bas)
+          const conv = !p.g, tyc = conv ? ((p.ty + 1 + spinT * .00007 * (p.spr ? 1.3 : 1)) % 2) - 1 : p.ty, edge = conv ? clamp((1 - Math.abs(tyc)) * 3.5, 0, 1) : 1;
+          const a = p.a0 + u * 1.1 * (p.spr ? 1.5 : 1) + spinT * .0003 * (p.spr ? 1.4 : 1) + (conv ? tyc * 1.2 : 0), h01 = (tyc + 1) / 2;
+          const r = p.spr ? (110 + h01 * 100) * p.rr * 2.2 * (.6 + .4 * ke) : (360 + h01 * 90) * (.6 + .4 * ke);
+          x = Math.cos(a) * r; z = Math.sin(a) * r * .9 - 200; y = tyc * -320 + (p.spr ? Math.sin(u * 4 + p.a0 * 3) * 16 : 0);
+          ry = p.spr ? 0 : -a * 57.3 + 90; rx = 0; rz = p.spr ? Math.sin(u * 3 + p.a0) * 14 : 0; s = lerp(.25, 1, ke);
           const depth = clamp((Math.sin(a) + 1) / 2, 0, 1);   // 1 = devant, 0 = derrière
-          op = ke * (.3 + .7 * depth) * .95;
+          op = ke * (.5 + .5 * depth) * (p.spr ? .95 : .98) * edge;
         } else if (p.tile) {
           // les tuiles forment la capture au départ, puis s'éclatent
           x = lerp(p.gx, x, e); y = lerp(p.gy, y, e); z = lerp(0, z, e) + Math.sin(Math.PI * ex) * 260;
@@ -1372,7 +1387,7 @@
           const sl = SLOTS[p.gi % SLOTS.length]; x = lerp(x, sl[0], fe); y = lerp(y, sl[1], fe); z = lerp(z, 220, fe);
           ry = lerp(ry, -10, fe); rx = lerp(rx, 3, fe); rz = lerp(rz, sl[2], fe);
           s = lerp(s, 1.1, fe); op = lerp(op, 1, fe);
-        } else if (!p.tile && !p.tor) op *= .6;
+        } else if (!p.tile && !p.tor) op = 0;   // une petite carte n'apparait que quand son chapitre la met en avant : rien ne se promène seul
         if (p.tile) op *= clamp(1 - (u - .85) / .6, 0, 1);
         p.el.style.opacity = (op * dim * (p.tor ? 1 : 1 - .95 * tk)).toFixed(3);   // pendant la tornade, le reste s'efface : rien ne se mélange
         p.el.style.transform = 'translate3d(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px,' + z.toFixed(1) + 'px) rotateX(' + rx.toFixed(1) + 'deg) rotateY(' + ry.toFixed(1) + 'deg) rotateZ(' + rz.toFixed(1) + 'deg) scale(' + s.toFixed(3) + ')';
@@ -1392,6 +1407,7 @@
     let last = 0, dirty = true, uCur = 0, uTgt = 0;
     const tick = (t) => {
       const dt = Math.min(50, t - last || 16); last = t;
+      if (!calm && !document.hidden) spinT += dt;
       sy = scrollY; uTgt = stepU(); uCur += (uTgt - uCur) * (calm ? 1 : .14);
       if (Math.abs(uTgt - uCur) < .0005) uCur = uTgt;
       if (!document.hidden) { place(uCur); if (!calm) paint(dt); }
